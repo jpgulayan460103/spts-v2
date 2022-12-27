@@ -75,6 +75,14 @@ class LibrarySeeder extends Seeder
                 'name' => "12",
                 'library_type' => "grade_levels",
             ],
+            [
+                'name' => "Male",
+                'library_type' => "genders",
+            ],
+            [
+                'name' => "Female",
+                'library_type' => "genders",
+            ],
 
         ];
         foreach ($libraries as $library) {
