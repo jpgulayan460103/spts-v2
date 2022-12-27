@@ -24,6 +24,14 @@ class LibrarySeeder extends Seeder
                 'library_type' => "quarters",
             ],
             [
+                'name' => "Third Quarter",
+                'library_type' => "quarters",
+            ],
+            [
+                'name' => "Fourth Quarter",
+                'library_type' => "quarters",
+            ],
+            [
                 'name' => "First Semester",
                 'library_type' => "semesters",
             ],
