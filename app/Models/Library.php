@@ -12,5 +12,6 @@ class Library extends Model
     protected $fillable = [
         'name',
         'library_type',
+        'parent_id'
     ];
 }

@@ -17,6 +17,7 @@ class CreateLibrariesTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('library_type')->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
             $table->timestamps();
         });
     }
