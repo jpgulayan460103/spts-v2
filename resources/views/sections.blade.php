@@ -2,6 +2,6 @@
 
 @section('content')
 <div>
-    Home
+    <section-index />
 </div>
 @endsection

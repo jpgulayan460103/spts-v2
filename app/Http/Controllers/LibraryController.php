@@ -12,9 +12,9 @@ class LibraryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($library_type)
     {
-        //
+        return Library::where('library_type', $library_type)->get();
     }
 
     /**

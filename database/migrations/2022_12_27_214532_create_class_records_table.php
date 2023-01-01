@@ -16,10 +16,12 @@ class CreateClassRecordsTable extends Migration
         Schema::create('class_records', function (Blueprint $table) {
             $table->id();
             $table->string('class_record_number')->nullable();
-            $table->unsignedBigInteger('class_section_id')->nullable();
+            $table->unsignedBigInteger('section_id')->nullable();
             $table->unsignedBigInteger('subject_id')->nullable();
             $table->unsignedBigInteger('teacher_id')->nullable();
             $table->timestamps();
+            $table->string('uuid')->nullable();
+            $table->index('uuid');
         });
     }
 

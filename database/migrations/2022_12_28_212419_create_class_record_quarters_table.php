@@ -16,7 +16,10 @@ class CreateClassRecordQuartersTable extends Migration
         Schema::create('class_record_quarters', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('class_record_id')->nullable();
+            $table->unsignedBigInteger('quarter_id')->nullable();
             $table->timestamps();
+            $table->string('uuid')->nullable();
+            $table->index('uuid');
         });
     }
 
