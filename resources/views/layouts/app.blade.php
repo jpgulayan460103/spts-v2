@@ -18,7 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    @routes
+    <?php echo app('Tightenco\Ziggy\BladeRouteGenerator')->generate(); ?>
 </head>
 <body>
     <div id="app">
