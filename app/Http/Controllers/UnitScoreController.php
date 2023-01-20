@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SectionStudent;
+use App\Models\UnitScore;
 use Illuminate\Http\Request;
 
-class SectionStudentController extends Controller
+class UnitScoreController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,22 +35,27 @@ class SectionStudentController extends Controller
      */
     public function store(Request $request)
     {
-        $section_student_exist = SectionStudent::where('section_id', $request->section_id)->where('student_id', $request->student_id)->first();
-        if($section_student_exist){
-            abort(422);
+        $unit_score = UnitScore::where([
+            ['unit_id', '=', $request->unit_id],
+            ['unit_item_id', '=', $request->unit_item_id],
+            ['section_student_id', '=', $request->section_student_id],
+            ['grading_system_id', '=', $request->grading_system_id],
+        ])->first();
+        
+        if($unit_score){
+            $unit_score->update($request->all());
         }else{
-            $section_student = SectionStudent::create($request->all());
-            return $section_student->load('student.gender');
+            $unit_score = UnitScore::create($request->all());
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\SectionStudent  $sectionStudent
+     * @param  \App\Models\UnitScore  $unitScore
      * @return \Illuminate\Http\Response
      */
-    public function show(SectionStudent $sectionStudent)
+    public function show(UnitScore $unitScore)
     {
         //
     }
@@ -58,10 +63,10 @@ class SectionStudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\SectionStudent  $sectionStudent
+     * @param  \App\Models\UnitScore  $unitScore
      * @return \Illuminate\Http\Response
      */
-    public function edit(SectionStudent $sectionStudent)
+    public function edit(UnitScore $unitScore)
     {
         //
     }
@@ -70,10 +75,10 @@ class SectionStudentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SectionStudent  $sectionStudent
+     * @param  \App\Models\UnitScore  $unitScore
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SectionStudent $sectionStudent)
+    public function update(Request $request, UnitScore $unitScore)
     {
         //
     }
@@ -81,11 +86,11 @@ class SectionStudentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\SectionStudent  $sectionStudent
+     * @param  \App\Models\UnitScore  $unitScore
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(UnitScore $unitScore)
     {
-        return SectionStudent::find($id)->delete();
+        //
     }
 }

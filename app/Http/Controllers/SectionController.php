@@ -7,6 +7,7 @@ use App\Models\ClassRecordQuarter;
 use App\Models\Library;
 use App\Models\Section;
 use App\Models\Subject;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 
 class SectionController extends Controller
@@ -18,7 +19,11 @@ class SectionController extends Controller
      */
     public function index()
     {
-        //
+        return Section::with([
+            'school_year',
+            'grade_level',
+            'track',
+        ])->get();
     }
 
     /**
@@ -72,19 +77,35 @@ class SectionController extends Controller
         }
         $section->class_records()->saveMany($class_records);
 
-        $section->class_records->each(function ($class_record, $key) use ($first_quarter, $second_quarter) {
-            $quarters = [
-                new ClassRecordQuarter(['quarter_id' => $first_quarter->id]),
-                new ClassRecordQuarter(['quarter_id' => $second_quarter->id]),
-            ];
-            $class_record->quarters()->saveMany($quarters);
-        });
+        $section->class_records->each(function ($class_record, $key) use ($first_semester, $second_semester, $first_quarter, $second_quarter, $third_quarter, $fourth_quarter) {
 
-        // $quarters = [
-        //     new ClassRecordQuarter(['quarter_id' => $first_quarter->id]),
-        //     new ClassRecordQuarter(['quarter_id' => $second_quarter->id]),
-        // ];
-        // $class_records[$key]->quarters()->saveMany($quarters);
+            if($class_record->subject->semester_id == $first_semester->id){
+                $quarters = [
+                    new ClassRecordQuarter(['quarter_id' => $first_quarter->id]),
+                    new ClassRecordQuarter(['quarter_id' => $second_quarter->id]),
+                ];
+            }elseif($class_record->subject->semester_id == $second_semester->id){
+                $quarters = [
+                    new ClassRecordQuarter(['quarter_id' => $third_quarter->id]),
+                    new ClassRecordQuarter(['quarter_id' => $fourth_quarter->id]),
+                ];
+            }else{
+                abort(500);
+            }
+            $class_record->quarters()->saveMany($quarters);
+
+            $class_record->quarters->each(function ($quarter, $key) {
+                $units = [
+                    new Unit(['name' => "Unit 1"]),
+                    new Unit(['name' => "Unit 2"]),
+                    new Unit(['name' => "Unit 3"]),
+                    new Unit(['name' => "Unit 4"]),
+                    new Unit(['name' => "Unit 5"]),
+                ];
+                $quarter->units()->saveMany($units);
+            });
+        });
+        
         return $section;
     }
 

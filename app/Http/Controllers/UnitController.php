@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SectionStudent;
+use App\Models\Unit;
 use Illuminate\Http\Request;
 
-class SectionStudentController extends Controller
+class UnitController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,22 +35,16 @@ class SectionStudentController extends Controller
      */
     public function store(Request $request)
     {
-        $section_student_exist = SectionStudent::where('section_id', $request->section_id)->where('student_id', $request->student_id)->first();
-        if($section_student_exist){
-            abort(422);
-        }else{
-            $section_student = SectionStudent::create($request->all());
-            return $section_student->load('student.gender');
-        }
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\SectionStudent  $sectionStudent
+     * @param  \App\Models\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function show(SectionStudent $sectionStudent)
+    public function show(Unit $unit)
     {
         //
     }
@@ -58,10 +52,10 @@ class SectionStudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\SectionStudent  $sectionStudent
+     * @param  \App\Models\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function edit(SectionStudent $sectionStudent)
+    public function edit(Unit $unit)
     {
         //
     }
@@ -70,10 +64,10 @@ class SectionStudentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SectionStudent  $sectionStudent
+     * @param  \App\Models\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SectionStudent $sectionStudent)
+    public function update(Request $request, Unit $unit)
     {
         //
     }
@@ -81,11 +75,16 @@ class SectionStudentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\SectionStudent  $sectionStudent
+     * @param  \App\Models\Unit  $unit
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Unit $unit)
     {
-        return SectionStudent::find($id)->delete();
+        //
+    }
+
+    public function total()
+    {
+        # code...
     }
 }

@@ -23,6 +23,8 @@ class CreateStudentsTable extends Migration
             $table->unsignedBigInteger('gender_id')->nullable();
             $table->unsignedBigInteger('guardian_id')->nullable();
             $table->timestamps();
+            $table->string('uuid')->nullable();
+            $table->index('uuid');
         });
     }
 

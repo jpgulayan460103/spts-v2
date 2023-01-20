@@ -23,6 +23,8 @@ class CreateSubjectsTable extends Migration
             $table->string('offer_code')->nullable();
             $table->string('subject_code')->nullable();
             $table->timestamps();
+            $table->string('uuid')->nullable();
+            $table->index('uuid');
         });
     }
 

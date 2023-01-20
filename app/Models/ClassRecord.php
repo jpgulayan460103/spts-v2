@@ -28,6 +28,21 @@ class ClassRecord extends Model
         });
     }
 
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
+    }
+
+    public function teacher()
+    {
+        return $this->belongsTo(Teacher::class);
+    }
+
     public function quarters()
     {
         return $this->hasMany(ClassRecordQuarter::class);

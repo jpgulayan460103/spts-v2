@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSectionStudentsTable extends Migration
+class CreateGradingScalesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,12 @@ class CreateSectionStudentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('section_students', function (Blueprint $table) {
+        Schema::create('grading_scales', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('student_id')->nullable();
-            $table->unsignedBigInteger('section_id')->nullable();
+            $table->float('transmuted_grade',5,2);
+            $table->string('descriptor')->nullable();
+            $table->string('remarks')->nullable();
             $table->timestamps();
-            $table->string('uuid')->nullable();
-            $table->index('uuid');
         });
     }
 
@@ -30,6 +29,6 @@ class CreateSectionStudentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('section_students');
+        Schema::dropIfExists('grading_scales');
     }
 }

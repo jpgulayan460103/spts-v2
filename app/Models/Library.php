@@ -15,6 +15,11 @@ class Library extends Model
         'parent_id'
     ];
 
+    public function grading_systems()
+    {
+        return $this->hasMany(GradingSystem::class, 'subject_category_id');
+    }
+
     public static function firstSemester()
     {
         $instance = new static;

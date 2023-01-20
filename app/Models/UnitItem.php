@@ -6,13 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
-class SectionStudent extends Model
+class UnitItem extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'student_id',
-        'section_id',
+        'item',
+        'unit_id',
+        'grading_system_id',
     ];
 
     public static function boot()
@@ -26,13 +27,8 @@ class SectionStudent extends Model
         });
     }
 
-    public function student()
+    public function grading_system()
     {
-        return $this->belongsTo(Student::class);
-    }
-
-    public function section()
-    {
-        return $this->belongsTo(Section::class);
+        return $this->belongsTo(GradingSystem::class);
     }
 }

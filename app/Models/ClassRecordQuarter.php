@@ -25,4 +25,14 @@ class ClassRecordQuarter extends Model
 
         });
     }
+
+    public function quarter()
+    {
+        return $this->belongsTo(Library::class);
+    }
+
+    public function units()
+    {
+        return $this->hasMany(Unit::class);
+    }
 }

@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Controllers\ClassRecordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\SectionStudentController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\UnitItemController;
+use App\Http\Controllers\UnitScoreController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,11 +23,20 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'sections'])->name('home');
 Route::get('/sections', [HomeController::class, 'sections'])->name('sections');
+Route::get('/students', [HomeController::class, 'students'])->name('students');
+Route::get('/sections/{uuid}/manage/{type?}', [HomeController::class, 'manageSection'])->name('sections.manage');
 Route::get('/libraries/{library_type}', [LibraryController::class, 'index'])->name('libraries.type');
 
 Route::prefix('data')->group(function () {
     Route::resource('/sections', SectionController::class);
+    Route::resource('/students', StudentController::class);
+    Route::resource('/section-students', SectionStudentController::class);
+    Route::resource('/unit-items', UnitItemController::class);
+    Route::resource('/unit-scores', UnitScoreController::class);
+    Route::get('/class-records/{id}/unit-items', [ClassRecordController::class, 'unitItems'])->name('class-records.unit-items');
+    Route::get('/class-records/{id}/unit-scores', [ClassRecordController::class, 'unitScore'])->name('class-records.unit-scores');
+    Route::get('/class-records/{id}/unit-summary', [ClassRecordController::class, 'unitSummary'])->name('class-records.unit-summary');
 });
 

@@ -19,6 +19,8 @@ class CreateGradingSystemsTable extends Migration
             $table->double('percentage',5,2)->nullable();
             $table->unsignedBigInteger('subject_category_id')->nullable();
             $table->timestamps();
+            $table->string('uuid')->nullable();
+            $table->index('uuid');
         });
     }
 

@@ -32,4 +32,24 @@ class Section extends Model
 
         });
     }
+    public function school_year()
+    {
+        return $this->belongsTo(Library::class);
+    }
+
+    public function grade_level()
+    {
+        return $this->belongsTo(Library::class);
+    }
+
+    public function track()
+    {
+        return $this->belongsTo(Library::class);
+    }
+
+    public function students()
+    {
+        return $this->hasMany(SectionStudent::class);
+    }
+
 }

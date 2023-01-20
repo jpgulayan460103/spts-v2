@@ -8,7 +8,9 @@ require('./bootstrap');
 
 import Vue from 'vue'
 
+import 'bootstrap-icons/font/bootstrap-icons.css'
 import './components'
+import './../css/app.css'
 
 
 const app = new Vue({

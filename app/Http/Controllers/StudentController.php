@@ -14,7 +14,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        return Student::with(['gender','guardian'])->get();
     }
 
     /**
@@ -35,7 +35,7 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Student::create($request->all());
     }
 
     /**
