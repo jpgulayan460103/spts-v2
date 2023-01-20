@@ -5848,6 +5848,16 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -31712,6 +31722,8 @@ var render = function () {
                 ]),
                 _vm._v(" "),
                 _c("th", [_vm._v("Remarks")]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Action to be Taken")]),
               ]),
             ]),
             _vm._v(" "),
@@ -31801,6 +31813,8 @@ var render = function () {
                   _c("th", { staticClass: "br" }, [
                     _vm._v(_vm._s(sectionStudent.remarks)),
                   ]),
+                  _vm._v(" "),
+                  _vm._m(0, true),
                 ])
               }),
               0
@@ -31939,7 +31953,7 @@ var render = function () {
               ),
             ]),
             _vm._v(" "),
-            _vm._m(0),
+            _vm._m(1),
           ]),
         ]),
       ]
@@ -31947,6 +31961,26 @@ var render = function () {
   ])
 }
 var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("th", { staticClass: "br" }, [
+      _c("select", [
+        _c("option", { attrs: { value: "" } }, [_vm._v("Select Action")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "" } }, [
+          _vm._v("One-on-One Consultation"),
+        ]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "" } }, [_vm._v("Remedial Classes")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "" } }, [_vm._v("Parent Conference")]),
+        _vm._v(" "),
+        _c("option", { attrs: { value: "" } }, [_vm._v("Reinforcement")]),
+      ]),
+    ])
+  },
   function () {
     var _vm = this
     var _h = _vm.$createElement

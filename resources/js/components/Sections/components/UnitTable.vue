@@ -135,6 +135,7 @@
                         <th>Remarks</th>
                         <th class="bl">{{ unitGradingSystem3.percentage * 100 }}%</th>
                         <th>Remarks</th>
+                        <th>Action to be Taken</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -155,6 +156,15 @@
                         <th class="br">{{ sectionStudent.transmuted_grade }}</th>
                         <th>{{ sectionStudent.descriptor }}</th>
                         <th class="br">{{ sectionStudent.remarks }}</th>
+                        <th class="br">
+                            <select>
+                                <option value="">Select Action</option>
+                                <option value="">One-on-One Consultation</option>
+                                <option value="">Remedial Classes</option>
+                                <option value="">Parent Conference</option>
+                                <option value="">Reinforcement</option>
+                            </select>
+                        </th>
                     </tr>
                 </tbody>
             </table>
