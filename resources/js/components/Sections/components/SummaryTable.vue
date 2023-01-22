@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="isEmpty(classRecordQuarter)" class="">
-            <p>
+            <p v-if="user.account_type == 'admin'">
                 Teacher: <br>
                 <select v-model="subjectTeacherId">
                     <option value="">Select Teacher</option>
@@ -9,7 +9,7 @@
                 </select> 
                 <button class="btn btn-primary btn-sm" @click="updateSubjectTeacher">Save</button>
             </p>
-            <hr>
+            <hr v-if="user.account_type == 'admin'">
         </div>
         <table class="table">
             <thead>
@@ -40,6 +40,7 @@
 
     export default {
         props: [
+            'user',
             'classRecord',
             'classRecordQuarter',
             'section',

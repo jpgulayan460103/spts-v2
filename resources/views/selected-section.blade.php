@@ -8,6 +8,7 @@
         :class-record-quarter="{{ $class_record_quarter}}"
         :unit="{{ $unit}}"
         type="{{ $type }}"
+        :user="{{ $user }}"
     />
 </div>
 @endsection

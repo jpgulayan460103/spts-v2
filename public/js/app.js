@@ -5066,6 +5066,149 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboards/DashboardTeacher.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboards/DashboardTeacher.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Card_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../Card.vue */ "./resources/js/components/Card.vue");
+/* harmony import */ var _FormItem_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../FormItem.vue */ "./resources/js/components/FormItem.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_3__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    Card: _Card_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    FormItem: _FormItem_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  props: ['user'],
+  data: function data() {
+    return {
+      classRecords: [],
+      sections: []
+    };
+  },
+  methods: {
+    getClassRecords: function getClassRecords() {
+      var _this = this;
+      axios__WEBPACK_IMPORTED_MODULE_2___default().get(route('teachers.class-records', this.user.userable_id)).then(function (res) {
+        _this.classRecords = res.data.data;
+      })["catch"](function (res) {});
+    },
+    viewClassRecord: function viewClassRecord(classRecord) {
+      window.location = route('sections.manage', {
+        uuid: classRecord.section.uuid,
+        type: 'class-records',
+        _query: {
+          cruid: classRecord.uuid
+        }
+      });
+    },
+    getAdvisories: function getAdvisories() {
+      var _this2 = this;
+      axios__WEBPACK_IMPORTED_MODULE_2___default().get(route('teachers.advisories', this.user.userable_id)).then(function (res) {
+        _this2.sections = res.data.data;
+      })["catch"](function (res) {});
+    },
+    manageSection: function manageSection(section) {
+      window.location = route('sections.manage', [section.uuid, 'students']);
+    },
+    manageClassRecord: function manageClassRecord(section) {
+      window.location = route('sections.manage', [section.uuid, 'class-records']);
+    }
+  },
+  mounted: function mounted() {
+    this.getClassRecords();
+    this.getAdvisories();
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/FormItem.vue?vue&type=script&lang=js&":
 /*!***************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/FormItem.vue?vue&type=script&lang=js& ***!
@@ -5817,6 +5960,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -5825,7 +5971,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['section', 'classRecord', 'classRecordQuarter', 'unit', 'type', 'uuid'],
+  props: ['user', 'section', 'classRecord', 'classRecordQuarter', 'unit', 'type', 'uuid'],
   components: {
     Card: _Card_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     FormItem: _FormItem_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -5982,7 +6128,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ['classRecord', 'classRecordQuarter', 'section', 'viewUnit'],
+  props: ['user', 'classRecord', 'classRecordQuarter', 'section', 'viewUnit'],
   data: function data() {
     return {
       sectionStudents: [],
@@ -6264,6 +6410,41 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -6272,7 +6453,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   components: {
     FormItem: _FormItem_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  props: ['section', 'classRecord', 'classRecordQuarter', 'unit'],
+  props: ['user', 'section', 'classRecord', 'classRecordQuarter', 'unit'],
   data: function data() {
     return {
       submit: false,
@@ -7118,23 +7299,26 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var _Sections_Section__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Sections/Section */ "./resources/js/components/Sections/Section.vue");
 /* harmony import */ var _Sections_SelectedSection__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Sections/SelectedSection */ "./resources/js/components/Sections/SelectedSection.vue");
 /* harmony import */ var _Students_Students__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Students/Students */ "./resources/js/components/Students/Students.vue");
 /* harmony import */ var _Guardian_Guardian__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Guardian/Guardian */ "./resources/js/components/Guardian/Guardian.vue");
 /* harmony import */ var _Teachers_Teachers__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Teachers/Teachers */ "./resources/js/components/Teachers/Teachers.vue");
+/* harmony import */ var _Dashboards_DashboardTeacher__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Dashboards/DashboardTeacher */ "./resources/js/components/Dashboards/DashboardTeacher.vue");
 
 
 
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_5__["default"].component('section-index', _Sections_Section__WEBPACK_IMPORTED_MODULE_0__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_5__["default"].component('selected-section', _Sections_SelectedSection__WEBPACK_IMPORTED_MODULE_1__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_5__["default"].component('student-index', _Students_Students__WEBPACK_IMPORTED_MODULE_2__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_5__["default"].component('guardian-index', _Guardian_Guardian__WEBPACK_IMPORTED_MODULE_3__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_5__["default"].component('teacher-index', _Teachers_Teachers__WEBPACK_IMPORTED_MODULE_4__["default"]);
+
+vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('section-index', _Sections_Section__WEBPACK_IMPORTED_MODULE_0__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('selected-section', _Sections_SelectedSection__WEBPACK_IMPORTED_MODULE_1__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('student-index', _Students_Students__WEBPACK_IMPORTED_MODULE_2__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('guardian-index', _Guardian_Guardian__WEBPACK_IMPORTED_MODULE_3__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('teacher-index', _Teachers_Teachers__WEBPACK_IMPORTED_MODULE_4__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_6__["default"].component('dashboard-teacher', _Dashboards_DashboardTeacher__WEBPACK_IMPORTED_MODULE_5__["default"]);
 // Vue.component('message', Message);
 // Vue.component('failed-message', FailedMessage);
 // Vue.component('sent-message', SentMessage);
@@ -31975,6 +32159,45 @@ component.options.__file = "resources/js/components/Card.vue"
 
 /***/ }),
 
+/***/ "./resources/js/components/Dashboards/DashboardTeacher.vue":
+/*!*****************************************************************!*\
+  !*** ./resources/js/components/Dashboards/DashboardTeacher.vue ***!
+  \*****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _DashboardTeacher_vue_vue_type_template_id_1d450463___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DashboardTeacher.vue?vue&type=template&id=1d450463& */ "./resources/js/components/Dashboards/DashboardTeacher.vue?vue&type=template&id=1d450463&");
+/* harmony import */ var _DashboardTeacher_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DashboardTeacher.vue?vue&type=script&lang=js& */ "./resources/js/components/Dashboards/DashboardTeacher.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _DashboardTeacher_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DashboardTeacher_vue_vue_type_template_id_1d450463___WEBPACK_IMPORTED_MODULE_0__.render,
+  _DashboardTeacher_vue_vue_type_template_id_1d450463___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Dashboards/DashboardTeacher.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/FormItem.vue":
 /*!**********************************************!*\
   !*** ./resources/js/components/FormItem.vue ***!
@@ -32307,6 +32530,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Dashboards/DashboardTeacher.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/Dashboards/DashboardTeacher.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DashboardTeacher_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./DashboardTeacher.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboards/DashboardTeacher.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DashboardTeacher_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/FormItem.vue?vue&type=script&lang=js&":
 /*!***********************************************************************!*\
   !*** ./resources/js/components/FormItem.vue?vue&type=script&lang=js& ***!
@@ -32586,6 +32825,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Card_vue_vue_type_template_id_b9bc2c0a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Card_vue_vue_type_template_id_b9bc2c0a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./Card.vue?vue&type=template&id=b9bc2c0a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Card.vue?vue&type=template&id=b9bc2c0a&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Dashboards/DashboardTeacher.vue?vue&type=template&id=1d450463&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/Dashboards/DashboardTeacher.vue?vue&type=template&id=1d450463& ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DashboardTeacher_vue_vue_type_template_id_1d450463___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DashboardTeacher_vue_vue_type_template_id_1d450463___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DashboardTeacher_vue_vue_type_template_id_1d450463___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./DashboardTeacher.vue?vue&type=template&id=1d450463& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboards/DashboardTeacher.vue?vue&type=template&id=1d450463&");
 
 
 /***/ }),
@@ -32991,6 +33247,197 @@ var render = function () {
     _c("div", { staticClass: "card-header" }, [_vm._t("header")], 2),
     _vm._v(" "),
     _c("div", { staticClass: "card-body" }, [_vm._t("default")], 2),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboards/DashboardTeacher.vue?vue&type=template&id=1d450463&":
+/*!***************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Dashboards/DashboardTeacher.vue?vue&type=template&id=1d450463& ***!
+  \***************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row gy-2 gx-2" }, [
+    _c(
+      "div",
+      { staticClass: "col-md-6" },
+      [
+        _c(
+          "card",
+          {
+            scopedSlots: _vm._u([
+              {
+                key: "header",
+                fn: function () {
+                  return [_vm._v("Assigned Subjects")]
+                },
+                proxy: true,
+              },
+            ]),
+          },
+          [
+            _vm._v(" "),
+            _c("table", { staticClass: "table" }, [
+              _c("thead", [
+                _c("tr", [
+                  _c("th", [_vm._v("Class Record ID")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Semester")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Subject Code")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Subject Description")]),
+                  _vm._v(" "),
+                  _c("th", { staticStyle: { "text-align": "center" } }, [
+                    _vm._v("Manage"),
+                  ]),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.classRecords, function (classRecord, csindex) {
+                  return _c("tr", { key: csindex }, [
+                    _c("td", [_vm._v(_vm._s(classRecord.id))]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(classRecord.subject.semester.name)),
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(classRecord.subject.subject_code)),
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(classRecord.subject.subject_description)),
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticStyle: { "text-align": "center" } }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function ($event) {
+                              return _vm.viewClassRecord(classRecord)
+                            },
+                          },
+                        },
+                        [_c("i", { staticClass: "bi bi-gear-fill" })]
+                      ),
+                    ]),
+                  ])
+                }),
+                0
+              ),
+            ]),
+          ]
+        ),
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "col-md-6" },
+      [
+        _c(
+          "card",
+          {
+            scopedSlots: _vm._u([
+              {
+                key: "header",
+                fn: function () {
+                  return [_vm._v("Your Advisories")]
+                },
+                proxy: true,
+              },
+            ]),
+          },
+          [
+            _vm._v(" "),
+            _c("table", { staticClass: "table" }, [
+              _c("thead", [
+                _c("tr", [
+                  _c("th", [_vm._v("Section Name")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("School Year")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Grade Level")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Track")]),
+                  _vm._v(" "),
+                  _c("th"),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.sections, function (section, index) {
+                  return _c("tr", { key: index }, [
+                    _c("td", [_vm._v(_vm._s(section.section_name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(section.school_year.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(section.grade_level.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(section.track.name))]),
+                    _vm._v(" "),
+                    _c("td", { staticStyle: { width: "120px" } }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function ($event) {
+                              return _vm.manageClassRecord(section)
+                            },
+                          },
+                        },
+                        [_c("i", { staticClass: "bi bi-book-fill" })]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function ($event) {
+                              return _vm.manageSection(section)
+                            },
+                          },
+                        },
+                        [_c("i", { staticClass: "bi bi-people-fill" })]
+                      ),
+                    ]),
+                  ])
+                }),
+                0
+              ),
+            ]),
+          ]
+        ),
+      ],
+      1
+    ),
   ])
 }
 var staticRenderFns = []
@@ -34578,6 +35025,8 @@ var render = function () {
                           _vm._v(" "),
                           _c("th", [_vm._v("Subject Description")]),
                           _vm._v(" "),
+                          _c("th", [_vm._v("Teacher")]),
+                          _vm._v(" "),
                           _c(
                             "th",
                             { staticStyle: { "text-align": "center" } },
@@ -34610,6 +35059,17 @@ var render = function () {
                                 _vm._v(
                                   _vm._s(
                                     class_record.subject.subject_description
+                                  )
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(
+                                  _vm._s(
+                                    class_record.teacher &&
+                                      class_record.teacher.full_name_first_name
+                                      ? class_record.teacher.full_name_last_name
+                                      : ""
                                   )
                                 ),
                               ]),
@@ -34724,23 +35184,25 @@ var render = function () {
               },
               [
                 _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary",
-                    attrs: {
-                      type: "button",
-                      "data-bs-toggle": "modal",
-                      "data-bs-target": "#staticBackdrop",
-                    },
-                    on: {
-                      click: function ($event) {
-                        return _vm.getStudents()
+                _vm.user.account_type == "admin"
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: {
+                          type: "button",
+                          "data-bs-toggle": "modal",
+                          "data-bs-target": "#staticBackdrop",
+                        },
+                        on: {
+                          click: function ($event) {
+                            return _vm.getStudents()
+                          },
+                        },
                       },
-                    },
-                  },
-                  [_vm._v("\n            Add Students\n            ")]
-                ),
+                      [_vm._v("\n            Add Students\n            ")]
+                    )
+                  : _vm._e(),
                 _vm._v(" "),
                 _c("table", { staticClass: "table" }, [
                   _c("thead", [
@@ -34780,19 +35242,25 @@ var render = function () {
                         _c("td", [_vm._v(_vm._s(student.student.gender.name))]),
                         _vm._v(" "),
                         _c("td", [
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-danger",
-                              attrs: { type: "button" },
-                              on: {
-                                click: function ($event) {
-                                  return _vm.deleteStudent(student)
+                          _vm.user.account_type == "admin"
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  attrs: { type: "button" },
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.deleteStudent(student)
+                                    },
+                                  },
                                 },
-                              },
-                            },
-                            [_c("i", { staticClass: "bi bi-person-dash-fill" })]
-                          ),
+                                [
+                                  _c("i", {
+                                    staticClass: "bi bi-person-dash-fill",
+                                  }),
+                                ]
+                              )
+                            : _vm._e(),
                         ]),
                       ])
                     }),
@@ -35019,64 +35487,66 @@ var render = function () {
   return _c("div", [
     _vm.isEmpty(_vm.classRecordQuarter)
       ? _c("div", {}, [
-          _c("p", [
-            _vm._v("\n            Teacher: "),
-            _c("br"),
-            _vm._v(" "),
-            _c(
-              "select",
-              {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.subjectTeacherId,
-                    expression: "subjectTeacherId",
-                  },
-                ],
-                on: {
-                  change: function ($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function (o) {
-                        return o.selected
-                      })
-                      .map(function (o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.subjectTeacherId = $event.target.multiple
-                      ? $$selectedVal
-                      : $$selectedVal[0]
-                  },
-                },
-              },
-              [
-                _c("option", { attrs: { value: "" } }, [
-                  _vm._v("Select Teacher"),
-                ]),
+          _vm.user.account_type == "admin"
+            ? _c("p", [
+                _vm._v("\n            Teacher: "),
+                _c("br"),
                 _vm._v(" "),
-                _vm._l(_vm.subjectTeachers, function (teacher, index) {
-                  return _c(
-                    "option",
-                    { key: index, domProps: { value: teacher.id } },
-                    [_vm._v(_vm._s(teacher.full_name_last_name))]
-                  )
-                }),
-              ],
-              2
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary btn-sm",
-                on: { click: _vm.updateSubjectTeacher },
-              },
-              [_vm._v("Save")]
-            ),
-          ]),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.subjectTeacherId,
+                        expression: "subjectTeacherId",
+                      },
+                    ],
+                    on: {
+                      change: function ($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function (o) {
+                            return o.selected
+                          })
+                          .map(function (o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.subjectTeacherId = $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      },
+                    },
+                  },
+                  [
+                    _c("option", { attrs: { value: "" } }, [
+                      _vm._v("Select Teacher"),
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.subjectTeachers, function (teacher, index) {
+                      return _c(
+                        "option",
+                        { key: index, domProps: { value: teacher.id } },
+                        [_vm._v(_vm._s(teacher.full_name_last_name))]
+                      )
+                    }),
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary btn-sm",
+                    on: { click: _vm.updateSubjectTeacher },
+                  },
+                  [_vm._v("Save")]
+                ),
+              ])
+            : _vm._e(),
           _vm._v(" "),
-          _c("hr"),
+          _vm.user.account_type == "admin" ? _c("hr") : _vm._e(),
         ])
       : _vm._e(),
     _vm._v(" "),
@@ -35255,25 +35725,28 @@ var render = function () {
                         _vm._s(_vm.unitGradingSystem1.name) +
                         "\n                        "
                     ),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary btn-sm",
-                        attrs: {
-                          type: "button",
-                          "data-bs-toggle": "modal",
-                          "data-bs-target": "#staticBackdrop",
-                        },
-                        on: {
-                          click: function ($event) {
-                            return _vm.selectGradingSystem(
-                              _vm.unitGradingSystem1
-                            )
+                    _vm.user.account_type == "admin" ||
+                    _vm.user.userable_id == _vm.classRecord.teacher_id
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary btn-sm",
+                            attrs: {
+                              type: "button",
+                              "data-bs-toggle": "modal",
+                              "data-bs-target": "#staticBackdrop",
+                            },
+                            on: {
+                              click: function ($event) {
+                                return _vm.selectGradingSystem(
+                                  _vm.unitGradingSystem1
+                                )
+                              },
+                            },
                           },
-                        },
-                      },
-                      [_c("b", [_vm._v("+")])]
-                    ),
+                          [_c("b", [_vm._v("+")])]
+                        )
+                      : _vm._e(),
                   ]
                 ),
                 _vm._v(" "),
@@ -35294,25 +35767,28 @@ var render = function () {
                         _vm._s(_vm.unitGradingSystem2.name) +
                         "\n                        "
                     ),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary btn-sm",
-                        attrs: {
-                          type: "button",
-                          "data-bs-toggle": "modal",
-                          "data-bs-target": "#staticBackdrop",
-                        },
-                        on: {
-                          click: function ($event) {
-                            return _vm.selectGradingSystem(
-                              _vm.unitGradingSystem2
-                            )
+                    _vm.user.account_type == "admin" ||
+                    _vm.user.userable_id == _vm.classRecord.teacher_id
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary btn-sm",
+                            attrs: {
+                              type: "button",
+                              "data-bs-toggle": "modal",
+                              "data-bs-target": "#staticBackdrop",
+                            },
+                            on: {
+                              click: function ($event) {
+                                return _vm.selectGradingSystem(
+                                  _vm.unitGradingSystem2
+                                )
+                              },
+                            },
                           },
-                        },
-                      },
-                      [_c("b", [_vm._v("+")])]
-                    ),
+                          [_c("b", [_vm._v("+")])]
+                        )
+                      : _vm._e(),
                   ]
                 ),
                 _vm._v(" "),
@@ -35333,25 +35809,28 @@ var render = function () {
                         _vm._s(_vm.unitGradingSystem3.name) +
                         "\n                        "
                     ),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary btn-sm",
-                        attrs: {
-                          type: "button",
-                          "data-bs-toggle": "modal",
-                          "data-bs-target": "#staticBackdrop",
-                        },
-                        on: {
-                          click: function ($event) {
-                            return _vm.selectGradingSystem(
-                              _vm.unitGradingSystem3
-                            )
+                    _vm.user.account_type == "admin" ||
+                    _vm.user.userable_id == _vm.classRecord.teacher_id
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary btn-sm",
+                            attrs: {
+                              type: "button",
+                              "data-bs-toggle": "modal",
+                              "data-bs-target": "#staticBackdrop",
+                            },
+                            on: {
+                              click: function ($event) {
+                                return _vm.selectGradingSystem(
+                                  _vm.unitGradingSystem3
+                                )
+                              },
+                            },
                           },
-                        },
-                      },
-                      [_c("b", [_vm._v("+")])]
-                    ),
+                          [_c("b", [_vm._v("+")])]
+                        )
+                      : _vm._e(),
                   ]
                 ),
                 _vm._v(" "),
@@ -35533,33 +36012,54 @@ var render = function () {
                       _vm.unitGradingSystem1.unit_items,
                       function (unitItem, index) {
                         return _c("td", { key: "unit-score-1-" + index }, [
-                          _c("input", {
-                            ref: "scores",
-                            refInFor: true,
-                            staticStyle: { width: "50px" },
-                            attrs: {
-                              type: "number",
-                              min: "0",
-                              max: unitItem.item,
-                            },
-                            domProps: {
-                              value: _vm.unitScore(
-                                unitItem,
-                                sectionStudent,
-                                _vm.scoreGradingSystem1(sectionStudent)
-                              ),
-                            },
-                            on: {
-                              blur: function ($event) {
-                                _vm.addScore(
-                                  $event,
-                                  unitItem,
-                                  sectionStudent,
-                                  _vm.scoreGradingSystem1(sectionStudent)
-                                )
-                              },
-                            },
-                          }),
+                          _vm.user.account_type == "admin" ||
+                          _vm.user.userable_id == _vm.classRecord.teacher_id
+                            ? _c("div", [
+                                _c("input", {
+                                  ref: "scores",
+                                  refInFor: true,
+                                  staticStyle: { width: "50px" },
+                                  attrs: {
+                                    type: "number",
+                                    min: "0",
+                                    max: unitItem.item,
+                                  },
+                                  domProps: {
+                                    value: _vm.unitScore(
+                                      unitItem,
+                                      sectionStudent,
+                                      _vm.scoreGradingSystem1(sectionStudent)
+                                    ),
+                                  },
+                                  on: {
+                                    blur: function ($event) {
+                                      _vm.addScore(
+                                        $event,
+                                        unitItem,
+                                        sectionStudent,
+                                        _vm.scoreGradingSystem1(sectionStudent)
+                                      )
+                                    },
+                                  },
+                                }),
+                              ])
+                            : _c("div", [
+                                _c("span", [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm.unitScore(
+                                          unitItem,
+                                          sectionStudent,
+                                          _vm.scoreGradingSystem1(
+                                            sectionStudent
+                                          )
+                                        )
+                                      ) +
+                                      "\n                            "
+                                  ),
+                                ]),
+                              ]),
                         ])
                       }
                     ),
@@ -35597,33 +36097,54 @@ var render = function () {
                       _vm.unitGradingSystem2.unit_items,
                       function (unitItem, index) {
                         return _c("td", { key: "unit-score-2-" + index }, [
-                          _c("input", {
-                            ref: "scores",
-                            refInFor: true,
-                            staticStyle: { width: "50px" },
-                            attrs: {
-                              type: "number",
-                              min: "0",
-                              max: unitItem.item,
-                            },
-                            domProps: {
-                              value: _vm.unitScore(
-                                unitItem,
-                                sectionStudent,
-                                _vm.scoreGradingSystem2(sectionStudent)
-                              ),
-                            },
-                            on: {
-                              blur: function ($event) {
-                                _vm.addScore(
-                                  $event,
-                                  unitItem,
-                                  sectionStudent,
-                                  _vm.scoreGradingSystem2(sectionStudent)
-                                )
-                              },
-                            },
-                          }),
+                          _vm.user.account_type == "admin" ||
+                          _vm.user.userable_id == _vm.classRecord.teacher_id
+                            ? _c("div", [
+                                _c("input", {
+                                  ref: "scores",
+                                  refInFor: true,
+                                  staticStyle: { width: "50px" },
+                                  attrs: {
+                                    type: "number",
+                                    min: "0",
+                                    max: unitItem.item,
+                                  },
+                                  domProps: {
+                                    value: _vm.unitScore(
+                                      unitItem,
+                                      sectionStudent,
+                                      _vm.scoreGradingSystem2(sectionStudent)
+                                    ),
+                                  },
+                                  on: {
+                                    blur: function ($event) {
+                                      _vm.addScore(
+                                        $event,
+                                        unitItem,
+                                        sectionStudent,
+                                        _vm.scoreGradingSystem2(sectionStudent)
+                                      )
+                                    },
+                                  },
+                                }),
+                              ])
+                            : _c("div", [
+                                _c("span", [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm.unitScore(
+                                          unitItem,
+                                          sectionStudent,
+                                          _vm.scoreGradingSystem2(
+                                            sectionStudent
+                                          )
+                                        )
+                                      ) +
+                                      "\n                            "
+                                  ),
+                                ]),
+                              ]),
                         ])
                       }
                     ),
@@ -35661,33 +36182,54 @@ var render = function () {
                       _vm.unitGradingSystem3.unit_items,
                       function (unitItem, index) {
                         return _c("td", { key: "unit-score-3-" + index }, [
-                          _c("input", {
-                            ref: "scores",
-                            refInFor: true,
-                            staticStyle: { width: "50px" },
-                            attrs: {
-                              type: "number",
-                              min: "0",
-                              max: unitItem.item,
-                            },
-                            domProps: {
-                              value: _vm.unitScore(
-                                unitItem,
-                                sectionStudent,
-                                _vm.scoreGradingSystem3(sectionStudent)
-                              ),
-                            },
-                            on: {
-                              blur: function ($event) {
-                                _vm.addScore(
-                                  $event,
-                                  unitItem,
-                                  sectionStudent,
-                                  _vm.scoreGradingSystem3(sectionStudent)
-                                )
-                              },
-                            },
-                          }),
+                          _vm.user.account_type == "admin" ||
+                          _vm.user.userable_id == _vm.classRecord.teacher_id
+                            ? _c("div", [
+                                _c("input", {
+                                  ref: "scores",
+                                  refInFor: true,
+                                  staticStyle: { width: "50px" },
+                                  attrs: {
+                                    type: "number",
+                                    min: "0",
+                                    max: unitItem.item,
+                                  },
+                                  domProps: {
+                                    value: _vm.unitScore(
+                                      unitItem,
+                                      sectionStudent,
+                                      _vm.scoreGradingSystem3(sectionStudent)
+                                    ),
+                                  },
+                                  on: {
+                                    blur: function ($event) {
+                                      _vm.addScore(
+                                        $event,
+                                        unitItem,
+                                        sectionStudent,
+                                        _vm.scoreGradingSystem3(sectionStudent)
+                                      )
+                                    },
+                                  },
+                                }),
+                              ])
+                            : _c("div", [
+                                _c("span", [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(
+                                        _vm.unitScore(
+                                          unitItem,
+                                          sectionStudent,
+                                          _vm.scoreGradingSystem3(
+                                            sectionStudent
+                                          )
+                                        )
+                                      ) +
+                                      "\n                            "
+                                  ),
+                                ]),
+                              ]),
                         ])
                       }
                     ),
@@ -35894,102 +36436,142 @@ var render = function () {
                   ]),
                   _vm._v(" "),
                   _c("th", { staticClass: "br" }, [
-                    sectionStudent.descriptor != ""
-                      ? _c(
-                          "select",
-                          {
-                            on: {
-                              change: function ($event) {
-                                return _vm.setUnitAction(
-                                  $event,
-                                  sectionStudent,
-                                  "action"
-                                )
-                              },
-                            },
-                          },
-                          [
-                            _c("option", { attrs: { value: "" } }, [
-                              _vm._v("Select Action"),
-                            ]),
-                            _vm._v(" "),
-                            _vm._l(_vm.actionOptions, function (item, index) {
-                              return _c(
-                                "option",
+                    _vm.user.account_type == "admin" ||
+                    _vm.user.userable_id == _vm.classRecord.teacher_id
+                      ? _c("div", [
+                          sectionStudent.descriptor != ""
+                            ? _c(
+                                "select",
                                 {
-                                  key: index,
-                                  domProps: {
-                                    value: item.id,
-                                    selected:
-                                      sectionStudent.unit_action &&
-                                      sectionStudent.unit_action.action_id ==
-                                        item.id,
+                                  on: {
+                                    change: function ($event) {
+                                      return _vm.setUnitAction(
+                                        $event,
+                                        sectionStudent,
+                                        "action"
+                                      )
+                                    },
                                   },
                                 },
-                                [_vm._v(_vm._s(item.name))]
+                                [
+                                  _c("option", { attrs: { value: "" } }, [
+                                    _vm._v("Select Action"),
+                                  ]),
+                                  _vm._v(" "),
+                                  _vm._l(
+                                    _vm.actionOptions,
+                                    function (item, index) {
+                                      return _c(
+                                        "option",
+                                        {
+                                          key: index,
+                                          domProps: {
+                                            value: item.id,
+                                            selected:
+                                              sectionStudent.unit_action &&
+                                              sectionStudent.unit_action
+                                                .action_id == item.id,
+                                          },
+                                        },
+                                        [_vm._v(_vm._s(item.name))]
+                                      )
+                                    }
+                                  ),
+                                ],
+                                2
                               )
-                            }),
-                          ],
-                          2
-                        )
-                      : _vm._e(),
+                            : _vm._e(),
+                        ])
+                      : _c("div", [
+                          _c("span", [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  sectionStudent.unit_action &&
+                                    sectionStudent.unit_action.action
+                                    ? sectionStudent.unit_action.action.name
+                                    : ""
+                                ) +
+                                "\n                            "
+                            ),
+                          ]),
+                        ]),
                   ]),
                   _vm._v(" "),
                   _c("th", { staticClass: "br" }, [
-                    sectionStudent.descriptor != ""
+                    _vm.user.account_type == "admin" ||
+                    _vm.user.userable_id == _vm.classRecord.teacher_id
                       ? _c("div", [
-                          sectionStudent.unit_action
-                            ? _c("textarea", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value:
-                                      sectionStudent.unit_action
-                                        .teacher_feedback,
-                                    expression:
-                                      "sectionStudent.unit_action.teacher_feedback",
-                                  },
-                                ],
-                                attrs: { rows: "1" },
-                                domProps: {
-                                  value:
-                                    sectionStudent.unit_action.teacher_feedback,
-                                },
-                                on: {
-                                  change: function ($event) {
-                                    return _vm.setUnitAction(
-                                      $event,
-                                      sectionStudent,
-                                      "feedback"
-                                    )
-                                  },
-                                  input: function ($event) {
-                                    if ($event.target.composing) {
-                                      return
-                                    }
-                                    _vm.$set(
-                                      sectionStudent.unit_action,
-                                      "teacher_feedback",
-                                      $event.target.value
-                                    )
-                                  },
-                                },
-                              })
-                            : _c("textarea", {
-                                attrs: { rows: "1" },
-                                on: {
-                                  change: function ($event) {
-                                    return _vm.setUnitAction(
-                                      $event,
-                                      sectionStudent,
-                                      "feedback"
-                                    )
-                                  },
-                                },
-                              }),
+                          sectionStudent.descriptor != ""
+                            ? _c("div", [
+                                sectionStudent.unit_action
+                                  ? _c("textarea", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value:
+                                            sectionStudent.unit_action
+                                              .teacher_feedback,
+                                          expression:
+                                            "sectionStudent.unit_action.teacher_feedback",
+                                        },
+                                      ],
+                                      attrs: { rows: "1" },
+                                      domProps: {
+                                        value:
+                                          sectionStudent.unit_action
+                                            .teacher_feedback,
+                                      },
+                                      on: {
+                                        change: function ($event) {
+                                          return _vm.setUnitAction(
+                                            $event,
+                                            sectionStudent,
+                                            "feedback"
+                                          )
+                                        },
+                                        input: function ($event) {
+                                          if ($event.target.composing) {
+                                            return
+                                          }
+                                          _vm.$set(
+                                            sectionStudent.unit_action,
+                                            "teacher_feedback",
+                                            $event.target.value
+                                          )
+                                        },
+                                      },
+                                    })
+                                  : _c("textarea", {
+                                      attrs: { rows: "1" },
+                                      on: {
+                                        change: function ($event) {
+                                          return _vm.setUnitAction(
+                                            $event,
+                                            sectionStudent,
+                                            "feedback"
+                                          )
+                                        },
+                                      },
+                                    }),
+                              ])
+                            : _vm._e(),
                         ])
-                      : _vm._e(),
+                      : _c("div", [
+                          _c("span", [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  sectionStudent.unit_action
+                                    ? sectionStudent.unit_action
+                                        .teacher_feedback
+                                    : ""
+                                ) +
+                                "\n                            "
+                            ),
+                          ]),
+                        ]),
                   ]),
                 ])
               }),

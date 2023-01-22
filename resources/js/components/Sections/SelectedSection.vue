@@ -59,6 +59,7 @@
                             <th>Semester</th>
                             <th>Subject Code</th>
                             <th>Subject Description</th>
+                            <th>Teacher</th>
                             <th style="text-align:center">Manage</th>
                         </tr>
                     </thead>
@@ -68,10 +69,12 @@
                             <td>{{ class_record.subject.semester.name }}</td>
                             <td>{{ class_record.subject.subject_code }}</td>
                             <td>{{ class_record.subject.subject_description }}</td>
+                            <td>{{ class_record.teacher && class_record.teacher.full_name_first_name ? class_record.teacher.full_name_last_name : "" }}</td>
                             <td style="text-align:center">
                                 <!-- <div class="btn-group" role="group" aria-label="Basic example">
                                     <button type="button" class="btn btn-primary" v-for="(quarter, qindex) in class_record.quarters" :key="qindex">{{ quarter.quarter.name }}</button>
                                 </div> -->
+                                <!-- <button type="button" class="btn btn-primary" @click="viewClassRecord(class_record)" v-if="user.account_type == 'admin' || user.userable_id == class_record.teacher_id"> -->
                                 <button type="button" class="btn btn-primary" @click="viewClassRecord(class_record)">
                                     <i class="bi bi-gear-fill"></i>
                                 </button>
@@ -99,7 +102,7 @@
         <div class="col-md-10" v-else-if="type=='students'">
             <card>
                 <template v-slot:header>Students</template>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="getStudents()">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="getStudents()"  v-if="user.account_type == 'admin'">
                 Add Students
                 </button>
 
@@ -124,7 +127,7 @@
                             <td>{{ student.student.ext_name }}</td>
                             <td>{{ student.student.gender.name }}</td>
                             <td>
-                                <button type="button" class="btn btn-danger" @click="deleteStudent(student)">
+                                <button type="button" class="btn btn-danger" @click="deleteStudent(student)" v-if="user.account_type == 'admin'">
                                     <i class="bi bi-person-dash-fill"></i>
                                 </button>
                                 
@@ -207,6 +210,7 @@
 
     export default {
         props: [
+            'user',
             'section',
             'classRecord',
             'classRecordQuarter',

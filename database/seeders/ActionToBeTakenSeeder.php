@@ -17,19 +17,19 @@ class ActionToBeTakenSeeder extends Seeder
         $libraries = [
             [
                 'name' => "One-on-One Consultation",
-                'library_type' => "action_options",
+                'library_type' => "actions",
             ],
             [
                 'name' => "Remedial Classes",
-                'library_type' => "action_options",
+                'library_type' => "actions",
             ],
             [
                 'name' => "Parent Conference",
-                'library_type' => "action_options",
+                'library_type' => "actions",
             ],
             [
                 'name' => "Reinforcement",
-                'library_type' => "action_options",
+                'library_type' => "actions",
             ],
         ];
         foreach ($libraries as $library) {

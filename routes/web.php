@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', [HomeController::class, 'sections'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/sections', [HomeController::class, 'sections'])->name('sections');
 Route::get('/students', [HomeController::class, 'students'])->name('students');
 Route::get('/guardians', [HomeController::class, 'guardians'])->name('guardians');
@@ -49,5 +49,7 @@ Route::prefix('data')->group(function () {
     Route::get('/class-records/{id}/unit-summary', [ClassRecordController::class, 'unitSummary'])->name('class-records.unit-summary');
     Route::get('/all/teachers', [TeacherController::class, 'all'])->name('all.teachers');
     Route::get('/all/guardians', [GuardianController::class, 'all'])->name('all.guardians');
+    Route::get('/teachers/{id}/class-records', [TeacherController::class, 'classRecords'])->name('teachers.class-records');
+    Route::get('/teachers/{id}/advisories', [TeacherController::class, 'advisories'])->name('teachers.advisories');
 });
 

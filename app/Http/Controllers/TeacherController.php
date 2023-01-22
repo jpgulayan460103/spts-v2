@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TeacherRequest;
+use App\Models\ClassRecord;
+use App\Models\Section;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 
@@ -132,5 +134,42 @@ class TeacherController extends Controller
         $teachers = $teachers->get();
 
         return $teachers;
+    }
+
+    public function classRecords(Request $request, $id)
+    {
+        $class_records = ClassRecord::with([
+            'subject.semester',
+            'section.adviser',
+            'section.adviser',
+            'section.school_year',
+            'section.grade_level',
+            'section.track',
+        ])->where('teacher_id', $id);
+
+        $class_records = $class_records->paginate(20);
+
+        return $class_records;
+    }
+
+    public function advisories(Request $request, $id)
+    {
+        $sections = Section::with([
+            'school_year',
+            'grade_level',
+            'track',
+            'adviser',
+        ])->where('adviser_id', $id);
+
+        if($request->searchQuery){
+            $searchQuery = $request->searchQuery;
+            $sections->orWhere("section_name", "like", "%$searchQuery%");
+        }
+
+        $per_page = $request->perPage ?? 20;
+
+        $sections = $sections->paginate($per_page);
+
+        return $sections;
     }
 }

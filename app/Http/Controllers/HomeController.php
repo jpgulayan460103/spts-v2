@@ -6,8 +6,10 @@ use App\Models\ClassRecord;
 use App\Models\ClassRecordQuarter;
 use App\Models\Section;
 use App\Models\Subject;
+use App\Models\Teacher;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -28,7 +30,23 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user = Auth::user();
+        $data = [
+            'user' => $user,
+        ];
+        switch ($user->account_type) {
+            case 'admin':
+                return view('sections', $data);
+            case 'teacher':
+                return view('dashboard-teacher', $data);
+            case 'student':
+                return view('dashboard-student', $data);
+            case 'guardian':
+                return view('dashboard-guardian', $data);
+            default:
+                # code...
+                break;
+        }
     }
 
     public function sections()
@@ -51,6 +69,12 @@ class HomeController extends Controller
 
     public function manageSection(Request $request, $section_uuid, $type = null)
     {
+
+        $user = Auth::user();
+        $data = [
+            'user' => $user,
+        ];
+
         $with = [
             'school_year',
             'grade_level',
@@ -62,6 +86,7 @@ class HomeController extends Controller
         $class_record_quarter = "{}";
         $unit = "{}";
         $section = Section::query();
+
         if($type){
             switch ($type) {
                 case 'students':

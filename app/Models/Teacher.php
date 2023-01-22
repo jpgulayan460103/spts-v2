@@ -45,6 +45,11 @@ class Teacher extends Model
     {
         return $this->belongsTo(Library::class);
     }
+    
+    public function class_records()
+    {
+        return $this->hasMany(ClassRecord::class);
+    }
 
     public function user()
     {
