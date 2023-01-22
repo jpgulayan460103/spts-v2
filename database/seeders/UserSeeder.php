@@ -16,9 +16,9 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
-                'name' => 'admin',
                 'username' => 'admin',
                 'password' => 'admin',
+                'account_type' => 'admin'
             ]
         ];
         foreach ($users as $user) {

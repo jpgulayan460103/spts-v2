@@ -5,26 +5,36 @@
             <card>
                 <template v-slot:header>Teacher Form</template>
                 <form @submit.prevent="submitForm()">
-                    <form-item label="Teacher ID Number" :errors="formErrors.teacher_id_number">
-                        <input type="text" v-model="formData.teacher_id_number" class="form-control" :class="formErrors.teacher_id_number ? 'is-invalid' : ''">
-                    </form-item>
-                    <form-item label="Last Name" :errors="formErrors.last_name">
-                        <input type="text" v-model="formData.last_name" class="form-control" :class="formErrors.last_name ? 'is-invalid' : ''">
-                    </form-item>
-                    <form-item label="First Name" :errors="formErrors.first_name">
-                        <input type="text" v-model="formData.first_name" class="form-control" :class="formErrors.first_name ? 'is-invalid' : ''">
-                    </form-item>
-                    <form-item label="Middle Name" :errors="formErrors.middle_name">
-                        <input type="text" v-model="formData.middle_name" class="form-control" :class="formErrors.middle_name ? 'is-invalid' : ''">
-                    </form-item>
-                    <form-item label="Ext Name" :errors="formErrors.ext_name">
-                        <input type="text" v-model="formData.ext_name" class="form-control" :class="formErrors.ext_name ? 'is-invalid' : ''">
-                    </form-item>
-                    <form-item label="Gender" :errors="formErrors.gender_id">
-                        <select v-model="formData.gender_id" class="form-control" :class="formErrors.gender_id ? 'is-invalid' : ''">
-                            <option v-for="(item, index) in genders" :key="index" :value="item.id">{{ item.name }}</option>
-                        </select>
-                    </form-item>
+                    <div v-if="formType != 'update-account'">
+                        <form-item label="Teacher ID Number" :errors="formErrors.teacher_id_number">
+                            <input type="text" v-model="formData.teacher_id_number" class="form-control" :class="formErrors.teacher_id_number ? 'is-invalid' : ''" @change="setAccountDetails">
+                        </form-item>
+                        <form-item label="Last Name" :errors="formErrors.last_name">
+                            <input type="text" v-model="formData.last_name" class="form-control" :class="formErrors.last_name ? 'is-invalid' : ''">
+                        </form-item>
+                        <form-item label="First Name" :errors="formErrors.first_name">
+                            <input type="text" v-model="formData.first_name" class="form-control" :class="formErrors.first_name ? 'is-invalid' : ''">
+                        </form-item>
+                        <form-item label="Middle Name" :errors="formErrors.middle_name">
+                            <input type="text" v-model="formData.middle_name" class="form-control" :class="formErrors.middle_name ? 'is-invalid' : ''">
+                        </form-item>
+                        <form-item label="Ext Name" :errors="formErrors.ext_name">
+                            <input type="text" v-model="formData.ext_name" class="form-control" :class="formErrors.ext_name ? 'is-invalid' : ''">
+                        </form-item>
+                        <form-item label="Gender" :errors="formErrors.gender_id">
+                            <select v-model="formData.gender_id" class="form-control" :class="formErrors.gender_id ? 'is-invalid' : ''">
+                                <option v-for="(item, index) in genders" :key="index" :value="item.id">{{ item.name }}</option>
+                            </select>
+                        </form-item>
+                    </div>
+                    <div v-if="formType != 'update'">
+                        <form-item label="SPTS Account ID" :errors="formErrors.username">
+                            <input type="text" v-model="formData.username" class="form-control" :class="formErrors.username ? 'is-invalid' : ''">
+                        </form-item>
+                        <form-item label="SPTS Password" :errors="formErrors.password" :help="formType == 'update-account' ? 'Leave blank to remain the password unchanged.' : ''">
+                            <input type="text" v-model="formData.password" class="form-control" :class="formErrors.password ? 'is-invalid' : ''">
+                        </form-item>
+                    </div>
                     <button type="submit" class="btn btn-primary" :disabled="submit">Submit</button>
                     <button type="button" style="display:none">Button</button>
                     <button type="button" class="btn btn-danger" v-if="formType != 'create'" @click="resetForm">Cancel</button>
@@ -54,6 +64,7 @@
                             <th>Middle Name</th>
                             <th>Ext Name</th>
                             <th>Gender</th>
+                            <th>SPTS Account ID</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -65,7 +76,11 @@
                             <td>{{ teacher.middle_name }}</td>
                             <td>{{ teacher.ext_name }}</td>
                             <td>{{ teacher.gender.name }}</td>
+                            <td>{{ teacher.user ? teacher.user.username : "" }}</td>
                             <td>
+                                <button type="button" class="btn btn-primary" @click="editAccount(teacher)">
+                                    <i class="bi bi-person-circle"></i>
+                                </button>
                                 <button type="button" class="btn btn-primary" @click="editTeacher(teacher)">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
@@ -127,11 +142,23 @@
                         this.submit = false;
                         this.getTeachers();
                         this.resetForm();
-                        alert(`Teacher has been updated.`);
+                        alert(`Teacher information has been updated.`);
                     })
                     .catch(err => {
                         this.submit = false;
                         this.formErrors = err.response.data.errors;
+                    });
+                }else if(this.formType == "update-account"){
+                    axios.put(route('teachers.update', this.formData.userable_id), this.formData)
+                    .then(res => {
+                        this.submit = false;
+                        this.getTeachers();
+                        this.resetForm();
+                        alert(`Teacher account has been updated.`);
+                    })
+                    .catch(err => {
+                        this.submit = false;
+                        this.formErrors = err.response.data.errors
                     });
                 }else{
                     axios.post(route('teachers.store'), this.formData)
@@ -173,9 +200,15 @@
                 this.teacherFilterData.page = label;
                 this.getTeachers();
             },
-            editTeacher(student){
-                this.formData = cloneDeep(student);
+            editTeacher(teacher){
+                this.formData = cloneDeep(teacher);
                 this.formType = "update";
+            },
+            editAccount(teacher){
+                if(teacher.user){
+                    this.formData = cloneDeep(teacher.user);
+                }
+                this.formType = "update-account";
             },
             deleteTeacher(teacher){
                 if(confirm("Are you sure you want to delete?")){
@@ -188,7 +221,16 @@
             },
             resetForm(){
                 this.formData = {};
+                this.formErrors = {};
                 this.formType = "create";
+            },
+            setAccountDetails(e){
+                let teacher_id_number = e.target.value;
+                this.formData = {
+                    ...this.formData,
+                    username: teacher_id_number,
+                    password: teacher_id_number,
+                }
             },
         },
         mounted() {

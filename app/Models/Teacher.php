@@ -46,4 +46,9 @@ class Teacher extends Model
         return $this->belongsTo(Library::class);
     }
 
+    public function user()
+    {
+        return $this->morphOne(User::class, 'userable');
+    }
+
 }

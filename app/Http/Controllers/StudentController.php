@@ -15,7 +15,7 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-        $students =  Student::with(['gender','guardian']);
+        $students =  Student::with(['gender','guardian','user']);
         
         if($request->searchQuery){
             $searchQuery = $request->searchQuery;
@@ -56,7 +56,13 @@ class StudentController extends Controller
      */
     public function store(StudentRequest $request)
     {
-        return Student::create($request->all());
+        $student = Student::create($request->all());
+        $user_account = $request->only([
+            'username',
+            'password'
+        ]);
+        $user_account['account_type'] = "student";
+        $student->user()->create($user_account);
     }
 
     /**
@@ -92,6 +98,15 @@ class StudentController extends Controller
     {
         $student = Student::find($id);
         $student->update($request->all());
+        if($request->username){
+            $data = [];
+            if($request->password){
+                $data['password'] = bcrypt($request->password);
+            }
+            $data['username'] = $request->username;
+
+            $student->user()->update($data);
+        }
     }
 
     /**

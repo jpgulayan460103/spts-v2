@@ -53,4 +53,9 @@ class Student extends Model
         return $this->belongsTo(Guardian::class);
     }
 
+    public function user()
+    {
+        return $this->morphOne(User::class, 'userable');
+    }
+
 }

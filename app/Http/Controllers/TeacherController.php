@@ -15,7 +15,7 @@ class TeacherController extends Controller
      */
     public function index(Request $request)
     {
-        $teachers = Teacher::with(['gender']);
+        $teachers = Teacher::with(['gender','user']);
         if($request->searchQuery){
             $searchQuery = $request->searchQuery;
             $teachers->orWhere("teacher_id_number", "like", "%$searchQuery%");
@@ -48,7 +48,13 @@ class TeacherController extends Controller
      */
     public function store(TeacherRequest $request)
     {
-        return Teacher::create($request->all());
+        $teacher = Teacher::create($request->all());
+        $user_account = $request->only([
+            'username',
+            'password'
+        ]);
+        $user_account['account_type'] = "teacher";
+        $teacher->user()->create($user_account);
     }
 
     /**
@@ -84,6 +90,15 @@ class TeacherController extends Controller
     {
         $teacher = Teacher::find($id);
         $teacher->update($request->all());
+        if($request->username){
+            $data = [];
+            if($request->password){
+                $data['password'] = bcrypt($request->password);
+            }
+            $data['username'] = $request->username;
+
+            $teacher->user()->update($data);
+        }
     }
 
     /**

@@ -5,40 +5,50 @@
             <card>
                 <template v-slot:header>Student Form</template>
                 <form @submit.prevent="submitForm()">
-                    <form-item label="Student ID Number" :errors="formErrors.student_id_number">
-                        <input type="text" v-model="formData.student_id_number" class="form-control" :class="formErrors.student_id_number ? 'is-invalid' : ''">
-                    </form-item>
-                    <form-item label="Last Name" :errors="formErrors.last_name">
-                        <input type="text" v-model="formData.last_name" class="form-control" :class="formErrors.last_name ? 'is-invalid' : ''">
-                    </form-item>
-                    <form-item label="First Name" :errors="formErrors.first_name">
-                        <input type="text" v-model="formData.first_name" class="form-control" :class="formErrors.first_name ? 'is-invalid' : ''">
-                    </form-item>
-                    <form-item label="Middle Name" :errors="formErrors.middle_name">
-                        <input type="text" v-model="formData.middle_name" class="form-control" :class="formErrors.middle_name ? 'is-invalid' : ''">
-                    </form-item>
-                    <form-item label="Ext Name" :errors="formErrors.ext_name">
-                        <input type="text" v-model="formData.ext_name" class="form-control" :class="formErrors.ext_name ? 'is-invalid' : ''">
-                    </form-item>
-                    <form-item label="Gender" :errors="formErrors.gender_id">
-                        <select v-model="formData.gender_id" class="form-control" :class="formErrors.gender_id ? 'is-invalid' : ''">
-                            <option v-for="(item, index) in genders" :key="index" :value="item.id">{{ item.name }}</option>
-                        </select>
-                    </form-item>
-                    <form-item label="Guardian" :errors="formErrors.guardian_id">
-                        <select v-model="formData.guardian_id" class="form-control" :class="formErrors.guardian_id ? 'is-invalid' : ''">
-                            <option v-for="(guardian, index) in guardians" :key="index" :value="guardian.id">{{ guardian.full_name_last_name }}</option>
-                        </select>
-                        <!-- <vue-bootstrap-typeahead
-                            :data="guardians"
-                            v-model="guardianSearch"
-                            size="lg"
-                            :serializer="s => s.full_name_first_name"
-                            placeholder="Search for name of guardian"
-                            @hit="selectedGuardian = $event"
-                            inputClass="form-control"
-                        /> -->
-                    </form-item>
+                    <div v-if="formType != 'update-account'">
+                        <form-item label="Student ID Number" :errors="formErrors.student_id_number">
+                            <input type="text" v-model="formData.student_id_number" class="form-control" :class="formErrors.student_id_number ? 'is-invalid' : ''" @change="setAccountDetails">
+                        </form-item>
+                        <form-item label="Last Name" :errors="formErrors.last_name">
+                            <input type="text" v-model="formData.last_name" class="form-control" :class="formErrors.last_name ? 'is-invalid' : ''">
+                        </form-item>
+                        <form-item label="First Name" :errors="formErrors.first_name">
+                            <input type="text" v-model="formData.first_name" class="form-control" :class="formErrors.first_name ? 'is-invalid' : ''">
+                        </form-item>
+                        <form-item label="Middle Name" :errors="formErrors.middle_name">
+                            <input type="text" v-model="formData.middle_name" class="form-control" :class="formErrors.middle_name ? 'is-invalid' : ''">
+                        </form-item>
+                        <form-item label="Ext Name" :errors="formErrors.ext_name">
+                            <input type="text" v-model="formData.ext_name" class="form-control" :class="formErrors.ext_name ? 'is-invalid' : ''">
+                        </form-item>
+                        <form-item label="Gender" :errors="formErrors.gender_id">
+                            <select v-model="formData.gender_id" class="form-control" :class="formErrors.gender_id ? 'is-invalid' : ''">
+                                <option v-for="(item, index) in genders" :key="index" :value="item.id">{{ item.name }}</option>
+                            </select>
+                        </form-item>
+                        <form-item label="Guardian" :errors="formErrors.guardian_id">
+                            <select v-model="formData.guardian_id" class="form-control" :class="formErrors.guardian_id ? 'is-invalid' : ''">
+                                <option v-for="(guardian, index) in guardians" :key="index" :value="guardian.id">{{ guardian.full_name_last_name }}</option>
+                            </select>
+                            <!-- <vue-bootstrap-typeahead
+                                :data="guardians"
+                                v-model="guardianSearch"
+                                size="lg"
+                                :serializer="s => s.full_name_first_name"
+                                placeholder="Search for name of guardian"
+                                @hit="selectedGuardian = $event"
+                                inputClass="form-control"
+                            /> -->
+                        </form-item>
+                    </div>
+                    <div v-if="formType != 'update'">
+                        <form-item label="SPTS Account ID" :errors="formErrors.username">
+                            <input type="text" v-model="formData.username" class="form-control" :class="formErrors.username ? 'is-invalid' : ''">
+                        </form-item>
+                        <form-item label="SPTS Password" :errors="formErrors.password" :help="formType == 'update-account' ? 'Leave blank to remain the password unchanged.' : ''">
+                            <input type="text" v-model="formData.password" class="form-control" :class="formErrors.password ? 'is-invalid' : ''">
+                        </form-item>
+                    </div>
                     <button type="submit" class="btn btn-primary" :disabled="submit">Submit</button>
                     <button type="button" style="display:none">Button</button>
                     <button type="button" class="btn btn-danger" v-if="formType != 'create'" @click="resetForm">Cancel</button>
@@ -69,6 +79,7 @@
                             <th>Ext Name</th>
                             <th>Gender</th>
                             <th>Guardian</th>
+                            <th>SPTS Account ID</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -81,7 +92,11 @@
                             <td>{{ student.ext_name }}</td>
                             <td>{{ student.gender.name }}</td>
                             <td>{{ student.guardian ? student.guardian.full_name_last_name : "" }}</td>
+                            <td>{{ student.user ? student.user.username : "" }}</td>
                             <td>
+                                <button type="button" class="btn btn-primary" @click="editAccount(student)">
+                                    <i class="bi bi-person-circle"></i>
+                                </button>
                                 <button type="button" class="btn btn-primary" @click="editStudent(student)">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
@@ -149,7 +164,19 @@
                         this.submit = false;
                         this.getStudents();
                         this.resetForm();
-                        alert(`Student has been updated.`);
+                        alert(`Student information has been updated.`);
+                    })
+                    .catch(err => {
+                        this.submit = false;
+                        this.formErrors = err.response.data.errors
+                    });
+                }else if(this.formType == "update-account"){
+                    axios.put(route('students.update', this.formData.userable_id), this.formData)
+                    .then(res => {
+                        this.submit = false;
+                        this.getStudents();
+                        this.resetForm();
+                        alert(`Student account has been updated.`);
                     })
                     .catch(err => {
                         this.submit = false;
@@ -199,6 +226,12 @@
                 this.formData = cloneDeep(student);
                 this.formType = "update";
             },
+            editAccount(student){
+                if(student.user){
+                    this.formData = cloneDeep(student.user);
+                }
+                this.formType = "update-account";
+            },
             deleteStudent(student){
                 if(confirm("Are you sure you want to delete?")){
                     axios.delete(route('students.destroy', student.id))
@@ -210,6 +243,7 @@
             },
             resetForm(){
                 this.formData = {};
+                this.formErrors = {};
                 this.formType = "create";
             },
             getGuardians(){
@@ -218,6 +252,14 @@
                     this.guardians = res.data;
                 })
                 .catch(err => {});
+            },
+            setAccountDetails(e){
+                let student_id_number = e.target.value;
+                this.formData = {
+                    ...this.formData,
+                    username: student_id_number,
+                    password: student_id_number,
+                }
             }
             // async getGuardianes(query) {
             //     // const res = await fetch(API_URL.replace(':query', query))
@@ -240,7 +282,7 @@
             this.getStudents();
             this.getGuardians();
         },
-         watch: {
+        watch: {
             guardianSearch: debounce(function(addr) { this.getGuardianes(addr) }, 500)
         }
     }

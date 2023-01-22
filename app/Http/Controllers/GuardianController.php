@@ -15,7 +15,7 @@ class GuardianController extends Controller
      */
     public function index(Request $request)
     {
-        $guardians =  Guardian::with(['gender','guardian']);
+        $guardians =  Guardian::with(['gender','guardian','user']);
         
         if($request->searchQuery){
             $searchQuery = $request->searchQuery;
@@ -56,7 +56,13 @@ class GuardianController extends Controller
      */
     public function store(GuardianRequest $request)
     {
-        return Guardian::create($request->all());
+        $guardian = Guardian::create($request->all());
+        $user_account = $request->only([
+            'username',
+            'password'
+        ]);
+        $user_account['account_type'] = "guardian";
+        $guardian->user()->create($user_account);
     }
 
     /**
@@ -92,6 +98,15 @@ class GuardianController extends Controller
     {
         $guardian = Guardian::find($id);
         $guardian->update($request->all());
+        if($request->username){
+            $data = [];
+            if($request->password){
+                $data['password'] = bcrypt($request->password);
+            }
+            $data['username'] = $request->username;
+
+            $guardian->user()->update($data);
+        }
     }
 
     /**
