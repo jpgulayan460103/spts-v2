@@ -5,7 +5,7 @@
                 Teacher: <br>
                 <select v-model="subjectTeacherId">
                     <option value="">Select Teacher</option>
-                    <option v-for="(teacher, index) in subjectTeachers" :key="index" :value="teacher.id">{{ teacher.full_name_first_name }}</option>
+                    <option v-for="(teacher, index) in subjectTeachers" :key="index" :value="teacher.id">{{ teacher.full_name_last_name }}</option>
                 </select> 
                 <button class="btn btn-primary btn-sm" @click="updateSubjectTeacher">Save</button>
             </p>

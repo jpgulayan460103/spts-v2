@@ -23,6 +23,11 @@
                             <option v-for="(item, index) in tracks" :key="index" :value="item.id">{{ item.name }}</option>
                         </select>
                     </form-item>
+                    <form-item label="Adviser" :errors="formErrors.adviser_id">
+                        <select v-model="formData.adviser_id" class="form-control" :class="formErrors.adviser_id ? 'is-invalid' : ''">
+                            <option v-for="(item, index) in advisers" :key="index" :value="item.id">{{ item.full_name_last_name }}</option>
+                        </select>
+                    </form-item>
                     <button type="submit" class="btn btn-primary" :disabled="submit">Submit</button>
                     <button type="button" style="display:none">Button</button>
                     <button type="button" class="btn btn-danger" v-if="formType != 'create'" @click="resetForm">Cancel</button>
@@ -50,6 +55,7 @@
                             <th>School Year</th>
                             <th>Grade Level</th>
                             <th>Track</th>
+                            <th>Adviser</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -59,6 +65,7 @@
                             <td>{{ section.school_year.name }}</td>
                             <td>{{ section.grade_level.name }}</td>
                             <td>{{ section.track.name }}</td>
+                            <td>{{ section.adviser ? section.adviser.full_name_last_name : "" }}</td>
                             <td>
                                 <button type="button" class="btn btn-primary" @click="manageClassRecord(section)">
                                     <i class="bi bi-book-fill"></i>
@@ -76,6 +83,15 @@
                         </tr>
                     </tbody>
                 </table>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item" :class="{ active: pagination.active }" v-for="(pagination, index) in sectionPaginations" :key="index" @click="navigateSectionPages(pagination.label)">
+                            <a class="page-link" href="javascript:void(0);" v-if="pagination.url != null">
+                                <span v-html="pagination.label"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </card>
         </div>
 
@@ -108,6 +124,7 @@
                     page: 1,
                     searchQuery: "",
                 },
+                advisers: [],
             };
         },
         methods: {
@@ -176,7 +193,7 @@
                 })
                 .catch(err => {});
             }, 250),
-            navigateTeacherPages(label){
+            navigateSectionPages(label){
                 if(label == "Next &raquo;"){
                     label = this.sectionFilterData.page + 1;
                 }else if(label == "&laquo; Previous"){
@@ -202,12 +219,20 @@
                 this.formData = {};
                 this.formType = "create";
             },
+            getAdvisers(){
+                axios.get(route('all.teachers'))
+                .then(res => {
+                    this.advisers = res.data;
+                })
+                .catch(err => {});
+            }
         },
         mounted() {
             this.getSchoolYears();
             this.getGradeLevels();
             this.getTracks();
             this.getSections();
+            this.getAdvisers();
         }
     }
 </script>

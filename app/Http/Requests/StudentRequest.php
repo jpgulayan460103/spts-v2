@@ -26,9 +26,9 @@ class StudentRequest extends FormRequest
         return [
             'student_id_number' => 'required',
             'first_name' => 'required',
-            'middle_name' => 'required',
+            // 'middle_name' => 'required',
             'last_name' => 'required',
-            'ext_name' => 'required',
+            // 'ext_name' => 'required',
             'gender_id' => 'required',
             'guardian_id' => 'required',
         ];

@@ -24,6 +24,7 @@ class SectionController extends Controller
             'school_year',
             'grade_level',
             'track',
+            'adviser',
         ]);
 
         if($request->searchQuery){

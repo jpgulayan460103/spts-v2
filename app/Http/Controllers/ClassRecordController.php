@@ -130,7 +130,7 @@ class ClassRecordController extends Controller
                 $grading_systems[$key]['total_scores'] = UnitScore::where('unit_id', $unit_id)->where('grading_system_id', $grading_system['id'])->where('section_student_id', $section_student->id)->sum('score');
                 $grading_systems[$key]['unit_items'] = UnitItem::where('unit_id', $unit_id)->where('grading_system_id', $grading_system['id'])->sum('item');
                 $grading_systems[$key]['count'] = count($grading_systems[$key]['unit_scores']);
-                if($grading_systems[$key]['total_scores'] != 0){
+                if($grading_systems[$key]['total_scores'] != 0 && $grading_systems[$key]['unit_items'] != 0){
                     $grading_systems[$key]['percentage_score'] = ($grading_systems[$key]['total_scores'] / $grading_systems[$key]['unit_items']) * 100;
                     $grading_systems[$key]['weighted_score'] = $grading_systems[$key]['percentage_score'] * $grading_systems[$key]['percentage'];
 
@@ -222,10 +222,20 @@ class ClassRecordController extends Controller
 
     public function unitScore(Request $request, $id)
     {
-        $class_record = ClassRecord::with([
+        $with = [
             'subject.subject_category.grading_systems',
-            'section.students.student'
-        ])->find($id);
+            'section.students' => function($query){
+                $query->join('students', 'section_students.student_id', '=', 'students.id');
+                $query->select(['section_students.*']);
+                $query->orderBy('students.last_name');
+                $query->orderBy('students.first_name');
+                $query->orderBy('students.middle_name');
+                $query->orderBy('students.ext_name');
+                $query->with(['student.gender']);
+            }
+        ];
+
+        $class_record = ClassRecord::with($with)->find($id);
 
         // return $class_record;
 
@@ -244,12 +254,21 @@ class ClassRecordController extends Controller
 
     public function unitSummary(Request $request, $id)
     {
-        $class_record = ClassRecord::with([
+        $with = [
             'subject.subject_category.grading_systems',
-            'section.students.student',
-            'quarters.units'
-        ])->find($id);
+            'quarters.units',
+            'section.students' => function($query){
+                $query->join('students', 'section_students.student_id', '=', 'students.id');
+                $query->select(['section_students.*']);
+                $query->orderBy('students.last_name');
+                $query->orderBy('students.first_name');
+                $query->orderBy('students.middle_name');
+                $query->orderBy('students.ext_name');
+                $query->with(['student.gender']);
+            }
+        ];
 
+        $class_record = ClassRecord::with($with)->find($id);
         if($request->section_student_id){
             $section_students = $class_record->section->students()->where('id', $request->section_student_id)->get();
         }else{

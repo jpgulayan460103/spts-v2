@@ -40,6 +40,10 @@ class HomeController extends Controller
     {
         return view('students');
     }
+    public function guardians()
+    {
+        return view('guardians');
+    }
     public function teachers()
     {
         return view('teachers');
@@ -51,22 +55,40 @@ class HomeController extends Controller
             'school_year',
             'grade_level',
             'track',
+            'adviser',
         ];
 
         $class_record = "{}";
         $class_record_quarter = "{}";
         $unit = "{}";
+        $section = Section::query();
         if($type){
             switch ($type) {
                 case 'students':
-                    $with[] = "students.student.gender";
-                    $with[] = "students.student.guardian";
+                    $with["students"] = function($query){
+                        $query->join('students', 'section_students.student_id', '=', 'students.id');
+                        $query->select(['section_students.*']);
+                        $query->orderBy('students.last_name');
+                        $query->orderBy('students.first_name');
+                        $query->orderBy('students.middle_name');
+                        $query->orderBy('students.ext_name');
+                        $query->with(['student.gender', 'student.guardian']);
+                    };
                     break;
                 case 'class-records':
                     $with[] = "class_records.subject.semester";
                     $with[] = "class_records.teacher";
                     $with[] = "class_records.quarters.quarter";
-                    $with[] = "students.student.gender";
+
+                    $with["students"] = function($query){
+                        $query->join('students', 'section_students.student_id', '=', 'students.id');
+                        $query->select(['section_students.*']);
+                        $query->orderBy('students.last_name');
+                        $query->orderBy('students.first_name');
+                        $query->orderBy('students.middle_name');
+                        $query->orderBy('students.ext_name');
+                        $query->with(['student.gender']);
+                    };
 
                     if($request->cruid){
                         $class_record_uuid = $request->cruid;
@@ -114,9 +136,10 @@ class HomeController extends Controller
             }
         }
 
-        $section = Section::with($with)->whereUuid($section_uuid)->first();
+        $section = $section->with($with)->whereUuid($section_uuid)->first();
         if($section){
             $data['section'] = $section;
+            // return $data;
             $data['type'] = $type;
             $data['class_record'] = $class_record;
             $data['class_record_quarter'] = $class_record_quarter;

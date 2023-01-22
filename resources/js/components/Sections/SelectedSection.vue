@@ -9,6 +9,7 @@
                         <p>School Year: <b>{{ section.school_year.name }}</b></p>
                         <p>Grade Level: <b>{{ section.grade_level.name }}</b></p>
                         <p>Track: <b>{{ section.track.name }}</b></p>
+                        <p>Adviser: <b>{{ section.adviser ? section.adviser.full_name_last_name : "" }}</b></p>
 
                         <ul class="list-group">
                             <li class="list-group-item custom-pointer" :class="type=='class-records' ? 'active' : ''" @click="manageClassRecord(section)">Manage Class Records</li>
@@ -23,7 +24,7 @@
                         <p>Semester: <b>{{ classRecord.subject.semester.name }}</b></p>
                         <p>Subject Code: <b>{{ classRecord.subject.subject_code }}</b></p>
                         <p>Subject Description: <b>{{ classRecord.subject.subject_description }}</b></p>
-                        <p>Teacher: <b>{{ classRecord.teacher && classRecord.teacher.full_name_first_name ? classRecord.teacher.full_name_first_name : "" }}</b></p>
+                        <p>Teacher: <b>{{ classRecord.teacher && classRecord.teacher.full_name_first_name ? classRecord.teacher.full_name_last_name : "" }}</b></p>
                         <ul class="list-group">
                             <li
                                 class="list-group-item custom-pointer"

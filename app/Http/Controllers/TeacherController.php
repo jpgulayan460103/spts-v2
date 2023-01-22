@@ -108,6 +108,12 @@ class TeacherController extends Controller
             $teachers->orWhere("last_name", "like", "%$searchQuery%");
             $teachers->orWhere("ext_name", "like", "%$searchQuery%");
         }
+
+        $teachers->orderBy('last_name');
+        $teachers->orderBy('first_name');
+        $teachers->orderBy('middle_name');
+        $teachers->orderBy('ext_name');
+
         $teachers = $teachers->get();
 
         return $teachers;

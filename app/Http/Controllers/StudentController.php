@@ -28,6 +28,11 @@ class StudentController extends Controller
 
         $per_page = $request->perPage ?? 20;
 
+        $students->orderBy('last_name');
+        $students->orderBy('first_name');
+        $students->orderBy('middle_name');
+        $students->orderBy('ext_name');
+
         $students = $students->paginate($per_page);
 
         return $students;

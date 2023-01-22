@@ -434,6 +434,11 @@
                 }
                 return this.unitItems[2];
             },
+        },
+        watch: {
+            viewMode(){
+                this.getUnitScores();
+            }
         }
     }
 </script>

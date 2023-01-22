@@ -3,10 +3,10 @@
 
         <div class="col-md-4">
             <card>
-                <template v-slot:header>Student Form</template>
+                <template v-slot:header>Guardian Form</template>
                 <form @submit.prevent="submitForm()">
-                    <form-item label="Student ID Number" :errors="formErrors.student_id_number">
-                        <input type="text" v-model="formData.student_id_number" class="form-control" :class="formErrors.student_id_number ? 'is-invalid' : ''">
+                    <form-item label="Guardian ID Number" :errors="formErrors.guardian_id_number">
+                        <input type="text" v-model="formData.guardian_id_number" class="form-control" :class="formErrors.guardian_id_number ? 'is-invalid' : ''">
                     </form-item>
                     <form-item label="Last Name" :errors="formErrors.last_name">
                         <input type="text" v-model="formData.last_name" class="form-control" :class="formErrors.last_name ? 'is-invalid' : ''">
@@ -25,20 +25,6 @@
                             <option v-for="(item, index) in genders" :key="index" :value="item.id">{{ item.name }}</option>
                         </select>
                     </form-item>
-                    <form-item label="Guardian" :errors="formErrors.guardian_id">
-                        <select v-model="formData.guardian_id" class="form-control" :class="formErrors.guardian_id ? 'is-invalid' : ''">
-                            <option v-for="(guardian, index) in guardians" :key="index" :value="guardian.id">{{ guardian.full_name_last_name }}</option>
-                        </select>
-                        <!-- <vue-bootstrap-typeahead
-                            :data="guardians"
-                            v-model="guardianSearch"
-                            size="lg"
-                            :serializer="s => s.full_name_first_name"
-                            placeholder="Search for name of guardian"
-                            @hit="selectedGuardian = $event"
-                            inputClass="form-control"
-                        /> -->
-                    </form-item>
                     <button type="submit" class="btn btn-primary" :disabled="submit">Submit</button>
                     <button type="button" style="display:none">Button</button>
                     <button type="button" class="btn btn-danger" v-if="formType != 'create'" @click="resetForm">Cancel</button>
@@ -48,12 +34,12 @@
 
         <div class="col-md-8">
             <card>
-                <template v-slot:header>Students</template>
-                <form @submit.prevent="getStudents()">
+                <template v-slot:header>Guardians</template>
+                <form @submit.prevent="getGuardians()">
                     <div class="row gx-0">
                         <div class="col-md-6">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" v-model="studentFilterData.searchQuery" placeholder="Search for name or ID number" aria-label="Search for name or ID number" aria-describedby="button-addon2">
+                                <input type="text" class="form-control" v-model="guardianFilterData.searchQuery" placeholder="Search for name or ID number" aria-label="Search for name or ID number" aria-describedby="button-addon2">
                                 <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
                             </div>
                         </div>
@@ -62,30 +48,28 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Student ID Number</th>
+                            <th>Guardian ID Number</th>
                             <th>Last Name</th>
                             <th>First Name</th>
                             <th>Middle Name</th>
                             <th>Ext Name</th>
                             <th>Gender</th>
-                            <th>Guardian</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(student, index) in students" :key="index">
-                            <td>{{ student.student_id_number }}</td>
-                            <td>{{ student.last_name }}</td>
-                            <td>{{ student.first_name }}</td>
-                            <td>{{ student.middle_name }}</td>
-                            <td>{{ student.ext_name }}</td>
-                            <td>{{ student.gender.name }}</td>
-                            <td>{{ student.guardian ? student.guardian.full_name_last_name : "" }}</td>
+                        <tr v-for="(guardian, index) in guardians" :key="index">
+                            <td>{{ guardian.guardian_id_number }}</td>
+                            <td>{{ guardian.last_name }}</td>
+                            <td>{{ guardian.first_name }}</td>
+                            <td>{{ guardian.middle_name }}</td>
+                            <td>{{ guardian.ext_name }}</td>
+                            <td>{{ guardian.gender.name }}</td>
                             <td>
-                                <button type="button" class="btn btn-primary" @click="editStudent(student)">
+                                <button type="button" class="btn btn-primary" @click="editGuardian(guardian)">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
-                                <button type="button" class="btn btn-danger" @click="deleteStudent(student)">
+                                <button type="button" class="btn btn-danger" @click="deleteGuardian(guardian)">
                                     <i class="bi bi-trash"></i>
                                 </button>
                                 
@@ -96,7 +80,7 @@
 
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                        <li class="page-item" :class="{ active: pagination.active }" v-for="(pagination, index) in studentPaginations" :key="index" @click="navigateStudentPages(pagination.label)">
+                        <li class="page-item" :class="{ active: pagination.active }" v-for="(pagination, index) in guardianPaginations" :key="index" @click="navigateGuardianPages(pagination.label)">
                             <a class="page-link" href="javascript:void(0);" v-if="pagination.url != null">
                                 <span v-html="pagination.label"></span>
                             </a>
@@ -115,8 +99,6 @@
     import axios from 'axios';
     import { cloneDeep, isEmpty, debounce } from 'lodash'
 
-    const API_URL = 'https://api-url-here.com?query=:query'
-
     export default {
         components: {
             Card,
@@ -129,39 +111,36 @@
                 formType: "create",
                 formErrors: {},
                 genders: [],
-                students: [],
-                studentPaginations: [],
-                studentFilterData: {
+                guardians: [],
+                guardianPaginations: [],
+                guardianFilterData: {
                     page: 1,
                     searchQuery: "",
                 },
-                guardians: [],
-                guardianSearch: '',
-                selectedGuardian: null
             };
         },
         methods: {
             submitForm: debounce(function(){
                 this.submit = true;
                 if(this.formType == "update"){
-                    axios.put(route('students.update', this.formData.id), this.formData)
+                    axios.put(route('guardians.update', this.formData.id), this.formData)
                     .then(res => {
                         this.submit = false;
-                        this.getStudents();
+                        this.getGuardians();
                         this.resetForm();
-                        alert(`Student has been updated.`);
+                        alert(`Guardian has been updated.`);
                     })
                     .catch(err => {
                         this.submit = false;
                         this.formErrors = err.response.data.errors
                     });
                 }else{
-                    axios.post(route('students.store'), this.formData)
+                    axios.post(route('guardians.store'), this.formData)
                     .then(res => {
                         this.submit = false;
-                        this.getStudents();
+                        this.getGuardians();
                         this.resetForm();
-                        alert(`Student has been added.`);
+                        alert(`Guardian has been added.`);
                     })
                     .catch(err => {
                         this.submit = false;
@@ -176,34 +155,34 @@
                 })
                 .catch(err => {});
             },
-            getStudents: debounce(function(){
-                axios.get(route('students.index'), {
-                    params: this.studentFilterData
+            getGuardians: debounce(function(){
+                axios.get(route('guardians.index'), {
+                    params: this.guardianFilterData
                 })
                 .then(res => {
-                    this.students = res.data.data;
-                    this.studentPaginations = res.data.links;
+                    this.guardians = res.data.data;
+                    this.guardianPaginations = res.data.links;
                 })
                 .catch(err => {});
             }, 250),
-            navigateStudentPages(label){
+            navigateGuardianPages(label){
                 if(label == "Next &raquo;"){
-                    label = this.studentFilterData.page + 1;
+                    label = this.guardianFilterData.page + 1;
                 }else if(label == "&laquo; Previous"){
-                    label = this.studentFilterData.page - 1;
+                    label = this.guardianFilterData.page - 1;
                 }
-                this.studentFilterData.page = label;
-                this.getStudents();
+                this.guardianFilterData.page = label;
+                this.getGuardians();
             },
-            editStudent(student){
-                this.formData = cloneDeep(student);
+            editGuardian(guardian){
+                this.formData = cloneDeep(guardian);
                 this.formType = "update";
             },
-            deleteStudent(student){
+            deleteGuardian(guardian){
                 if(confirm("Are you sure you want to delete?")){
-                    axios.delete(route('students.destroy', student.id))
+                    axios.delete(route('guardians.destroy', guardian.id))
                     .then(res => {
-                        this.getStudents();
+                        this.getGuardians();
                     })
                     .catch(err => {});
                 }
@@ -212,36 +191,10 @@
                 this.formData = {};
                 this.formType = "create";
             },
-            getGuardians(){
-                axios.get(route('all.guardians'))
-                .then(res => {
-                    this.guardians = res.data;
-                })
-                .catch(err => {});
-            }
-            // async getGuardianes(query) {
-            //     // const res = await fetch(API_URL.replace(':query', query))
-            //     // const suggestions = await res.json()
-            //     // this.guardians = suggestions.suggestions
-
-            //     axios.get(route('guardians.index'), {
-            //         params: {
-            //             searchQuery: query
-            //         }
-            //     })
-            //     .then(res => {
-            //         this.guardians = res.data.data;
-            //     })
-            //     .catch(err => {});
-            // }
         },
         mounted() {
             this.getGenders();
-            this.getStudents();
             this.getGuardians();
-        },
-         watch: {
-            guardianSearch: debounce(function(addr) { this.getGuardianes(addr) }, 500)
         }
     }
 </script>

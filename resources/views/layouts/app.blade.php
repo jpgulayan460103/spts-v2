@@ -35,13 +35,16 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('sections') }}">{{ __('Sections') }}</a>
+                            <a class="nav-link {{ Route::currentRouteNamed('sections') ? 'active' : '' }}" href="{{ route('sections') }}">{{ __('Sections') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('students') }}">{{ __('Students') }}</a>
+                            <a class="nav-link {{ Route::currentRouteNamed('students') ? 'active' : '' }}" href="{{ route('students') }}">{{ __('Students') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('teachers') }}">{{ __('Teachers') }}</a>
+                            <a class="nav-link {{ Route::currentRouteNamed('guardians') ? 'active' : '' }}" href="{{ route('guardians') }}">{{ __('Guardians') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Route::currentRouteNamed('teachers') ? 'active' : '' }}" href="{{ route('teachers') }}">{{ __('Teachers') }}</a>
                         </li>
                     </ul>
 

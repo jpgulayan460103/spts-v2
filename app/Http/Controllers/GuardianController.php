@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GuardianRequest;
 use App\Models\Guardian;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,29 @@ class GuardianController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $guardians =  Guardian::with(['gender','guardian']);
+        
+        if($request->searchQuery){
+            $searchQuery = $request->searchQuery;
+            $guardians->orWhere("guardian_id_number", "like", "%$searchQuery%");
+            $guardians->orWhere("first_name", "like", "%$searchQuery%");
+            $guardians->orWhere("middle_name", "like", "%$searchQuery%");
+            $guardians->orWhere("last_name", "like", "%$searchQuery%");
+            $guardians->orWhere("ext_name", "like", "%$searchQuery%");
+        }
+
+        $per_page = $request->perPage ?? 20;
+
+        $guardians->orderBy('last_name');
+        $guardians->orderBy('first_name');
+        $guardians->orderBy('middle_name');
+        $guardians->orderBy('ext_name');
+
+        $guardians = $guardians->paginate($per_page);
+
+        return $guardians;
     }
 
     /**
@@ -33,9 +54,9 @@ class GuardianController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(GuardianRequest $request)
     {
-        //
+        return Guardian::create($request->all());
     }
 
     /**
@@ -67,9 +88,10 @@ class GuardianController extends Controller
      * @param  \App\Models\Guardian  $guardian
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Guardian $guardian)
+    public function update(Request $request, $id)
     {
-        //
+        $guardian = Guardian::find($id);
+        $guardian->update($request->all());
     }
 
     /**
@@ -78,8 +100,30 @@ class GuardianController extends Controller
      * @param  \App\Models\Guardian  $guardian
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Guardian $guardian)
+    public function destroy($id)
     {
-        //
+        Guardian::find($id)->delete();
+    }
+
+    public function all(Request $request)
+    {
+        $guardians = Guardian::with(['gender']);
+        if($request->searchQuery){
+            $searchQuery = $request->searchQuery;
+            $guardians->orWhere("guardian_id_number", "like", "%$searchQuery%");
+            $guardians->orWhere("first_name", "like", "%$searchQuery%");
+            $guardians->orWhere("middle_name", "like", "%$searchQuery%");
+            $guardians->orWhere("last_name", "like", "%$searchQuery%");
+            $guardians->orWhere("ext_name", "like", "%$searchQuery%");
+        }
+
+        $guardians->orderBy('last_name');
+        $guardians->orderBy('first_name');
+        $guardians->orderBy('middle_name');
+        $guardians->orderBy('ext_name');
+
+        $guardians = $guardians->get();
+
+        return $guardians;
     }
 }
