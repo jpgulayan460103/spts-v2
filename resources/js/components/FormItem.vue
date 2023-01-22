@@ -3,6 +3,7 @@
         <label class="form-label">{{ label }}</label>
             <slot></slot>
         <div class="form-text" v-if="help">{{ help }}</div>
+        <div class="form-text error" v-for="(error, index) in errors" :key="index">{{ error }}</div>
     </div> 
 </template>
 
@@ -11,7 +12,18 @@
         props: [
             'label',
             'help',
-            'helpType'
+            'helpType',
+            'errors',
         ],
+        watch: {
+
+        }
+
     }
 </script>
+
+<style scoped>
+.error{
+    color: red;
+}
+</style>

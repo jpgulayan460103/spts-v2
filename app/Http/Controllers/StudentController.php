@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StudentRequest;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,24 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Student::with(['gender','guardian'])->get();
+        $students =  Student::with(['gender','guardian']);
+        
+        if($request->searchQuery){
+            $searchQuery = $request->searchQuery;
+            $students->orWhere("student_id_number", "like", "%$searchQuery%");
+            $students->orWhere("first_name", "like", "%$searchQuery%");
+            $students->orWhere("middle_name", "like", "%$searchQuery%");
+            $students->orWhere("last_name", "like", "%$searchQuery%");
+            $students->orWhere("ext_name", "like", "%$searchQuery%");
+        }
+
+        $per_page = $request->perPage ?? 20;
+
+        $students = $students->paginate($per_page);
+
+        return $students;
     }
 
     /**
@@ -33,7 +49,7 @@ class StudentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StudentRequest $request)
     {
         return Student::create($request->all());
     }
@@ -67,9 +83,10 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student)
+    public function update(StudentRequest $request, $id)
     {
-        //
+        $student = Student::find($id);
+        $student->update($request->all());
     }
 
     /**
@@ -78,8 +95,8 @@ class StudentController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    public function destroy($id)
     {
-        //
+        Student::find($id)->delete();
     }
 }

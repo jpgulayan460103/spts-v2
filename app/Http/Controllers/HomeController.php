@@ -40,6 +40,10 @@ class HomeController extends Controller
     {
         return view('students');
     }
+    public function teachers()
+    {
+        return view('teachers');
+    }
 
     public function manageSection(Request $request, $section_uuid, $type = null)
     {
@@ -60,6 +64,7 @@ class HomeController extends Controller
                     break;
                 case 'class-records':
                     $with[] = "class_records.subject.semester";
+                    $with[] = "class_records.teacher";
                     $with[] = "class_records.quarters.quarter";
                     $with[] = "students.student.gender";
 
@@ -67,6 +72,7 @@ class HomeController extends Controller
                         $class_record_uuid = $request->cruid;
                         $class_record = ClassRecord::with([
                             'subject.semester',
+                            'teacher',
                             'subject.subject_category.grading_systems',
                             'quarters.quarter',
                         ])->whereUuid($class_record_uuid)->first();

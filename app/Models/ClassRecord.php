@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -22,6 +23,7 @@ class ClassRecord extends Model
         parent::boot();
         self::creating(function ($model) {
             $model->uuid = (string) Str::uuid();
+            // $model->class_record_number = Carbon::now()->format("Y-").str_pad($model->id, 5, "0");
         });
         self::updating(function($model) {
 

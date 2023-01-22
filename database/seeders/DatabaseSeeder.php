@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SubjectSeeder::class);
         $this->call(GradingSystemSeeder::class);
         $this->call(GradingScaleSeeder::class);
+        $this->call(ActionToBeTakenSeeder::class);
     }
 }

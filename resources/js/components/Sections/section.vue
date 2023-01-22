@@ -5,25 +5,27 @@
             <card>
                 <template v-slot:header>Section Form</template>
                 <form @submit.prevent="submitForm()">
-                    <form-item label="Section Name">
-                        <input type="text" v-model="formData.section_name" class="form-control">
+                    <form-item label="Section Name" :errors="formErrors.section_name">
+                        <input type="text" v-model="formData.section_name" class="form-control" :class="formErrors.section_name ? 'is-invalid' : ''">
                     </form-item>
-                    <form-item label="School Year">
-                        <select v-model="formData.school_year_id" class="form-control">
+                    <form-item label="School Year" v-if="formType == 'create'" :errors="formErrors.school_year_id">
+                        <select v-model="formData.school_year_id" class="form-control" :class="formErrors.school_year_id ? 'is-invalid' : ''">
                             <option v-for="(item, index) in schoolYears" :key="index" :value="item.id">{{ item.name }}</option>
                         </select>
                     </form-item>
-                    <form-item label="Grade Level">
-                        <select v-model="formData.grade_level_id" class="form-control">
+                    <form-item label="Grade Level" v-if="formType == 'create'" :errors="formErrors.grade_level_id">
+                        <select v-model="formData.grade_level_id" class="form-control" :class="formErrors.grade_level_id ? 'is-invalid' : ''">
                             <option v-for="(item, index) in gradeLevels" :key="index" :value="item.id">{{ item.name }}</option>
                         </select>
                     </form-item>
-                    <form-item label="Track">
-                        <select v-model="formData.track_id" class="form-control">
+                    <form-item label="Track" v-if="formType == 'create'" :errors="formErrors.track_id">
+                        <select v-model="formData.track_id" class="form-control" :class="formErrors.track_id ? 'is-invalid' : ''">
                             <option v-for="(item, index) in tracks" :key="index" :value="item.id">{{ item.name }}</option>
                         </select>
                     </form-item>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary" :disabled="submit">Submit</button>
+                    <button type="button" style="display:none">Button</button>
+                    <button type="button" class="btn btn-danger" v-if="formType != 'create'" @click="resetForm">Cancel</button>
                 </form>
             </card>
         </div>
@@ -31,6 +33,16 @@
         <div class="col-md-8">
             <card>
                 <template v-slot:header>Sections</template>
+                <form @submit.prevent="getSections()" id="section-table">
+                        <div class="row gx-0">
+                            <div class="col-md-6">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" v-model="sectionFilterData.searchQuery" placeholder="Search for section name" aria-label="Search for section name" aria-describedby="button-addon2">
+                                    <button class="btn btn-outline-secondary" type="submit" form="section-table" id="button-addon2">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 <table class="table">
                     <thead>
                         <tr>
@@ -51,8 +63,14 @@
                                 <button type="button" class="btn btn-primary" @click="manageClassRecord(section)">
                                     <i class="bi bi-book-fill"></i>
                                 </button>
-                                <button type="button" class="btn btn-primary" @click="manageStudent(section)">
+                                <button type="button" class="btn btn-primary" @click="manageSection(section)">
                                     <i class="bi bi-people-fill"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary" @click="editSection(section)">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger" @click="deleteSection(section)">
+                                    <i class="bi bi-trash"></i>
                                 </button>
                             </td>
                         </tr>
@@ -68,6 +86,7 @@
     import Card from './../Card.vue';
     import FormItem from './../FormItem.vue';
     import axios from 'axios';
+    import { cloneDeep, isEmpty, debounce } from 'lodash'
 
     export default {
         components: {
@@ -76,26 +95,51 @@
         },
         data() {
             return {
+                submit: false,
                 formData: {},
+                formType: "create",
                 formErrors: {},
                 schoolYears: [],
                 gradeLevels: [],
                 tracks: [],
                 sections: [],
+                sectionPaginations: [],
+                sectionFilterData: {
+                    page: 1,
+                    searchQuery: "",
+                },
             };
         },
         methods: {
-            submitForm(){
-                axios.post(route('sections.store'), this.formData)
-                .then(res => {
-                    alert(`${this.formData.section_name} has been added`);
-                    this.getSections();
-                })
-                .catch(res => {
-
-                });
-            },
-            manageStudent(section){
+            submitForm: debounce(function(){
+                this.submit = true;
+                if(this.formType == "update"){
+                    axios.put(route('sections.update', this.formData.id), this.formData)
+                    .then(res => {
+                        this.submit = false;
+                        this.getSections();
+                        this.resetForm();
+                        alert(`Section has been updated.`);
+                    })
+                    .catch(err => {
+                        this.submit = false;
+                        this.formErrors = err.response.data.errors;
+                    });
+                }else{
+                    axios.post(route('sections.store'), this.formData)
+                    .then(res => {
+                        this.submit = false;
+                        this.getSections();
+                        this.resetForm();
+                        alert(`Section has been added.`);
+                    })
+                    .catch(err => {
+                        this.submit = false;
+                        this.formErrors = err.response.data.errors;
+                    });
+                }
+            }, 250),
+            manageSection(section){
                 window.location = route('sections.manage', [section.uuid, 'students']);
             },
             manageClassRecord(section){
@@ -122,13 +166,42 @@
                 })
                 .catch(err => {});
             },
-            getSections(){
-                axios.get(route('sections.index'))
+            getSections: debounce(function(){
+                axios.get(route('sections.index'), {
+                    params: this.sectionFilterData
+                })
                 .then(res => {
-                    this.sections = res.data;
+                    this.sections = res.data.data;
+                    this.sectionPaginations = res.data.links;
                 })
                 .catch(err => {});
-            }
+            }, 250),
+            navigateTeacherPages(label){
+                if(label == "Next &raquo;"){
+                    label = this.sectionFilterData.page + 1;
+                }else if(label == "&laquo; Previous"){
+                    label = this.sectionFilterData.page - 1;
+                }
+                this.sectionFilterData.page = label;
+                this.getSections();
+            },
+            editSection(section){
+                this.formData = cloneDeep(section);
+                this.formType = "update";
+            },
+            deleteSection(section){
+                if(confirm("Are you sure you want to delete?")){
+                    axios.delete(route('sections.destroy', section.id))
+                    .then(res => {
+                        this.getSections();
+                    })
+                    .catch(err => {});
+                }
+            },
+            resetForm(){
+                this.formData = {};
+                this.formType = "create";
+            },
         },
         mounted() {
             this.getSchoolYears();

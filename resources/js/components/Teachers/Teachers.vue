@@ -3,10 +3,10 @@
 
         <div class="col-md-4">
             <card>
-                <template v-slot:header>Student Form</template>
+                <template v-slot:header>Teacher Form</template>
                 <form @submit.prevent="submitForm()">
-                    <form-item label="Student ID Number" :errors="formErrors.student_id_number">
-                        <input type="text" v-model="formData.student_id_number" class="form-control" :class="formErrors.student_id_number ? 'is-invalid' : ''">
+                    <form-item label="Teacher ID Number" :errors="formErrors.teacher_id_number">
+                        <input type="text" v-model="formData.teacher_id_number" class="form-control" :class="formErrors.teacher_id_number ? 'is-invalid' : ''">
                     </form-item>
                     <form-item label="Last Name" :errors="formErrors.last_name">
                         <input type="text" v-model="formData.last_name" class="form-control" :class="formErrors.last_name ? 'is-invalid' : ''">
@@ -34,12 +34,12 @@
 
         <div class="col-md-8">
             <card>
-                <template v-slot:header>Students</template>
-                <form @submit.prevent="getStudents()">
+                <template v-slot:header>Teachers</template>
+                <form @submit.prevent="getTeachers()">
                     <div class="row gx-0">
                         <div class="col-md-6">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" v-model="studentFilterData.searchQuery" placeholder="Search for name or ID number" aria-label="Search for name or ID number" aria-describedby="button-addon2">
+                                <input type="text" class="form-control" v-model="teacherFilterData.searchQuery" placeholder="Search for name or ID number" aria-label="Search for name or ID number" aria-describedby="button-addon2">
                                 <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
                             </div>
                         </div>
@@ -48,7 +48,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Student ID Number</th>
+                            <th>Teacher ID Number</th>
                             <th>Last Name</th>
                             <th>First Name</th>
                             <th>Middle Name</th>
@@ -58,18 +58,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(student, index) in students" :key="index">
-                            <td>{{ student.student_id_number }}</td>
-                            <td>{{ student.last_name }}</td>
-                            <td>{{ student.first_name }}</td>
-                            <td>{{ student.middle_name }}</td>
-                            <td>{{ student.ext_name }}</td>
-                            <td>{{ student.gender.name }}</td>
+                        <tr v-for="(teacher, index) in teachers" :key="index">
+                            <td>{{ teacher.teacher_id_number }}</td>
+                            <td>{{ teacher.last_name }}</td>
+                            <td>{{ teacher.first_name }}</td>
+                            <td>{{ teacher.middle_name }}</td>
+                            <td>{{ teacher.ext_name }}</td>
+                            <td>{{ teacher.gender.name }}</td>
                             <td>
-                                <button type="button" class="btn btn-primary" @click="editStudent(student)">
+                                <button type="button" class="btn btn-primary" @click="editTeacher(teacher)">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
-                                <button type="button" class="btn btn-danger" @click="deleteStudent(student)">
+                                <button type="button" class="btn btn-danger" @click="deleteTeacher(teacher)">
                                     <i class="bi bi-trash"></i>
                                 </button>
                                 
@@ -77,10 +77,9 @@
                         </tr>
                     </tbody>
                 </table>
-
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                        <li class="page-item" :class="{ active: pagination.active }" v-for="(pagination, index) in studentPaginations" :key="index" @click="navigateStudentPages(pagination.label)">
+                        <li class="page-item" :class="{ active: pagination.active }" v-for="(pagination, index) in teacherPaginations" :key="index" @click="navigateTeacherPages(pagination.label)">
                             <a class="page-link" href="javascript:void(0);" v-if="pagination.url != null">
                                 <span v-html="pagination.label"></span>
                             </a>
@@ -111,9 +110,9 @@
                 formType: "create",
                 formErrors: {},
                 genders: [],
-                students: [],
-                studentPaginations: [],
-                studentFilterData: {
+                teachers: [],
+                teacherPaginations: [],
+                teacherFilterData: {
                     page: 1,
                     searchQuery: "",
                 },
@@ -123,28 +122,28 @@
             submitForm: debounce(function(){
                 this.submit = true;
                 if(this.formType == "update"){
-                    axios.put(route('students.update', this.formData.id), this.formData)
+                    axios.put(route('teachers.update', this.formData.id), this.formData)
                     .then(res => {
                         this.submit = false;
-                        this.getStudents();
+                        this.getTeachers();
                         this.resetForm();
-                        alert(`Student has been updated.`);
+                        alert(`Teacher has been updated.`);
                     })
                     .catch(err => {
                         this.submit = false;
-                        this.formErrors = err.response.data.errors
+                        this.formErrors = err.response.data.errors;
                     });
                 }else{
-                    axios.post(route('students.store'), this.formData)
+                    axios.post(route('teachers.store'), this.formData)
                     .then(res => {
                         this.submit = false;
-                        this.getStudents();
+                        this.getTeachers();
                         this.resetForm();
-                        alert(`Student has been added.`);
+                        alert(`Teacher has been added.`);
                     })
                     .catch(err => {
                         this.submit = false;
-                        this.formErrors = err.response.data.errors
+                        this.formErrors = err.response.data.errors;
                     });
                 }
             }, 250),
@@ -155,34 +154,34 @@
                 })
                 .catch(err => {});
             },
-            getStudents: debounce(function(){
-                axios.get(route('students.index'), {
-                    params: this.studentFilterData
+            getTeachers: debounce(function(){
+                axios.get(route('teachers.index'), {
+                    params: this.teacherFilterData
                 })
                 .then(res => {
-                    this.students = res.data.data;
-                    this.studentPaginations = res.data.links;
+                    this.teachers = res.data.data;
+                    this.teacherPaginations = res.data.links;
                 })
                 .catch(err => {});
             }, 250),
-            navigateStudentPages(label){
+            navigateTeacherPages(label){
                 if(label == "Next &raquo;"){
-                    label = this.studentFilterData.page + 1;
+                    label = this.teacherFilterData.page + 1;
                 }else if(label == "&laquo; Previous"){
-                    label = this.studentFilterData.page - 1;
+                    label = this.teacherFilterData.page - 1;
                 }
-                this.studentFilterData.page = label;
-                this.getStudents();
+                this.teacherFilterData.page = label;
+                this.getTeachers();
             },
-            editStudent(student){
+            editTeacher(student){
                 this.formData = cloneDeep(student);
                 this.formType = "update";
             },
-            deleteStudent(student){
+            deleteTeacher(teacher){
                 if(confirm("Are you sure you want to delete?")){
-                    axios.delete(route('students.destroy', student.id))
+                    axios.delete(route('teachers.destroy', teacher.id))
                     .then(res => {
-                        this.getStudents();
+                        this.getTeachers();
                     })
                     .catch(err => {});
                 }
@@ -194,7 +193,7 @@
         },
         mounted() {
             this.getGenders();
-            this.getStudents();
+            this.getTeachers();
         }
     }
 </script>

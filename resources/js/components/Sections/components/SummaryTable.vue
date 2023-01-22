@@ -1,5 +1,16 @@
 <template>
     <div>
+        <div v-if="isEmpty(classRecordQuarter)" class="">
+            <p>
+                Teacher: <br>
+                <select v-model="subjectTeacherId">
+                    <option value="">Select Teacher</option>
+                    <option v-for="(teacher, index) in subjectTeachers" :key="index" :value="teacher.id">{{ teacher.full_name_first_name }}</option>
+                </select> 
+                <button class="btn btn-primary btn-sm" @click="updateSubjectTeacher">Save</button>
+            </p>
+            <hr>
+        </div>
         <table class="table">
             <thead>
                 <tr>
@@ -12,12 +23,7 @@
             </thead>
             <tbody>
                 <tr v-for="(sectionStudent, index) in sectionStudents" :key="index">
-                    <td>
-                        <span>{{ sectionStudent.student.last_name }}</span>,
-                        <span>{{ sectionStudent.student.first_name }}</span>
-                        <span>{{ sectionStudent.student.middle_name }}</span>
-                        <span>{{ sectionStudent.student.ext_name }}</span>
-                    </td>
+                    <td>{{ sectionStudent.student.full_name_last_name }}</td>
                     <td v-for="(unit, uindex) in sectionStudent.units" :key="uindex">
                         <span>{{ unit.remarks }}</span>
                     </td>
@@ -43,6 +49,8 @@
             return {
                 sectionStudents: [],
                 units: [],
+                subjectTeachers: [],
+                subjectTeacherId: "",
             };
         },
         methods: {
@@ -57,10 +65,31 @@
                     this.units = res.data.units;
                 })
                 .catch(err => {});
+            },
+            getTeachers(){
+                axios.get(route('all.teachers'))
+                .then(res => {
+                    this.subjectTeachers = res.data;
+                })
+                .catch(err => {});
+            },
+            updateSubjectTeacher(e){
+                axios.put(route('class-records.update', this.classRecord.id), {
+                    teacher_id: this.subjectTeacherId == "" ? null : this.subjectTeacherId,
+                })
+                .then(res => {
+                    location.reload();
+                })
+                .catch(err => {});
+            },
+            isEmpty(value){
+                return isEmpty(value);
             }
         },
         mounted() {
             this.getUnitSummary();
+            this.getTeachers();
+            this.subjectTeacherId = this.classRecord.teacher_id == null ? "" : this.classRecord.teacher_id;
         }
     }
 </script>

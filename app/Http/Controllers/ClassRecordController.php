@@ -6,6 +6,7 @@ use App\Models\ClassRecord;
 use App\Models\GradingScale;
 use App\Models\TransmutedGrade;
 use App\Models\Unit;
+use App\Models\UnitAction;
 use App\Models\UnitItem;
 use App\Models\UnitScore;
 use Illuminate\Http\Request;
@@ -72,9 +73,10 @@ class ClassRecordController extends Controller
      * @param  \App\Models\ClassRecord  $classRecord
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ClassRecord $classRecord)
+    public function update(Request $request, $id)
     {
-        //
+        $class_record = ClassRecord::find($id);
+        $class_record->update($request->all());
     }
 
     /**
@@ -164,6 +166,8 @@ class ClassRecordController extends Controller
             $grading_scale = GradingScale::where('transmuted_grade', '<=', $section_student->transmuted_grade)->orderBy('transmuted_grade', 'desc')->first();
             $section_student->descriptor = $section_student->total_items != 0 ? $grading_scale->descriptor : "";
             $section_student->remarks = $section_student->total_items != 0 ? $grading_scale->remarks : "";
+
+            $section_student->unit_action = UnitAction::with('action')->where('section_student_id', $section_student->id)->where('unit_id', $unit_id)->first();
         }
         return $section_students;
     }

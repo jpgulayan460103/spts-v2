@@ -7,10 +7,14 @@
 require('./bootstrap');
 
 import Vue from 'vue'
+import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
 
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import './components'
 import './../css/app.css'
+
+Vue.component('vue-bootstrap-typeahead', VueBootstrapTypeahead)
+
 
 
 const app = new Vue({

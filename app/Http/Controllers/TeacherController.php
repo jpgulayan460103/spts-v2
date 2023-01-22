@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TeacherRequest;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,21 @@ class TeacherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $teachers = Teacher::with(['gender']);
+        if($request->searchQuery){
+            $searchQuery = $request->searchQuery;
+            $teachers->orWhere("teacher_id_number", "like", "%$searchQuery%");
+            $teachers->orWhere("first_name", "like", "%$searchQuery%");
+            $teachers->orWhere("middle_name", "like", "%$searchQuery%");
+            $teachers->orWhere("last_name", "like", "%$searchQuery%");
+            $teachers->orWhere("ext_name", "like", "%$searchQuery%");
+        }
+
+        $teachers = $teachers->paginate(20);
+
+        return $teachers;
     }
 
     /**
@@ -33,9 +46,9 @@ class TeacherController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TeacherRequest $request)
     {
-        //
+        return Teacher::create($request->all());
     }
 
     /**
@@ -67,9 +80,10 @@ class TeacherController extends Controller
      * @param  \App\Models\Teacher  $teacher
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Teacher $teacher)
+    public function update(TeacherRequest $request, $id)
     {
-        //
+        $teacher = Teacher::find($id);
+        $teacher->update($request->all());
     }
 
     /**
@@ -78,8 +92,24 @@ class TeacherController extends Controller
      * @param  \App\Models\Teacher  $teacher
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Teacher $teacher)
+    public function destroy($id)
     {
-        //
+        Teacher::find($id)->delete();
+    }
+    
+    public function all(Request $request)
+    {
+        $teachers = Teacher::with(['gender']);
+        if($request->searchQuery){
+            $searchQuery = $request->searchQuery;
+            $teachers->orWhere("teacher_id_number", "like", "%$searchQuery%");
+            $teachers->orWhere("first_name", "like", "%$searchQuery%");
+            $teachers->orWhere("middle_name", "like", "%$searchQuery%");
+            $teachers->orWhere("last_name", "like", "%$searchQuery%");
+            $teachers->orWhere("ext_name", "like", "%$searchQuery%");
+        }
+        $teachers = $teachers->get();
+
+        return $teachers;
     }
 }

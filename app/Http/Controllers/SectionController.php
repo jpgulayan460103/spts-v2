@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SectionRequest;
 use App\Models\ClassRecord;
 use App\Models\ClassRecordQuarter;
 use App\Models\Library;
@@ -17,13 +18,24 @@ class SectionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Section::with([
+        $sections = Section::with([
             'school_year',
             'grade_level',
             'track',
-        ])->get();
+        ]);
+
+        if($request->searchQuery){
+            $searchQuery = $request->searchQuery;
+            $sections->orWhere("section_name", "like", "%$searchQuery%");
+        }
+
+        $per_page = $request->perPage ?? 20;
+
+        $sections = $sections->paginate($per_page);
+
+        return $sections;
     }
 
     /**
@@ -42,7 +54,7 @@ class SectionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SectionRequest $request)
     {
         $section = Section::create($request->all());
 
@@ -138,9 +150,10 @@ class SectionController extends Controller
      * @param  \App\Models\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Section $section)
+    public function update(Request $request, $id)
     {
-        //
+        $section = Section::find($id);
+        $section->update($request->all());
     }
 
     /**
@@ -149,8 +162,8 @@ class SectionController extends Controller
      * @param  \App\Models\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Section $section)
+    public function destroy($id)
     {
-        //
+        Section::find($id)->delete();
     }
 }

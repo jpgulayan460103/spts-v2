@@ -35,6 +35,16 @@ class UnitScoreController extends Controller
      */
     public function store(Request $request)
     {
+
+        $validated = $request->validate([
+            'grading_system_id' => 'required|numeric',
+            'score' => 'required|numeric|max:'.$request->unit_items,
+            'section_student_id' => 'required|numeric',
+            'unit_id' => 'required|numeric',
+            'unit_item_id' => 'required|numeric',
+            'unit_items' => 'required|numeric',
+        ]);
+
         $unit_score = UnitScore::where([
             ['unit_id', '=', $request->unit_id],
             ['unit_item_id', '=', $request->unit_item_id],
@@ -47,6 +57,8 @@ class UnitScoreController extends Controller
         }else{
             $unit_score = UnitScore::create($request->all());
         }
+
+        return UnitScore::find($unit_score->id);
     }
 
     /**

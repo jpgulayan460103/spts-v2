@@ -54,6 +54,11 @@ class UnitItemController extends Controller
      */
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'grading_system_id' => 'required|numeric',
+            'item' => 'required|numeric|min:0',
+            'unit_id' => 'required|numeric',
+        ]);
         $unit_item = UnitItem::create($request->all());
     }
 

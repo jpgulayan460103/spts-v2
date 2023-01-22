@@ -40,6 +40,9 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('students') }}">{{ __('Students') }}</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('teachers') }}">{{ __('Teachers') }}</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

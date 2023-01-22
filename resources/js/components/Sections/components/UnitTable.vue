@@ -87,7 +87,7 @@
                         </td>
 
                         <td v-for="(unitItem, index) in unitGradingSystem1.unit_items" :key="`unit-score-1-${index}`">
-                            <input type="text" style="width: 50px;" :value="unitScore(unitItem, sectionStudent, scoreGradingSystem1(sectionStudent))" @blur="addScore($event, unitItem, sectionStudent, scoreGradingSystem1(sectionStudent))">
+                            <input type="number" min="0" style="width: 50px;" :value="unitScore(unitItem, sectionStudent, scoreGradingSystem1(sectionStudent))" :max="unitItem.item" @blur="addScore($event, unitItem, sectionStudent, scoreGradingSystem1(sectionStudent))" ref="scores">
                         </td>
                         <th v-if="isEmpty(unitGradingSystem1.unit_items)"></th>
                         <td>{{ scoreGradingSystem1(sectionStudent).total_scores }}</td>
@@ -95,7 +95,7 @@
                         <td class="br">{{ scoreGradingSystem1(sectionStudent).weighted_score }}</td>
 
                         <td v-for="(unitItem, index) in unitGradingSystem2.unit_items" :key="`unit-score-2-${index}`">
-                            <input type="text" style="width: 50px;" :value="unitScore(unitItem, sectionStudent, scoreGradingSystem2(sectionStudent))" @blur="addScore($event, unitItem, sectionStudent, scoreGradingSystem2(sectionStudent))">
+                            <input type="number" min="0" style="width: 50px;" :value="unitScore(unitItem, sectionStudent, scoreGradingSystem2(sectionStudent))" :max="unitItem.item" @blur="addScore($event, unitItem, sectionStudent, scoreGradingSystem2(sectionStudent))" ref="scores">
                         </td>
                         <th v-if="isEmpty(unitGradingSystem2.unit_items)"></th>
                         <td>{{ scoreGradingSystem2(sectionStudent).total_scores }}</td>
@@ -103,7 +103,7 @@
                         <td class="br">{{ scoreGradingSystem2(sectionStudent).weighted_score }}</td>
 
                         <td v-for="(unitItem, index) in unitGradingSystem3.unit_items" :key="`unit-score-3-${index}`">
-                            <input type="text" style="width: 50px;" :value="unitScore(unitItem, sectionStudent, scoreGradingSystem3(sectionStudent))" @blur="addScore($event, unitItem, sectionStudent, scoreGradingSystem3(sectionStudent))">
+                            <input type="number" min="0" style="width: 50px;" :value="unitScore(unitItem, sectionStudent, scoreGradingSystem3(sectionStudent))" :max="unitItem.item" @blur="addScore($event, unitItem, sectionStudent, scoreGradingSystem3(sectionStudent))" ref="scores">
                         </td>
                         <th v-if="isEmpty(unitGradingSystem3.unit_items)"></th>
                         <td>{{ scoreGradingSystem3(sectionStudent).total_scores }}</td>
@@ -136,6 +136,7 @@
                         <th class="bl">{{ unitGradingSystem3.percentage * 100 }}%</th>
                         <th>Remarks</th>
                         <th>Action to be Taken</th>
+                        <th>Teacher’s Feedback</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -157,13 +158,16 @@
                         <th>{{ sectionStudent.descriptor }}</th>
                         <th class="br">{{ sectionStudent.remarks }}</th>
                         <th class="br">
-                            <select>
+                            <select @change="setUnitAction($event, sectionStudent, 'action')" v-if="sectionStudent.descriptor != ''">
                                 <option value="">Select Action</option>
-                                <option value="">One-on-One Consultation</option>
-                                <option value="">Remedial Classes</option>
-                                <option value="">Parent Conference</option>
-                                <option value="">Reinforcement</option>
+                                <option v-for="(item, index) in actionOptions" :key="index" :value="item.id" :selected="(sectionStudent.unit_action && sectionStudent.unit_action.action_id == item.id)">{{ item.name }}</option>
                             </select>
+                        </th>
+                        <th class="br">
+                            <div v-if="sectionStudent.descriptor != ''">
+                                <textarea @change="setUnitAction($event, sectionStudent, 'feedback')" rows="1" v-if="sectionStudent.unit_action" v-model="sectionStudent.unit_action.teacher_feedback"></textarea>
+                                <textarea @change="setUnitAction($event, sectionStudent, 'feedback')" rows="1" v-else></textarea>
+                            </div>
                         </th>
                     </tr>
                 </tbody>
@@ -182,12 +186,13 @@
                 <div class="modal-body">
 
                     <form @submit.prevent="addUnitItem()">
-                        <form-item label="Number of Items">
-                            <input type="number" min="1" v-model="formData.item" class="form-control">
+                        <form-item label="Number of Items" :errors="formErrors.item">
+                            <input type="number" min="1" v-model="formData.item" class="form-control" :class="formErrors.item ? 'is-invalid' : ''">
                         </form-item>
-                        <button type="submit" class="btn btn-primary">Add</button>
+                        <button type="submit" class="btn btn-primary" :disabled="submit">Add</button>
                     </form>
                     <ul class="list-group mt-2">
+                        <li class="list-group-item d-flex justify-content-between align-items-center"><b>Items</b></li>
                         <li class="list-group-item d-flex justify-content-between align-items-center" v-for="(unit_item, uiindex) in selectedGradingSystem.unit_items" :key="uiindex">
                             {{ unit_item.item }}
                             <button type="submit" class="btn btn-danger btn-sm" @click="deleteUnitItem(unit_item)">
@@ -209,7 +214,7 @@
 <script>
 
     import axios from 'axios';
-    import { cloneDeep, isEmpty } from 'lodash'
+    import { cloneDeep, isEmpty, debounce } from 'lodash'
     import FormItem from './../../FormItem.vue';
 
     export default {
@@ -224,17 +229,21 @@
         ],
         data() {
             return {
+                submit: false,
                 formData: {},
+                formErrors: {},
                 sectionStudents: [],
                 selectedGradingSystem: {},
                 unitItems: [],
                 unitItemInitialGrade: 0,
                 unitItemTransmutedGrade: 0,
                 viewMode: "summary",
+                actionOptions: [],
             };
         },
         methods: {
-            addUnitItem(){
+            addUnitItem: debounce(function(){
+                this.submit = true;
                 const formData = {
                     ...this.formData,
                     grading_system_id: this.selectedGradingSystem.id,
@@ -242,11 +251,15 @@
                 }
                 axios.post(route('unit-items.store'), formData)
                 .then(res => {
+                    this.submit = false,
                     this.getUnitItems();
                     // this.getUnitScores();
                 })
-                .catch(err => {});
-            },
+                .catch(err => {
+                    this.submit = false,
+                    this.formErrors = err.response.data.errors
+                });
+            }, 250),
             deleteUnitItem(unitItem){
                 axios.delete(route('unit-items.destroy', unitItem.id))
                 .then(res => {
@@ -256,18 +269,33 @@
                 .catch(err => {});
             },
             addScore(e, unitItem, sectionStudent, gradingSystem){
+                let score = e.target.value;
+                if(score > unitItem.item){
+                    this.$refs['scores'][0].value = unitItem.item;
+                    score = unitItem.item;
+                }
+                if(score < 1){
+                    this.$refs['scores'][0].value = 0;
+                    score = 0;
+                }
                 const formData = {
-                    score: e.target.value,
+                    score,
                     unit_id: this.unit.id,
                     unit_item_id: unitItem.id,
+                    unit_items: unitItem.item,
                     section_student_id: sectionStudent.id,
                     grading_system_id: gradingSystem.id,
                 }
                 axios.post(route('unit-scores.store'), formData)
                 .then(res => {
+                    this.$refs['scores'][0].className = '';
                     this.getUnitScores();
                 })
-                .catch(err => {});
+                .catch(err => {
+                    console.log(this.$refs['scores'][0].className);
+                    this.$refs['scores'][0].className = 'score-error';
+                    
+                });
             },
             unitScore(unitItem, sectionStudent, gradingSystem){
                 // console.log(unitItem);
@@ -336,12 +364,43 @@
                         utuid: e.target.value
                     }
                 })
-            }
+            },
+            getActionOptions(){
+                axios.get(route('libraries.type', 'actions'))
+                .then(res => {
+                    this.actionOptions = res.data
+                })
+                .catch(err => {});
+            },
+            setUnitAction(e, sectionStudent, type){
+                let formData;
+                if(type == "action"){
+                    formData = {
+                        'action_id': e.target.value == "" ? null: e.target.value,
+                        'section_student_id': sectionStudent.id,
+                        'unit_id': this.unit.id
+                    };
+                }else{
+                    formData = {
+                        'teacher_feedback': e.target.value,
+                        'section_student_id': sectionStudent.id,
+                        'unit_id': this.unit.id
+                    };
+                }
+                axios.post(route('unit-actions.store'), formData)
+                .then(res => {
+
+                })
+                .catch(err => {});
+            },
         },
         mounted() {
             // this.sectionStudents = cloneDeep(this.section.sectionStudents);
             this.getUnitItems();
             this.getUnitScores();
+            if(!isEmpty(this.unit)){
+                this.getActionOptions();
+            }
         },
         computed: {
             unitGradingSystem1(){
@@ -391,5 +450,8 @@
     }
     .bb{
         border-bottom: 2px solid black
+    }
+    .score-error{
+        border: 1px solid red;
     }
 </style>

@@ -23,7 +23,7 @@
                         <p>Semester: <b>{{ classRecord.subject.semester.name }}</b></p>
                         <p>Subject Code: <b>{{ classRecord.subject.subject_code }}</b></p>
                         <p>Subject Description: <b>{{ classRecord.subject.subject_description }}</b></p>
-
+                        <p>Teacher: <b>{{ classRecord.teacher && classRecord.teacher.full_name_first_name ? classRecord.teacher.full_name_first_name : "" }}</b></p>
                         <ul class="list-group">
                             <li
                                 class="list-group-item custom-pointer"
@@ -143,7 +143,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-
+                    <form @submit.prevent="getStudents()">
+                        <div class="row gx-0">
+                            <div class="col-md-6">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" v-model="studentFilterData.searchQuery" placeholder="Search for name or ID number" aria-label="Search for name or ID number" aria-describedby="button-addon2">
+                                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                     <table class="table">
                         <thead>
                             <tr>
@@ -220,13 +229,20 @@
                 sections: [],
                 students: [],
                 sectionStudents: [],
+                studentFilterData: {
+                    page: 1,
+                    searchQuery: "",
+                    perPage: 5,
+                },
             };
         },
         methods: {
             getStudents(){
-                axios.get(route('students.index'))
+                axios.get(route('students.index'), {
+                    params: this.studentFilterData
+                })
                 .then(res => {
-                    this.students = res.data;
+                    this.students = res.data.data;
                 })
                 .catch(err => {});
             },
@@ -239,11 +255,11 @@
                     this.sectionStudents.unshift(res.data);
                 })
                 .catch(err => {
-                    alert(`${student.last_name}, ${student.first_name} ${student.middle_name} ${student.ext_name} is already added`);
+                    alert(`${student.full_name_last_name} is already added`);
                 });
             },
             deleteStudent(student){
-                if(confirm(`Are you sure you want to delete ${student.student.last_name}, ${student.student.first_name} ${student.student.middle_name} ${student.student.ext_name} in the list?`)){
+                if(confirm(`Are you sure you want to delete ${student.student.full_name_last_name} in the list?`)){
                     axios.delete(route('section-students.destroy', student.id))
                     .then(res => {
                         this.sectionStudents = this.sectionStudents.filter(item => item.id !== student.id)
