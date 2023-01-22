@@ -48,6 +48,6 @@ Route::prefix('data')->group(function () {
     Route::get('/class-records/{id}/unit-scores', [ClassRecordController::class, 'unitScore'])->name('class-records.unit-scores');
     Route::get('/class-records/{id}/unit-summary', [ClassRecordController::class, 'unitSummary'])->name('class-records.unit-summary');
     Route::get('/all/teachers', [TeacherController::class, 'all'])->name('all.teachers');
-    Route::get('/all/guardians', [TeacherController::class, 'all'])->name('all.guardians');
+    Route::get('/all/guardians', [GuardianController::class, 'all'])->name('all.guardians');
 });
 

@@ -33102,7 +33102,6 @@ var render = function () {
                               label: "Guardian ID Number",
                               errors: _vm.formErrors.guardian_id_number,
                             },
-                            on: { change: _vm.setAccountDetails },
                           },
                           [
                             _c("input", {
@@ -33123,6 +33122,7 @@ var render = function () {
                                 value: _vm.formData.guardian_id_number,
                               },
                               on: {
+                                change: _vm.setAccountDetails,
                                 input: function ($event) {
                                   if ($event.target.composing) {
                                     return

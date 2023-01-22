@@ -6,8 +6,8 @@
                 <template v-slot:header>Guardian Form</template>
                 <form @submit.prevent="submitForm()">
                     <div v-if="formType != 'update-account'">
-                        <form-item label="Guardian ID Number" :errors="formErrors.guardian_id_number" @change="setAccountDetails">
-                            <input type="text" v-model="formData.guardian_id_number" class="form-control" :class="formErrors.guardian_id_number ? 'is-invalid' : ''">
+                        <form-item label="Guardian ID Number" :errors="formErrors.guardian_id_number">
+                            <input type="text" v-model="formData.guardian_id_number" class="form-control" :class="formErrors.guardian_id_number ? 'is-invalid' : ''" @change="setAccountDetails">
                         </form-item>
                         <form-item label="Last Name" :errors="formErrors.last_name">
                             <input type="text" v-model="formData.last_name" class="form-control" :class="formErrors.last_name ? 'is-invalid' : ''">
