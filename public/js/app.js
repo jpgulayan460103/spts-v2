@@ -5155,6 +5155,46 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5169,15 +5209,37 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       classRecords: [],
-      sections: []
+      classRecordPaginations: [],
+      classRecordFilterData: {
+        page: 1,
+        searchQuery: ""
+      },
+      sections: [],
+      sectionPaginations: [],
+      sectionFilterData: {
+        page: 1,
+        searchQuery: ""
+      }
     };
   },
   methods: {
-    getClassRecords: function getClassRecords() {
+    getClassRecords: (0,lodash__WEBPACK_IMPORTED_MODULE_3__.debounce)(function () {
       var _this = this;
-      axios__WEBPACK_IMPORTED_MODULE_2___default().get(route('teachers.class-records', this.user.userable_id)).then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default().get(route('teachers.class-records', this.user.userable_id), {
+        params: this.classRecordFilterData
+      }).then(function (res) {
         _this.classRecords = res.data.data;
+        _this.classRecordPaginations = res.data.links;
       })["catch"](function (res) {});
+    }, 250),
+    navigateClassRecordPages: function navigateClassRecordPages(label) {
+      if (label == "Next &raquo;") {
+        label = this.classRecordFilterData.page + 1;
+      } else if (label == "&laquo; Previous") {
+        label = this.classRecordFilterData.page - 1;
+      }
+      this.classRecordFilterData.page = label;
+      this.getClassRecords();
     },
     viewClassRecord: function viewClassRecord(classRecord) {
       window.location = route('sections.manage', {
@@ -5188,11 +5250,23 @@ __webpack_require__.r(__webpack_exports__);
         }
       });
     },
-    getAdvisories: function getAdvisories() {
+    getSections: (0,lodash__WEBPACK_IMPORTED_MODULE_3__.debounce)(function () {
       var _this2 = this;
-      axios__WEBPACK_IMPORTED_MODULE_2___default().get(route('teachers.advisories', this.user.userable_id)).then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default().get(route('teachers.advisories', this.user.userable_id), {
+        params: this.sectionFilterData
+      }).then(function (res) {
         _this2.sections = res.data.data;
+        _this2.sectionPaginations = res.data.links;
       })["catch"](function (res) {});
+    }, 250),
+    navigateSectionPages: function navigateSectionPages(label) {
+      if (label == "Next &raquo;") {
+        label = this.sectionFilterData.page + 1;
+      } else if (label == "&laquo; Previous") {
+        label = this.sectionFilterData.page - 1;
+      }
+      this.sectionFilterData.page = label;
+      this.getSections();
     },
     manageSection: function manageSection(section) {
       window.location = route('sections.manage', [section.uuid, 'students']);
@@ -5203,7 +5277,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.getClassRecords();
-    this.getAdvisories();
+    this.getSections();
   }
 });
 
@@ -33280,6 +33354,7 @@ var render = function () {
         _c(
           "card",
           {
+            staticStyle: { height: "90vh" },
             scopedSlots: _vm._u([
               {
                 key: "header",
@@ -33292,6 +33367,67 @@ var render = function () {
           },
           [
             _vm._v(" "),
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function ($event) {
+                    $event.preventDefault()
+                    return _vm.getClassRecords()
+                  },
+                },
+              },
+              [
+                _c("div", { staticClass: "row gx-0" }, [
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c("div", { staticClass: "input-group mb-3" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.classRecordFilterData.searchQuery,
+                            expression: "classRecordFilterData.searchQuery",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Search for subject or section name",
+                          "aria-label": "Search for subject or section name",
+                          "aria-describedby": "button-addon2",
+                        },
+                        domProps: {
+                          value: _vm.classRecordFilterData.searchQuery,
+                        },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.classRecordFilterData,
+                              "searchQuery",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-outline-secondary",
+                          attrs: { type: "submit", id: "button-addon2" },
+                        },
+                        [_vm._v("Search")]
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]
+            ),
+            _vm._v(" "),
             _c("table", { staticClass: "table" }, [
               _c("thead", [
                 _c("tr", [
@@ -33299,9 +33435,11 @@ var render = function () {
                   _vm._v(" "),
                   _c("th", [_vm._v("Semester")]),
                   _vm._v(" "),
-                  _c("th", [_vm._v("Subject Code")]),
-                  _vm._v(" "),
                   _c("th", [_vm._v("Subject Description")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("Section Name")]),
+                  _vm._v(" "),
+                  _c("th", [_vm._v("School Year")]),
                   _vm._v(" "),
                   _c("th", { staticStyle: { "text-align": "center" } }, [
                     _vm._v("Manage"),
@@ -33320,11 +33458,15 @@ var render = function () {
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      _vm._v(_vm._s(classRecord.subject.subject_code)),
+                      _vm._v(_vm._s(classRecord.subject.subject_description)),
                     ]),
                     _vm._v(" "),
                     _c("td", [
-                      _vm._v(_vm._s(classRecord.subject.subject_description)),
+                      _vm._v(_vm._s(classRecord.section.section_name)),
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _vm._v(_vm._s(classRecord.section.school_year.name)),
                     ]),
                     _vm._v(" "),
                     _c("td", { staticStyle: { "text-align": "center" } }, [
@@ -33347,6 +33489,52 @@ var render = function () {
                 0
               ),
             ]),
+            _vm._v(" "),
+            _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+              _c(
+                "ul",
+                { staticClass: "pagination" },
+                _vm._l(
+                  _vm.classRecordPaginations,
+                  function (pagination, index) {
+                    return _c(
+                      "li",
+                      {
+                        key: index,
+                        staticClass: "page-item",
+                        class: { active: pagination.active },
+                        on: {
+                          click: function ($event) {
+                            return _vm.navigateClassRecordPages(
+                              pagination.label
+                            )
+                          },
+                        },
+                      },
+                      [
+                        pagination.url != null
+                          ? _c(
+                              "a",
+                              {
+                                staticClass: "page-link",
+                                attrs: { href: "javascript:void(0);" },
+                              },
+                              [
+                                _c("span", {
+                                  domProps: {
+                                    innerHTML: _vm._s(pagination.label),
+                                  },
+                                }),
+                              ]
+                            )
+                          : _vm._e(),
+                      ]
+                    )
+                  }
+                ),
+                0
+              ),
+            ]),
           ]
         ),
       ],
@@ -33360,6 +33548,7 @@ var render = function () {
         _c(
           "card",
           {
+            staticStyle: { height: "90vh" },
             scopedSlots: _vm._u([
               {
                 key: "header",
@@ -33371,6 +33560,65 @@ var render = function () {
             ]),
           },
           [
+            _vm._v(" "),
+            _c(
+              "form",
+              {
+                on: {
+                  submit: function ($event) {
+                    $event.preventDefault()
+                    return _vm.getSections()
+                  },
+                },
+              },
+              [
+                _c("div", { staticClass: "row gx-0" }, [
+                  _c("div", { staticClass: "col-md-6" }, [
+                    _c("div", { staticClass: "input-group mb-3" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.sectionFilterData.searchQuery,
+                            expression: "sectionFilterData.searchQuery",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          placeholder: "Search for section name",
+                          "aria-label": "Search for section name",
+                          "aria-describedby": "button-addon2",
+                        },
+                        domProps: { value: _vm.sectionFilterData.searchQuery },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.sectionFilterData,
+                              "searchQuery",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-outline-secondary",
+                          attrs: { type: "submit", id: "button-addon2" },
+                        },
+                        [_vm._v("Search")]
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]
+            ),
             _vm._v(" "),
             _c("table", { staticClass: "table" }, [
               _c("thead", [
@@ -33429,6 +33677,47 @@ var render = function () {
                       ),
                     ]),
                   ])
+                }),
+                0
+              ),
+            ]),
+            _vm._v(" "),
+            _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+              _c(
+                "ul",
+                { staticClass: "pagination" },
+                _vm._l(_vm.sectionPaginations, function (pagination, index) {
+                  return _c(
+                    "li",
+                    {
+                      key: index,
+                      staticClass: "page-item",
+                      class: { active: pagination.active },
+                      on: {
+                        click: function ($event) {
+                          return _vm.navigateSectionPages(pagination.label)
+                        },
+                      },
+                    },
+                    [
+                      pagination.url != null
+                        ? _c(
+                            "a",
+                            {
+                              staticClass: "page-link",
+                              attrs: { href: "javascript:void(0);" },
+                            },
+                            [
+                              _c("span", {
+                                domProps: {
+                                  innerHTML: _vm._s(pagination.label),
+                                },
+                              }),
+                            ]
+                          )
+                        : _vm._e(),
+                    ]
+                  )
                 }),
                 0
               ),
@@ -34006,7 +34295,7 @@ var render = function () {
                         "button",
                         {
                           staticClass: "btn btn-outline-secondary",
-                          attrs: { type: "button", id: "button-addon2" },
+                          attrs: { type: "submit", id: "button-addon2" },
                         },
                         [_vm._v("Search")]
                       ),
@@ -35344,7 +35633,7 @@ var render = function () {
                           "button",
                           {
                             staticClass: "btn btn-outline-secondary",
-                            attrs: { type: "button", id: "button-addon2" },
+                            attrs: { type: "submit", id: "button-addon2" },
                           },
                           [_vm._v("Search")]
                         ),
@@ -37346,7 +37635,7 @@ var render = function () {
                         "button",
                         {
                           staticClass: "btn btn-outline-secondary",
-                          attrs: { type: "button", id: "button-addon2" },
+                          attrs: { type: "submit", id: "button-addon2" },
                         },
                         [_vm._v("Search")]
                       ),
@@ -38027,7 +38316,7 @@ var render = function () {
                         "button",
                         {
                           staticClass: "btn btn-outline-secondary",
-                          attrs: { type: "button", id: "button-addon2" },
+                          attrs: { type: "submit", id: "button-addon2" },
                         },
                         [_vm._v("Search")]
                       ),

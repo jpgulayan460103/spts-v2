@@ -50,7 +50,7 @@
                         <div class="col-md-6">
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" v-model="teacherFilterData.searchQuery" placeholder="Search for name or ID number" aria-label="Search for name or ID number" aria-describedby="button-addon2">
-                                <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search</button>
+                                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
                             </div>
                         </div>
                     </div>

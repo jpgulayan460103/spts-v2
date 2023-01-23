@@ -147,7 +147,19 @@ class TeacherController extends Controller
             'section.track',
         ])->where('teacher_id', $id);
 
-        $class_records = $class_records->paginate(20);
+        if($request->searchQuery){
+            $searchQuery = $request->searchQuery;
+            $class_records->whereHas("section", function($query) use ($searchQuery){
+                $query->where('section_name', 'like', "%$searchQuery%");
+            });
+            $class_records->orWhereHas("subject", function($query) use ($searchQuery){
+                $query->where('subject_description', 'like', "%$searchQuery%");
+            });
+        }
+
+        $per_page = $request->perPage ?? 20;
+
+        $class_records = $class_records->paginate($per_page);
 
         return $class_records;
     }
@@ -163,7 +175,7 @@ class TeacherController extends Controller
 
         if($request->searchQuery){
             $searchQuery = $request->searchQuery;
-            $sections->orWhere("section_name", "like", "%$searchQuery%");
+            $sections->where("section_name", "like", "%$searchQuery%");
         }
 
         $per_page = $request->perPage ?? 20;
