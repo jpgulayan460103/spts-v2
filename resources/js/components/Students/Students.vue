@@ -64,12 +64,15 @@
             <card>
                 <template v-slot:header>Students</template>
                 <form @submit.prevent="getStudents()">
-                    <div class="row gx-0">
+                    <div class="row gx-2">
                         <div class="col-md-6">
                             <div class="input-group mb-3">
                                 <input type="text" class="form-control" v-model="studentFilterData.searchQuery" placeholder="Search for name or ID number" aria-label="Search for name or ID number" aria-describedby="button-addon2">
                                 <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
                             </div>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="btn btn-primary" href="/students/import">Import</a>
                         </div>
                     </div>
                 </form>

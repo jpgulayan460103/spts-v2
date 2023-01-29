@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StudentRequest;
 use App\Models\ClassRecord;
 use App\Models\GradingScale;
+use App\Models\Library;
 use App\Models\Section;
 use App\Models\SectionStudent;
 use App\Models\Student;
@@ -15,6 +16,7 @@ use App\Models\UnitScore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use League\Csv\Reader;
 
 class StudentController extends Controller
 {
@@ -259,5 +261,104 @@ class StudentController extends Controller
 
         $section_student['unit_action'] = UnitAction::with('action')->where('section_student_id', $section_student_id)->where('unit_id', $unit_id)->first();
         return $section_student;
+    }
+
+    public function import(Request $request)
+    {
+        $validated = $request->validate([
+            'file' => 'file|max:15000|mimetypes:text/plain',
+        ]);
+
+        $file = request('file');
+        // return $file->getMimeType();
+        $file_uuid = Str::uuid();
+        $filename = "$file_uuid.".$file->getClientOriginalExtension();
+        $path = Storage::putFileAs("public", $file, $filename);
+        // return public_path();
+        // return public_path(Storage::url($path));
+        $csv = Reader::createFromPath(public_path(Storage::url($path)), 'r');
+        $headers = [
+            'student_id_number',
+            'last_name',
+            'first_name',
+            'middle_name',
+            'ext_name',
+            'gender',
+            'spts_account_id',
+        ];
+        $csv->setHeaderOffset(0);
+        $records = $csv->getRecords($headers);
+
+        $file_data = [];
+
+        foreach ($records as $offset => $record) {
+
+
+            $gender = Library::where('library_type', 'genders')->where('name', $record['gender'])->first();
+            if($gender){
+                $gender_id = $gender->id;
+            }else{
+                $gender_id = null;
+            }
+            $password = $record['student_id_number'];
+
+            $file_data[] = [
+                'student_id_number' => $record['student_id_number'],
+                'last_name' => $record['last_name'],
+                'first_name' => $record['first_name'],
+                'middle_name' => $record['middle_name'],
+                'ext_name' => $record['ext_name'],
+                'gender' => $record['gender'],
+                'spts_account_id' => $record['spts_account_id'],
+                'username' => $record['spts_account_id'],
+                'gender_id' => $gender_id,
+                'password' => $password,
+            ];
+        }
+
+        $file_data = $this->safe_json_encode($file_data);
+
+        $file_data = json_decode($file_data, true);
+
+        return [
+            'contents' => $file_data,
+            'headers' => $headers
+        ];
+        return Storage::url($path);
+    }
+
+    private function utf8ize($d)
+    {
+        if (is_array($d)) {
+            foreach ($d as $k => $v) {
+                $d[$k] = $this->utf8ize($v);
+            }
+        } else if (is_string($d)) {
+            return utf8_encode($d);
+        }
+        return $d;
+    }
+
+    private function safe_json_encode($value, $options = 0, $depth = 512)
+    {
+        $encoded = json_encode($value, $options, $depth);
+        switch (json_last_error()) {
+            case JSON_ERROR_NONE:
+                return $encoded;
+            case JSON_ERROR_DEPTH:
+                return 'Maximum stack depth exceeded'; // or trigger_error() or throw new Exception()
+            case JSON_ERROR_STATE_MISMATCH:
+                return 'Underflow or the modes mismatch'; // or trigger_error() or throw new Exception()
+            case JSON_ERROR_CTRL_CHAR:
+                return 'Unexpected control character found';
+            case JSON_ERROR_SYNTAX:
+                return 'Syntax error, malformed JSON'; // or trigger_error() or throw new Exception()
+            case JSON_ERROR_UTF8:
+                $clean = $this->utf8ize($value);
+                return $this->safe_json_encode($clean, $options, $depth);
+            default:
+                return 'Unknown error'; // or trigger_error() or throw new Exception()
+
+        }
     }
 }

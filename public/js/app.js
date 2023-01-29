@@ -7431,6 +7431,261 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Students/ImportStudent.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Students/ImportStudent.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Card_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../Card.vue */ "./resources/js/components/Card.vue");
+/* harmony import */ var _FormItem_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../FormItem.vue */ "./resources/js/components/FormItem.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_3__);
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == _typeof(value) && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    Card: _Card_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    FormItem: _FormItem_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  props: ['user', 'genders'],
+  data: function data() {
+    return {
+      submit: false,
+      selectedFile: {},
+      fileErrors: {},
+      fileContents: [],
+      formData: {},
+      formErrors: []
+    };
+  },
+  methods: {
+    uploadFile: function uploadFile() {
+      var _this = this;
+      this.submit = true;
+      this.selectedFile = this.$refs.file.files[0];
+      var formData = new FormData();
+      formData.append("file", this.selectedFile);
+      axios__WEBPACK_IMPORTED_MODULE_2___default().post(route('sections.import'), formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      }).then(function (res) {
+        _this.submit = false;
+        _this.fileContents = res.data.contents;
+      })["catch"](function (err) {
+        _this.submit = false;
+        _this.fileErrors = err.response.data.errors;
+      });
+    },
+    hasErrors: function hasErrors(index, field) {
+      return !(0,lodash__WEBPACK_IMPORTED_MODULE_3__.isEmpty)(this.formErrors) ? this.formErrors[index] ? this.formErrors[index][field] : null : null;
+    },
+    importStudent: (0,lodash__WEBPACK_IMPORTED_MODULE_3__.debounce)( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var index, saveResult;
+      return _regeneratorRuntime().wrap(function _callee$(_context) {
+        while (1) switch (_context.prev = _context.next) {
+          case 0:
+            this.submit = true;
+            this.formErrors = [];
+            index = 0;
+          case 3:
+            if (!(index < this.fileContents.length)) {
+              _context.next = 19;
+              break;
+            }
+            _context.prev = 4;
+            _context.next = 7;
+            return this.saveStudent(this.fileContents[index]);
+          case 7:
+            saveResult = _context.sent;
+            this.fileContents[index].success = 1;
+            this.formErrors = [].concat(_toConsumableArray(this.formErrors), [[]]);
+            _context.next = 16;
+            break;
+          case 12:
+            _context.prev = 12;
+            _context.t0 = _context["catch"](4);
+            this.formErrors = [].concat(_toConsumableArray(this.formErrors), [_context.t0.response.data.errors]);
+            this.fileContents[index].success = 0;
+          case 16:
+            index++;
+            _context.next = 3;
+            break;
+          case 19:
+            this.submit = false;
+          case 20:
+          case "end":
+            return _context.stop();
+        }
+      }, _callee, this, [[4, 12]]);
+    })), 250),
+    saveStudent: function saveStudent(formData) {
+      return _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+        return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+          while (1) switch (_context2.prev = _context2.next) {
+            case 0:
+              return _context2.abrupt("return", axios__WEBPACK_IMPORTED_MODULE_2___default().post(route('students.store'), formData));
+            case 1:
+            case "end":
+              return _context2.stop();
+          }
+        }, _callee2);
+      }))();
+    },
+    resetData: function resetData() {
+      this.submit = false;
+      this.selectedFile = {};
+      this.fileErrors = {};
+      this.fileContents = [];
+      this.formData = {};
+      this.formErrors = [];
+    },
+    removeUploaded: function removeUploaded() {
+      this.fileContents = this.fileContents.filter(function (item) {
+        return item.success == 0;
+      });
+      this.formErrors = [];
+      console.log(this.formErrors);
+    },
+    isEmpty: function isEmpty(value) {
+      return (0,lodash__WEBPACK_IMPORTED_MODULE_3__.isEmpty)(value);
+    }
+  },
+  mounted: function mounted() {},
+  watch: {}
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Students/Students.vue?vue&type=script&lang=js&":
 /*!************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Students/Students.vue?vue&type=script&lang=js& ***!
@@ -7454,6 +7709,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+//
+//
+//
 //
 //
 //
@@ -8080,16 +8338,17 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
 /* harmony import */ var _Sections_Section__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Sections/Section */ "./resources/js/components/Sections/Section.vue");
 /* harmony import */ var _Sections_SelectedSection__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Sections/SelectedSection */ "./resources/js/components/Sections/SelectedSection.vue");
 /* harmony import */ var _Students_Students__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Students/Students */ "./resources/js/components/Students/Students.vue");
-/* harmony import */ var _Guardian_Guardian__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Guardian/Guardian */ "./resources/js/components/Guardian/Guardian.vue");
-/* harmony import */ var _Teachers_Teachers__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Teachers/Teachers */ "./resources/js/components/Teachers/Teachers.vue");
-/* harmony import */ var _Dashboards_DashboardTeacher__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Dashboards/DashboardTeacher */ "./resources/js/components/Dashboards/DashboardTeacher.vue");
-/* harmony import */ var _Dashboards_DashboardGuardian__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Dashboards/DashboardGuardian */ "./resources/js/components/Dashboards/DashboardGuardian.vue");
-/* harmony import */ var _Dashboards_DashboardStudent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Dashboards/DashboardStudent */ "./resources/js/components/Dashboards/DashboardStudent.vue");
-/* harmony import */ var _ChangePasswordModal__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./ChangePasswordModal */ "./resources/js/components/ChangePasswordModal.vue");
+/* harmony import */ var _Students_ImportStudent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Students/ImportStudent */ "./resources/js/components/Students/ImportStudent.vue");
+/* harmony import */ var _Guardian_Guardian__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Guardian/Guardian */ "./resources/js/components/Guardian/Guardian.vue");
+/* harmony import */ var _Teachers_Teachers__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Teachers/Teachers */ "./resources/js/components/Teachers/Teachers.vue");
+/* harmony import */ var _Dashboards_DashboardTeacher__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Dashboards/DashboardTeacher */ "./resources/js/components/Dashboards/DashboardTeacher.vue");
+/* harmony import */ var _Dashboards_DashboardGuardian__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Dashboards/DashboardGuardian */ "./resources/js/components/Dashboards/DashboardGuardian.vue");
+/* harmony import */ var _Dashboards_DashboardStudent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Dashboards/DashboardStudent */ "./resources/js/components/Dashboards/DashboardStudent.vue");
+/* harmony import */ var _ChangePasswordModal__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./ChangePasswordModal */ "./resources/js/components/ChangePasswordModal.vue");
 
 
 
@@ -8100,15 +8359,17 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_9__["default"].component('section-index', _Sections_Section__WEBPACK_IMPORTED_MODULE_0__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_9__["default"].component('selected-section', _Sections_SelectedSection__WEBPACK_IMPORTED_MODULE_1__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_9__["default"].component('student-index', _Students_Students__WEBPACK_IMPORTED_MODULE_2__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_9__["default"].component('guardian-index', _Guardian_Guardian__WEBPACK_IMPORTED_MODULE_3__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_9__["default"].component('teacher-index', _Teachers_Teachers__WEBPACK_IMPORTED_MODULE_4__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_9__["default"].component('dashboard-teacher', _Dashboards_DashboardTeacher__WEBPACK_IMPORTED_MODULE_5__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_9__["default"].component('dashboard-guardian', _Dashboards_DashboardGuardian__WEBPACK_IMPORTED_MODULE_6__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_9__["default"].component('dashboard-student', _Dashboards_DashboardStudent__WEBPACK_IMPORTED_MODULE_7__["default"]);
-vue__WEBPACK_IMPORTED_MODULE_9__["default"].component('change-password-modal', _ChangePasswordModal__WEBPACK_IMPORTED_MODULE_8__["default"]);
+
+vue__WEBPACK_IMPORTED_MODULE_10__["default"].component('section-index', _Sections_Section__WEBPACK_IMPORTED_MODULE_0__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_10__["default"].component('selected-section', _Sections_SelectedSection__WEBPACK_IMPORTED_MODULE_1__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_10__["default"].component('student-index', _Students_Students__WEBPACK_IMPORTED_MODULE_2__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_10__["default"].component('student-import', _Students_ImportStudent__WEBPACK_IMPORTED_MODULE_3__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_10__["default"].component('guardian-index', _Guardian_Guardian__WEBPACK_IMPORTED_MODULE_4__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_10__["default"].component('teacher-index', _Teachers_Teachers__WEBPACK_IMPORTED_MODULE_5__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_10__["default"].component('dashboard-teacher', _Dashboards_DashboardTeacher__WEBPACK_IMPORTED_MODULE_6__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_10__["default"].component('dashboard-guardian', _Dashboards_DashboardGuardian__WEBPACK_IMPORTED_MODULE_7__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_10__["default"].component('dashboard-student', _Dashboards_DashboardStudent__WEBPACK_IMPORTED_MODULE_8__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_10__["default"].component('change-password-modal', _ChangePasswordModal__WEBPACK_IMPORTED_MODULE_9__["default"]);
 // Vue.component('message', Message);
 // Vue.component('failed-message', FailedMessage);
 // Vue.component('sent-message', SentMessage);
@@ -33353,6 +33614,45 @@ component.options.__file = "resources/js/components/Sections/components/UnitTabl
 
 /***/ }),
 
+/***/ "./resources/js/components/Students/ImportStudent.vue":
+/*!************************************************************!*\
+  !*** ./resources/js/components/Students/ImportStudent.vue ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _ImportStudent_vue_vue_type_template_id_168759ac___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ImportStudent.vue?vue&type=template&id=168759ac& */ "./resources/js/components/Students/ImportStudent.vue?vue&type=template&id=168759ac&");
+/* harmony import */ var _ImportStudent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ImportStudent.vue?vue&type=script&lang=js& */ "./resources/js/components/Students/ImportStudent.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ImportStudent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ImportStudent_vue_vue_type_template_id_168759ac___WEBPACK_IMPORTED_MODULE_0__.render,
+  _ImportStudent_vue_vue_type_template_id_168759ac___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Students/ImportStudent.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/Students/Students.vue":
 /*!*******************************************************!*\
   !*** ./resources/js/components/Students/Students.vue ***!
@@ -33604,6 +33904,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UnitTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UnitTable.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Sections/components/UnitTable.vue?vue&type=script&lang=js&");
  /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UnitTable_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Students/ImportStudent.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/Students/ImportStudent.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportStudent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ImportStudent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5[0].rules[0].use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Students/ImportStudent.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_0_rules_0_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportStudent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
@@ -33960,6 +34276,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UnitTable_vue_vue_type_template_id_5b65ceb7_scoped_true___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UnitTable_vue_vue_type_template_id_5b65ceb7_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UnitTable.vue?vue&type=template&id=5b65ceb7&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Sections/components/UnitTable.vue?vue&type=template&id=5b65ceb7&scoped=true&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Students/ImportStudent.vue?vue&type=template&id=168759ac&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/Students/ImportStudent.vue?vue&type=template&id=168759ac& ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportStudent_vue_vue_type_template_id_168759ac___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportStudent_vue_vue_type_template_id_168759ac___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ImportStudent_vue_vue_type_template_id_168759ac___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ImportStudent.vue?vue&type=template&id=168759ac& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Students/ImportStudent.vue?vue&type=template&id=168759ac&");
 
 
 /***/ }),
@@ -39335,6 +39668,720 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Students/ImportStudent.vue?vue&type=template&id=168759ac&":
+/*!**********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Students/ImportStudent.vue?vue&type=template&id=168759ac& ***!
+  \**********************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function () {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row gy-2" }, [
+    _c("div", { staticClass: "col-md-12" }, [
+      _vm.isEmpty(_vm.fileContents)
+        ? _c(
+            "form",
+            {
+              on: {
+                submit: function ($event) {
+                  $event.preventDefault()
+                  return _vm.uploadFile()
+                },
+              },
+            },
+            [
+              _c("div", { staticClass: "row gx-2" }, [
+                _c(
+                  "div",
+                  { staticClass: "col-md-6" },
+                  [
+                    _c(
+                      "form-item",
+                      {
+                        attrs: {
+                          label: "Upload File",
+                          errors: _vm.fileErrors.file,
+                        },
+                      },
+                      [
+                        _c("input", {
+                          ref: "file",
+                          staticClass: "form-control",
+                          class: _vm.fileErrors.file ? "is-invalid" : "",
+                          attrs: { type: "file", accept: ".csv" },
+                        }),
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit", disabled: _vm.submit },
+                      },
+                      [
+                        _vm._v(
+                          "\n                        Upload\n                    "
+                        ),
+                      ]
+                    ),
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "col-md-6" },
+                  [
+                    _c(
+                      "form-item",
+                      {
+                        attrs: {
+                          label: "Importing Format",
+                          errors: _vm.fileErrors.file,
+                        },
+                      },
+                      [
+                        _c(
+                          "a",
+                          {
+                            staticClass: "form-control",
+                            attrs: { href: "/spts-import-student-format.csv" },
+                          },
+                          [
+                            _vm._v(
+                              "Download this file to view the importing format"
+                            ),
+                          ]
+                        ),
+                      ]
+                    ),
+                  ],
+                  1
+                ),
+              ]),
+            ]
+          )
+        : _vm._e(),
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "col-md-12" },
+      [
+        _c(
+          "card",
+          {
+            scopedSlots: _vm._u([
+              {
+                key: "header",
+                fn: function () {
+                  return [_vm._v("Uploaded File Contents")]
+                },
+                proxy: true,
+              },
+            ]),
+          },
+          [
+            _vm._v(" "),
+            _c("div", { staticClass: "table-responsive" }, [
+              _c("table", { staticClass: "table" }, [
+                _c("thead", [
+                  _c("tr", [
+                    _c("th", [_vm._v("Student ID Number")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Last Name")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("First Name")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Middle Name")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Ext Name")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("Gender Name")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("SPTS Account ID")]),
+                    _vm._v(" "),
+                    _c("th", [_vm._v("SPTS Password")]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(
+                    _vm.fileContents,
+                    function (fileContent, fileContentIndex) {
+                      return _c(
+                        "tr",
+                        {
+                          key: fileContentIndex,
+                          class:
+                            fileContent.success && fileContent.success == 1
+                              ? "table-success"
+                              : "",
+                        },
+                        [
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "form-item",
+                                {
+                                  attrs: {
+                                    label: "",
+                                    errors: _vm.hasErrors(
+                                      fileContentIndex,
+                                      "student_id_number"
+                                    ),
+                                  },
+                                },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: fileContent.student_id_number,
+                                        expression:
+                                          "fileContent.student_id_number",
+                                      },
+                                    ],
+                                    staticClass: "form-control",
+                                    class: _vm.hasErrors(
+                                      fileContentIndex,
+                                      "student_id_number"
+                                    )
+                                      ? "is-invalid"
+                                      : "",
+                                    attrs: { type: "text" },
+                                    domProps: {
+                                      value: fileContent.student_id_number,
+                                    },
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          fileContent,
+                                          "student_id_number",
+                                          $event.target.value
+                                        )
+                                      },
+                                    },
+                                  }),
+                                ]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "form-item",
+                                {
+                                  attrs: {
+                                    label: "",
+                                    errors: _vm.hasErrors(
+                                      fileContentIndex,
+                                      "last_name"
+                                    ),
+                                  },
+                                },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: fileContent.last_name,
+                                        expression: "fileContent.last_name",
+                                      },
+                                    ],
+                                    staticClass: "form-control",
+                                    class: _vm.hasErrors(
+                                      fileContentIndex,
+                                      "last_name"
+                                    )
+                                      ? "is-invalid"
+                                      : "",
+                                    attrs: { type: "text" },
+                                    domProps: { value: fileContent.last_name },
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          fileContent,
+                                          "last_name",
+                                          $event.target.value
+                                        )
+                                      },
+                                    },
+                                  }),
+                                ]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "form-item",
+                                {
+                                  attrs: {
+                                    label: "",
+                                    errors: _vm.hasErrors(
+                                      fileContentIndex,
+                                      "first_name"
+                                    ),
+                                  },
+                                },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: fileContent.first_name,
+                                        expression: "fileContent.first_name",
+                                      },
+                                    ],
+                                    staticClass: "form-control",
+                                    class: _vm.hasErrors(
+                                      fileContentIndex,
+                                      "first_name"
+                                    )
+                                      ? "is-invalid"
+                                      : "",
+                                    attrs: { type: "text" },
+                                    domProps: { value: fileContent.first_name },
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          fileContent,
+                                          "first_name",
+                                          $event.target.value
+                                        )
+                                      },
+                                    },
+                                  }),
+                                ]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "form-item",
+                                {
+                                  attrs: {
+                                    label: "",
+                                    errors: _vm.hasErrors(
+                                      fileContentIndex,
+                                      "middle_name"
+                                    ),
+                                  },
+                                },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: fileContent.middle_name,
+                                        expression: "fileContent.middle_name",
+                                      },
+                                    ],
+                                    staticClass: "form-control",
+                                    class: _vm.hasErrors(
+                                      fileContentIndex,
+                                      "middle_name"
+                                    )
+                                      ? "is-invalid"
+                                      : "",
+                                    attrs: { type: "text" },
+                                    domProps: {
+                                      value: fileContent.middle_name,
+                                    },
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          fileContent,
+                                          "middle_name",
+                                          $event.target.value
+                                        )
+                                      },
+                                    },
+                                  }),
+                                ]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "form-item",
+                                {
+                                  attrs: {
+                                    label: "",
+                                    errors: _vm.hasErrors(
+                                      fileContentIndex,
+                                      "ext_name"
+                                    ),
+                                  },
+                                },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: fileContent.ext_name,
+                                        expression: "fileContent.ext_name",
+                                      },
+                                    ],
+                                    staticClass: "form-control",
+                                    class: _vm.hasErrors(
+                                      fileContentIndex,
+                                      "ext_name"
+                                    )
+                                      ? "is-invalid"
+                                      : "",
+                                    attrs: { type: "text" },
+                                    domProps: { value: fileContent.ext_name },
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          fileContent,
+                                          "ext_name",
+                                          $event.target.value
+                                        )
+                                      },
+                                    },
+                                  }),
+                                ]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "form-item",
+                                {
+                                  attrs: {
+                                    label: "",
+                                    errors: _vm.hasErrors(
+                                      fileContentIndex,
+                                      "gender_id"
+                                    ),
+                                  },
+                                },
+                                [
+                                  _c(
+                                    "select",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: fileContent.gender_id,
+                                          expression: "fileContent.gender_id",
+                                        },
+                                      ],
+                                      staticClass: "form-control",
+                                      class: _vm.hasErrors(
+                                        fileContentIndex,
+                                        "gender_id"
+                                      )
+                                        ? "is-invalid"
+                                        : "",
+                                      on: {
+                                        change: function ($event) {
+                                          var $$selectedVal =
+                                            Array.prototype.filter
+                                              .call(
+                                                $event.target.options,
+                                                function (o) {
+                                                  return o.selected
+                                                }
+                                              )
+                                              .map(function (o) {
+                                                var val =
+                                                  "_value" in o
+                                                    ? o._value
+                                                    : o.value
+                                                return val
+                                              })
+                                          _vm.$set(
+                                            fileContent,
+                                            "gender_id",
+                                            $event.target.multiple
+                                              ? $$selectedVal
+                                              : $$selectedVal[0]
+                                          )
+                                        },
+                                      },
+                                    },
+                                    _vm._l(
+                                      _vm.genders,
+                                      function (gender, genderIndex) {
+                                        return _c(
+                                          "option",
+                                          {
+                                            key: genderIndex,
+                                            domProps: { value: gender.id },
+                                          },
+                                          [_vm._v(_vm._s(gender.name))]
+                                        )
+                                      }
+                                    ),
+                                    0
+                                  ),
+                                ]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "form-item",
+                                {
+                                  attrs: {
+                                    label: "",
+                                    errors: _vm.hasErrors(
+                                      fileContentIndex,
+                                      "username"
+                                    ),
+                                  },
+                                },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: fileContent.username,
+                                        expression: "fileContent.username",
+                                      },
+                                    ],
+                                    staticClass: "form-control",
+                                    class: _vm.hasErrors(
+                                      fileContentIndex,
+                                      "username"
+                                    )
+                                      ? "is-invalid"
+                                      : "",
+                                    attrs: { type: "text" },
+                                    domProps: { value: fileContent.username },
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          fileContent,
+                                          "username",
+                                          $event.target.value
+                                        )
+                                      },
+                                    },
+                                  }),
+                                ]
+                              ),
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "form-item",
+                                {
+                                  attrs: {
+                                    label: "",
+                                    errors: _vm.hasErrors(
+                                      fileContentIndex,
+                                      "password"
+                                    ),
+                                  },
+                                },
+                                [
+                                  _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: fileContent.password,
+                                        expression: "fileContent.password",
+                                      },
+                                    ],
+                                    staticClass: "form-control",
+                                    class: _vm.hasErrors(
+                                      fileContentIndex,
+                                      "password"
+                                    )
+                                      ? "is-invalid"
+                                      : "",
+                                    attrs: { type: "text" },
+                                    domProps: { value: fileContent.password },
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          fileContent,
+                                          "password",
+                                          $event.target.value
+                                        )
+                                      },
+                                    },
+                                  }),
+                                ]
+                              ),
+                            ],
+                            1
+                          ),
+                        ]
+                      )
+                    }
+                  ),
+                  0
+                ),
+              ]),
+            ]),
+            _vm._v(" "),
+            !_vm.isEmpty(_vm.fileContents)
+              ? _c("div", [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "button", disabled: _vm.submit },
+                      on: { click: _vm.importStudent },
+                    },
+                    [
+                      _vm._v(
+                        "\n                    Start Importing\n                "
+                      ),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button" },
+                      on: { click: _vm.resetData },
+                    },
+                    [
+                      _vm._v(
+                        "\n                    Upload New File\n                "
+                      ),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      attrs: { type: "button" },
+                      on: { click: _vm.removeUploaded },
+                    },
+                    [
+                      _vm._v(
+                        "\n                    Remove Uploaded Students\n                "
+                      ),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("hr"),
+                  _vm._v(" "),
+                  _c("b", [_vm._v("Importing Status")]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v("\n                Total Number of Students: "),
+                  _c("b", [_vm._v(_vm._s(_vm.fileContents.length))]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(
+                    "\n                Total Number of Successfully Imported: "
+                  ),
+                  _c("b", [
+                    _vm._v(
+                      _vm._s(
+                        _vm.fileContents.filter(function (item) {
+                          return item.success == 1
+                        }).length
+                      )
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v("\n                Total Number of Failed Imports: "),
+                  _c("b", [
+                    _vm._v(
+                      _vm._s(
+                        _vm.fileContents.filter(function (item) {
+                          return item.success == 0
+                        }).length
+                      )
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                ])
+              : _vm._e(),
+          ]
+        ),
+      ],
+      1
+    ),
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Students/Students.vue?vue&type=template&id=0af19df4&":
 /*!*****************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/Students/Students.vue?vue&type=template&id=0af19df4& ***!
@@ -39881,7 +40928,7 @@ var render = function () {
                 },
               },
               [
-                _c("div", { staticClass: "row gx-0" }, [
+                _c("div", { staticClass: "row gx-2" }, [
                   _c("div", { staticClass: "col-md-6" }, [
                     _c("div", { staticClass: "input-group mb-3" }, [
                       _c("input", {
@@ -39924,6 +40971,17 @@ var render = function () {
                         [_vm._v("Search")]
                       ),
                     ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-2" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { href: "/students/import" },
+                      },
+                      [_vm._v("Import")]
+                    ),
                   ]),
                 ]),
               ]

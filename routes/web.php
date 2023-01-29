@@ -29,6 +29,7 @@ Auth::routes();
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/sections', [HomeController::class, 'sections'])->name('sections');
 Route::get('/students', [HomeController::class, 'students'])->name('students');
+Route::get('/students/import', [HomeController::class, 'studentsImport'])->name('students.import');
 Route::get('/guardians', [HomeController::class, 'guardians'])->name('guardians');
 Route::get('/teachers', [HomeController::class, 'teachers'])->name('teachers');
 Route::get('/sections/{uuid}/manage/{type?}', [HomeController::class, 'manageSection'])->name('sections.manage');
@@ -66,5 +67,6 @@ Route::prefix('data')->group(function () {
 
     Route::get('/guaridans/{id}/students', [GuardianController::class, 'students'])->name('guaridans.students');
     Route::get('/sections/{id}/subjects', [SectionController::class, 'subjects'])->name('sections.subjects');
+    Route::post('/students-import', [StudentController::class, 'import'])->name('sections.import');
 });
 

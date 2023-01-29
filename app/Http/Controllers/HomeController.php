@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ClassRecord;
 use App\Models\ClassRecordQuarter;
+use App\Models\Library;
 use App\Models\Section;
 use App\Models\Student;
 use App\Models\Subject;
@@ -97,6 +98,15 @@ class HomeController extends Controller
     {
         return view('students');
     }
+
+    public function studentsImport(Request $request)
+    {
+        $data = [];
+        $data['user'] = Auth::user();
+        $data['genders'] = Library::where('library_type', 'genders')->get();
+        return view('student-import', $data);
+    }
+
     public function guardians()
     {
         return view('guardians');
