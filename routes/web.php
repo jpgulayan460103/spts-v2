@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AttendanceStudentController;
 use App\Http\Controllers\ClassRecordController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\HomeController;
@@ -46,6 +48,8 @@ Route::prefix('data')->group(function () {
     Route::resource('/unit-scores', UnitScoreController::class);
     Route::resource('/unit-actions', UnitActionController::class);
     Route::resource('/class-records', ClassRecordController::class);
+    Route::resource('/attendances', AttendanceController::class);
+    Route::resource('/attendance-students', AttendanceStudentController::class);
     Route::prefix('class-records')->group(function () {
         Route::get('/{id}/unit-items', [ClassRecordController::class, 'unitItems'])->name('class-records.unit-items');
         Route::get('/{id}/unit-scores', [ClassRecordController::class, 'unitScore'])->name('class-records.unit-scores');

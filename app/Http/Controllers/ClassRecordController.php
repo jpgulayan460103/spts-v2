@@ -280,6 +280,7 @@ class ClassRecordController extends Controller
             $section_students = $class_record->section->students()->where('id', $request->section_student_id)->get();
         }else{
             $section_students = $class_record->section->students;
+            $section_students->load('attendances');
         }
 
 

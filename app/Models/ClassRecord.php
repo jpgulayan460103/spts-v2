@@ -49,4 +49,8 @@ class ClassRecord extends Model
     {
         return $this->hasMany(ClassRecordQuarter::class);
     }
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
 }

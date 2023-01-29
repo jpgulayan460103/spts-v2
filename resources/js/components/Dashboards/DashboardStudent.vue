@@ -128,7 +128,35 @@
                         <div class="accordion-body">
 
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-md-2">
+                                    <h5>Attendance</h5>
+                                    <div class="table-responsive">
+                                        <table class="table table-borders">
+                                            <thead>
+                                                <tr>
+                                                    <th style="text-align: center">Week</th>
+                                                    <th style="text-align: center">Days</th>
+                                                    <th style="text-align: center">Present</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr v-for="(attendance, attIndex) in attendances" :key="attIndex">
+                                                    <td style="text-align: center">{{ attendance.attendance.week_name }}</td>
+                                                    <td style="text-align: center">{{ attendance.attendance.total_days }}</td>
+                                                    <td style="text-align: center">{{ attendance.present_days }}</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>TOTAL:</th>
+                                                    <th style="text-align: center">{{ week_days }}</th>
+                                                    <th style="text-align: center">{{ present_days }}</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
                                     <div style="height: 300px">
                                         <line-chart :data="chartOneData" :options="chartOptions" />
                                     </div>
@@ -158,7 +186,7 @@
                                     </table>
                                     </div>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-md-5">
                                     <div style="height: 300px">
                                         <line-chart :data="chartTwoData" :options="chartOptions" />
                                     </div>
@@ -258,6 +286,9 @@
                 },
                 selectedPhoto: null,
                 formErrors: {},
+                attendances: [],
+                present_days: 0,
+                week_days: 0,
                 chartOneData: {
                     labels: [],
                     datasets: [],
@@ -372,6 +403,9 @@
                 })
                 .then(res => {
                     let result = res.data;
+                    this.attendances = res.data.attendances;
+                    this.present_days = res.data.present_days;
+                    this.week_days = res.data.week_days;
                     let quarterOne = result.quarters[0];
                     let quarterOneUnits = quarterOne.units
                     let quarterOneLabels = map(quarterOneUnits, "name");

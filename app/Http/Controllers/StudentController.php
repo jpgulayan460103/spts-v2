@@ -189,9 +189,15 @@ class StudentController extends Controller
         $class_record = ClassRecord::with(['quarters.units', 'quarters.quarter'])->where('subject_id', $subject_id)->where('section_id', $section_id)->first();
         $unit_summarries = [];
 
-        $section_student = SectionStudent::where('section_id', $section_id)->where('student_id', $student_id)->first();
+        $section_student = SectionStudent::with(['attendances.attendance'])->where('section_id', $section_id)->where('student_id', $student_id)->first();
         if($section_student){
-
+            $class_record->attendances = $section_student->attendances()->with(['attendance'])->whereHas('attendance', function($query) use ($class_record){
+                $query->where('class_record_id', $class_record->id);
+            })->get();
+            $class_record->present_days = $section_student->attendances()->whereHas('attendance', function($query) use ($class_record){
+                $query->where('class_record_id', $class_record->id);
+            })->sum('present_days');
+            $class_record->week_days = $class_record->attendances()->where('class_record_id', $class_record->id)->sum('total_days');
         }else{
             abort(404);
         }

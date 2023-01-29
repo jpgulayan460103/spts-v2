@@ -31,7 +31,7 @@
                                 :class="(isEmpty(classRecordQuarter)) ? 'active' : ''"
                                 @click="viewClassRecord(classRecord)"
                             >
-                                Summary
+                                Attendance
                             </li>
 
                             <li
@@ -92,7 +92,7 @@
                 <template v-slot:header>
                     {{ classRecord.subject.subject_description }}
                     -
-                    <span v-if="isEmpty(classRecordQuarter)">Summary</span>
+                    <span v-if="isEmpty(classRecordQuarter)">Attendance</span>
                     <span v-else>{{ classRecordQuarter.quarter.name }}</span>
                 </template>
 

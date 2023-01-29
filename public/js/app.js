@@ -5516,6 +5516,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5545,6 +5573,9 @@ chart_js__WEBPACK_IMPORTED_MODULE_5__.Chart.register(chart_js__WEBPACK_IMPORTED_
       },
       selectedPhoto: null,
       formErrors: {},
+      attendances: [],
+      present_days: 0,
+      week_days: 0,
       chartOneData: {
         labels: [],
         datasets: []
@@ -5650,6 +5681,9 @@ chart_js__WEBPACK_IMPORTED_MODULE_5__.Chart.register(chart_js__WEBPACK_IMPORTED_
         }
       }).then(function (res) {
         var result = res.data;
+        _this4.attendances = res.data.attendances;
+        _this4.present_days = res.data.present_days;
+        _this4.week_days = res.data.week_days;
         var quarterOne = result.quarters[0];
         var quarterOneUnits = quarterOne.units;
         var quarterOneLabels = (0,lodash__WEBPACK_IMPORTED_MODULE_3__.map)(quarterOneUnits, "name");
@@ -6856,6 +6890,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _FormItem_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../FormItem.vue */ "./resources/js/components/FormItem.vue");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 //
 //
 //
@@ -6893,17 +6934,102 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    FormItem: _FormItem_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
   props: ['user', 'classRecord', 'classRecordQuarter', 'section', 'viewUnit'],
   data: function data() {
     return {
       sectionStudents: [],
       units: [],
       subjectTeachers: [],
-      subjectTeacherId: ""
+      subjectTeacherId: "",
+      formErrors: {},
+      formData: {},
+      attendances: [],
+      submit: false
     };
   },
   methods: {
@@ -6933,11 +7059,86 @@ __webpack_require__.r(__webpack_exports__);
     },
     isEmpty: function isEmpty(value) {
       return (0,lodash__WEBPACK_IMPORTED_MODULE_1__.isEmpty)(value);
+    },
+    getAttendances: function getAttendances() {
+      var _this3 = this;
+      axios__WEBPACK_IMPORTED_MODULE_0___default().get(route('attendances.index'), {
+        params: {
+          class_record_id: this.classRecord.id
+        }
+      }).then(function (res) {
+        _this3.attendances = res.data;
+      })["catch"](function (err) {});
+    },
+    extractStudentAttendance: function extractStudentAttendance(sectionStudent, attendance) {
+      var attendances = sectionStudent.attendances;
+      var studentAttendance = attendances.filter(function (item) {
+        return item.section_student_id == sectionStudent.id && item.attendance_id == attendance.id;
+      });
+      if (!(0,lodash__WEBPACK_IMPORTED_MODULE_1__.isEmpty)(studentAttendance)) {
+        return studentAttendance[0].present_days;
+      }
+      return 0;
+    },
+    addStudentAttendance: function addStudentAttendance(e, sectionStudent, attendance) {
+      var _this4 = this;
+      var present_days = e.target.value;
+      if (present_days > attendance.total_days) {
+        this.$refs['attendance'][0].value = attendance.total_days;
+        present_days = attendance.total_days;
+      }
+      if (present_days < 1) {
+        this.$refs['attendance'][0].value = 0;
+        present_days = 0;
+      }
+      var formData = {
+        attendance_id: attendance.id,
+        section_student_id: sectionStudent.id,
+        present_days: present_days
+      };
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post(route('attendance-students.store'), formData).then(function (res) {
+        _this4.getUnitSummary();
+        // this.getAttendances();
+      })["catch"](function (err) {});
+    },
+    addAttendance: function addAttendance() {
+      var _this5 = this;
+      this.submit = true;
+      axios__WEBPACK_IMPORTED_MODULE_0___default().post(route('attendances.store'), _objectSpread(_objectSpread({}, this.formData), {}, {
+        class_record_id: this.classRecord.id
+      })).then(function (res) {
+        _this5.submit = false;
+        _this5.formErrors = {};
+        _this5.formData = {};
+        _this5.getAttendances();
+      })["catch"](function (err) {
+        _this5.submit = false;
+        _this5.formErrors = err.response.data.errors;
+      });
+    },
+    deleteAttendance: function deleteAttendance(attendance) {
+      var _this6 = this;
+      axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"](route('attendances.destroy', attendance.id)).then(function (res) {
+        _this6.getAttendances();
+      })["catch"](function (err) {});
+    },
+    totalWeekDays: function totalWeekDays() {
+      return this.attendances.reduce(function (sum, t) {
+        return sum += t.total_days;
+      }, 0);
+    },
+    totalPresentDays: function totalPresentDays(sectionStudent) {
+      return sectionStudent.attendances.reduce(function (sum, t) {
+        return sum += t.present_days;
+      }, 0);
     }
   },
   mounted: function mounted() {
     this.getUnitSummary();
     this.getTeachers();
+    if ((0,lodash__WEBPACK_IMPORTED_MODULE_1__.isEmpty)(this.classRecordQuarter)) {
+      this.getAttendances();
+    }
     this.subjectTeacherId = this.classRecord.teacher_id == null ? "" : this.classRecord.teacher_id;
   }
 });
@@ -7256,7 +7457,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       var _this2 = this;
       axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"](route('unit-items.destroy', unitItem.id)).then(function (res) {
         _this2.getUnitItems();
-        // this.getUnitScores();
+        _this2.getUnitScores();
       })["catch"](function (err) {});
     },
     addScore: function addScore(e, unitItem, sectionStudent, gradingSystem) {
@@ -35633,7 +35834,157 @@ var render = function () {
                           [
                             _c("div", { staticClass: "accordion-body" }, [
                               _c("div", { staticClass: "row" }, [
-                                _c("div", { staticClass: "col-6" }, [
+                                _c("div", { staticClass: "col-md-2" }, [
+                                  _c("h5", [_vm._v("Attendance")]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "table-responsive" },
+                                    [
+                                      _c(
+                                        "table",
+                                        { staticClass: "table table-borders" },
+                                        [
+                                          _c("thead", [
+                                            _c("tr", [
+                                              _c(
+                                                "th",
+                                                {
+                                                  staticStyle: {
+                                                    "text-align": "center",
+                                                  },
+                                                },
+                                                [_vm._v("Week")]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "th",
+                                                {
+                                                  staticStyle: {
+                                                    "text-align": "center",
+                                                  },
+                                                },
+                                                [_vm._v("Days")]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "th",
+                                                {
+                                                  staticStyle: {
+                                                    "text-align": "center",
+                                                  },
+                                                },
+                                                [_vm._v("Present")]
+                                              ),
+                                            ]),
+                                          ]),
+                                          _vm._v(" "),
+                                          _c(
+                                            "tbody",
+                                            _vm._l(
+                                              _vm.attendances,
+                                              function (attendance, attIndex) {
+                                                return _c(
+                                                  "tr",
+                                                  { key: attIndex },
+                                                  [
+                                                    _c(
+                                                      "td",
+                                                      {
+                                                        staticStyle: {
+                                                          "text-align":
+                                                            "center",
+                                                        },
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            attendance
+                                                              .attendance
+                                                              .week_name
+                                                          )
+                                                        ),
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "td",
+                                                      {
+                                                        staticStyle: {
+                                                          "text-align":
+                                                            "center",
+                                                        },
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            attendance
+                                                              .attendance
+                                                              .total_days
+                                                          )
+                                                        ),
+                                                      ]
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "td",
+                                                      {
+                                                        staticStyle: {
+                                                          "text-align":
+                                                            "center",
+                                                        },
+                                                      },
+                                                      [
+                                                        _vm._v(
+                                                          _vm._s(
+                                                            attendance.present_days
+                                                          )
+                                                        ),
+                                                      ]
+                                                    ),
+                                                  ]
+                                                )
+                                              }
+                                            ),
+                                            0
+                                          ),
+                                          _vm._v(" "),
+                                          _c("tfoot", [
+                                            _c("tr", [
+                                              _c("th", [_vm._v("TOTAL:")]),
+                                              _vm._v(" "),
+                                              _c(
+                                                "th",
+                                                {
+                                                  staticStyle: {
+                                                    "text-align": "center",
+                                                  },
+                                                },
+                                                [_vm._v(_vm._s(_vm.week_days))]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "th",
+                                                {
+                                                  staticStyle: {
+                                                    "text-align": "center",
+                                                  },
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    _vm._s(_vm.present_days)
+                                                  ),
+                                                ]
+                                              ),
+                                            ]),
+                                          ]),
+                                        ]
+                                      ),
+                                    ]
+                                  ),
+                                ]),
+                                _vm._v(" "),
+                                _c("div", { staticClass: "col-md-5" }, [
                                   _c(
                                     "div",
                                     { staticStyle: { height: "300px" } },
@@ -35756,7 +36107,7 @@ var render = function () {
                                   ),
                                 ]),
                                 _vm._v(" "),
-                                _c("div", { staticClass: "col-6" }, [
+                                _c("div", { staticClass: "col-md-5" }, [
                                   _c(
                                     "div",
                                     { staticStyle: { height: "300px" } },
@@ -37826,7 +38177,7 @@ var render = function () {
                           },
                           [
                             _vm._v(
-                              "\n                            Summary\n                        "
+                              "\n                            Attendance\n                        "
                             ),
                           ]
                         ),
@@ -38012,7 +38363,7 @@ var render = function () {
                                   "\n                -\n                "
                               ),
                               _vm.isEmpty(_vm.classRecordQuarter)
-                                ? _c("span", [_vm._v("Summary")])
+                                ? _c("span", [_vm._v("Attendance")])
                                 : _c("span", [
                                     _vm._v(
                                       _vm._s(
@@ -38027,7 +38378,7 @@ var render = function () {
                       ],
                       null,
                       false,
-                      1194619838
+                      2259918325
                     ),
                   },
                   [
@@ -38448,64 +38799,422 @@ var render = function () {
         ])
       : _vm._e(),
     _vm._v(" "),
-    _c("div", { staticClass: "table-responsive" }, [
-      _c("table", { staticClass: "table" }, [
-        _c("thead", [
-          _c(
-            "tr",
-            [
-              _c("th", [_vm._v("Student Name")]),
-              _vm._v(" "),
-              _vm._l(_vm.units, function (unit, uindex) {
-                return _c("th", { key: uindex }, [
-                  _c(
-                    "a",
-                    {
-                      attrs: { href: "#" },
-                      on: {
-                        click: function ($event) {
-                          return _vm.viewUnit(unit)
+    !_vm.isEmpty(_vm.classRecordQuarter)
+      ? _c("div", { staticClass: "table-responsive" }, [
+          _c("table", { staticClass: "table" }, [
+            _c("thead", [
+              _c(
+                "tr",
+                [
+                  _c("th", [_vm._v("Student Name")]),
+                  _vm._v(" "),
+                  _vm._l(_vm.units, function (unit, uindex) {
+                    return _c("th", { key: uindex }, [
+                      _c(
+                        "a",
+                        {
+                          attrs: { href: "#" },
+                          on: {
+                            click: function ($event) {
+                              return _vm.viewUnit(unit)
+                            },
+                          },
                         },
+                        [_vm._v(_vm._s(unit.name))]
+                      ),
+                    ])
+                  }),
+                  _vm._v(" "),
+                  _c("th"),
+                ],
+                2
+              ),
+            ]),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.sectionStudents, function (sectionStudent, index) {
+                return _c(
+                  "tr",
+                  { key: index },
+                  [
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(sectionStudent.student.full_name_last_name)
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(sectionStudent.units, function (unit, uindex) {
+                      return _c("td", { key: uindex }, [
+                        _c("span", [_vm._v(_vm._s(unit.remarks))]),
+                      ])
+                    }),
+                  ],
+                  2
+                )
+              }),
+              0
+            ),
+          ]),
+        ])
+      : _c("div", { staticClass: "table-responsive" }, [
+          _c("table", { staticClass: "table table-bordered" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("th", { attrs: { rowspan: "2" } }, [_vm._v("Student Name")]),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticStyle: { "text-align": "center" },
+                    attrs: { colspan: _vm.attendances.length },
+                  },
+                  [
+                    _vm._v(
+                      "\n                        Week\n                        "
+                    ),
+                    _vm.user.account_type == "admin" ||
+                    _vm.user.userable_id == _vm.classRecord.teacher_id
+                      ? _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary btn-sm",
+                            attrs: {
+                              type: "button",
+                              "data-bs-toggle": "modal",
+                              "data-bs-target": "#attendanceModal",
+                            },
+                          },
+                          [_c("b", [_vm._v("+")])]
+                        )
+                      : _vm._e(),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticStyle: { "text-align": "center" },
+                    attrs: { rowspan: "2" },
+                  },
+                  [_vm._v("Total Week Days")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "th",
+                  {
+                    staticStyle: { "text-align": "center" },
+                    attrs: { rowspan: "2" },
+                  },
+                  [_vm._v("Total Present Days")]
+                ),
+              ]),
+              _vm._v(" "),
+              _c(
+                "tr",
+                _vm._l(_vm.attendances, function (attendance, attIndex) {
+                  return _c(
+                    "th",
+                    { key: attIndex, staticStyle: { "text-align": "center" } },
+                    [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(attendance.week_name) +
+                          "\n                    "
+                      ),
+                    ]
+                  )
+                }),
+                0
+              ),
+            ]),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.sectionStudents, function (sectionStudent, index) {
+                return _c(
+                  "tr",
+                  { key: index },
+                  [
+                    _c("td", [
+                      _vm._v(
+                        _vm._s(sectionStudent.student.full_name_last_name)
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _vm._l(_vm.attendances, function (attendance, attIndex) {
+                      return _c(
+                        "td",
+                        {
+                          key: attIndex,
+                          staticStyle: { "text-align": "center" },
+                        },
+                        [
+                          _c("input", {
+                            ref: "attendance",
+                            refInFor: true,
+                            staticStyle: { width: "50px" },
+                            attrs: {
+                              type: "number",
+                              min: "0",
+                              max: attendance.total_days,
+                            },
+                            domProps: {
+                              value: _vm.extractStudentAttendance(
+                                sectionStudent,
+                                attendance
+                              ),
+                            },
+                            on: {
+                              blur: function ($event) {
+                                return _vm.addStudentAttendance(
+                                  $event,
+                                  sectionStudent,
+                                  attendance
+                                )
+                              },
+                            },
+                          }),
+                        ]
+                      )
+                    }),
+                    _vm._v(" "),
+                    _c("td", { staticStyle: { "text-align": "center" } }, [
+                      _vm._v(_vm._s(_vm.totalWeekDays())),
+                    ]),
+                    _vm._v(" "),
+                    _c("td", { staticStyle: { "text-align": "center" } }, [
+                      _vm._v(_vm._s(_vm.totalPresentDays(sectionStudent))),
+                    ]),
+                  ],
+                  2
+                )
+              }),
+              0
+            ),
+          ]),
+        ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade modal-sm",
+        attrs: {
+          id: "attendanceModal",
+          "data-bs-backdrop": "static",
+          "data-bs-keyboard": "false",
+          tabindex: "-1",
+          "aria-labelledby": "attendanceModalLabel",
+          "aria-hidden": "true",
+        },
+      },
+      [
+        _c("div", { staticClass: "modal-dialog" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function ($event) {
+                      $event.preventDefault()
+                      return _vm.addAttendance()
+                    },
+                  },
+                },
+                [
+                  _c(
+                    "form-item",
+                    {
+                      attrs: {
+                        label: "Week Name or Number",
+                        errors: _vm.formErrors.week_name,
                       },
                     },
-                    [_vm._v(_vm._s(unit.name))]
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.formData.week_name,
+                            expression: "formData.week_name",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        class: _vm.formErrors.week_name ? "is-invalid" : "",
+                        attrs: { type: "text" },
+                        domProps: { value: _vm.formData.week_name },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.formData,
+                              "week_name",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]
                   ),
-                ])
-              }),
+                  _vm._v(" "),
+                  _c(
+                    "form-item",
+                    {
+                      attrs: {
+                        label: "Number of Days",
+                        errors: _vm.formErrors.total_days,
+                      },
+                    },
+                    [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.formData.total_days,
+                            expression: "formData.total_days",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        class: _vm.formErrors.total_days ? "is-invalid" : "",
+                        attrs: { type: "number", min: "1" },
+                        domProps: { value: _vm.formData.total_days },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.formData,
+                              "total_days",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { type: "submit", disabled: _vm.submit },
+                    },
+                    [_vm._v("Add")]
+                  ),
+                ],
+                1
+              ),
               _vm._v(" "),
-              _c("th"),
-            ],
-            2
-          ),
+              _c(
+                "ul",
+                { staticClass: "list-group mt-2" },
+                [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _vm._l(_vm.attendances, function (attendance, attIndex) {
+                    return _c(
+                      "li",
+                      {
+                        key: attIndex,
+                        staticClass:
+                          "list-group-item d-flex justify-content-between align-items-center",
+                      },
+                      [
+                        _c("span", [_vm._v(_vm._s(attendance.week_name))]),
+                        _vm._v(" "),
+                        _c("span", [_vm._v(_vm._s(attendance.total_days))]),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger btn-sm",
+                            attrs: { type: "submit" },
+                            on: {
+                              click: function ($event) {
+                                return _vm.deleteAttendance(attendance)
+                              },
+                            },
+                          },
+                          [_c("b", [_vm._v("x")])]
+                        ),
+                      ]
+                    )
+                  }),
+                ],
+                2
+              ),
+            ]),
+            _vm._v(" "),
+            _vm._m(2),
+          ]),
         ]),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.sectionStudents, function (sectionStudent, index) {
-            return _c(
-              "tr",
-              { key: index },
-              [
-                _c("td", [
-                  _vm._v(_vm._s(sectionStudent.student.full_name_last_name)),
-                ]),
-                _vm._v(" "),
-                _vm._l(sectionStudent.units, function (unit, uindex) {
-                  return _c("td", { key: uindex }, [
-                    _c("span", [_vm._v(_vm._s(unit.remarks))]),
-                  ])
-                }),
-              ],
-              2
-            )
-          }),
-          0
-        ),
-      ]),
-    ]),
+      ]
+    ),
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "attendanceModalLabel" } },
+        [_vm._v("Attendance")]
+      ),
+      _vm._v(" "),
+      _c("button", {
+        staticClass: "btn-close",
+        attrs: {
+          type: "button",
+          "data-bs-dismiss": "modal",
+          "aria-label": "Close",
+        },
+      }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "li",
+      {
+        staticClass:
+          "list-group-item d-flex justify-content-between align-items-center",
+      },
+      [
+        _c("b", [_vm._v("Week")]),
+        _c("b", [_vm._v("Days")]),
+        _c("b", [_vm._v("          ")]),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-bs-dismiss": "modal" },
+        },
+        [_vm._v("Done")]
+      ),
+    ])
+  },
+]
 render._withStripped = true
 
 

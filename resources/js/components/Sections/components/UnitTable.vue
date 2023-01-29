@@ -300,7 +300,7 @@
                 axios.delete(route('unit-items.destroy', unitItem.id))
                 .then(res => {
                     this.getUnitItems();
-                    // this.getUnitScores();
+                    this.getUnitScores();
                 })
                 .catch(err => {});
             },
