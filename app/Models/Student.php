@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class Student extends Model
@@ -20,6 +21,7 @@ class Student extends Model
         'ext_name',
         'gender_id',
         'guardian_id',
+        'photo',
     ];
 
     public static function boot()
@@ -57,5 +59,11 @@ class Student extends Model
     {
         return $this->morphOne(User::class, 'userable');
     }
+
+    public function getPhotoAttribute($value)
+    {
+        return Storage::url($value);
+    }
+
 
 }

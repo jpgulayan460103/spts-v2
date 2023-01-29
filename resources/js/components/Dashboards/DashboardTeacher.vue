@@ -2,7 +2,7 @@
     <div class="row gy-2 gx-2">
 
         <div class="col-md-6">
-            <card style="height: 90vh">
+            <card style="min-height: 90vh">
                 <template v-slot:header>Assigned Subjects</template>
                 <form @submit.prevent="getClassRecords()">
                     <div class="row gx-0">
@@ -14,35 +14,39 @@
                         </div>
                     </div>
                 </form>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Class Record ID</th>
-                            <th>Semester</th>
-                            <th>Subject Description</th>
-                            <th>Section Name</th>
-                            <th>School Year</th>
-                            <th style="text-align:center">Manage</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(classRecord, csindex) in classRecords" :key="csindex">
-                            <td>{{ classRecord.id }}</td>
-                            <td>{{ classRecord.subject.semester.name }}</td>
-                            <td>{{ classRecord.subject.subject_description }}</td>
-                            <td>{{ classRecord.section.section_name }}</td>
-                            <td>{{ classRecord.section.school_year.name }}</td>
-                            <td style="text-align:center">
-                                <!-- <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" class="btn btn-primary" v-for="(quarter, qindex) in classRecord.quarters" :key="qindex">{{ quarter.quarter.name }}</button>
-                                </div> -->
-                                <button type="button" class="btn btn-primary" @click="viewClassRecord(classRecord)">
-                                    <i class="bi bi-gear-fill"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Class Record ID</th>
+                                <th>Semester</th>
+                                <th>Subject Description</th>
+                                <th>Grade</th>
+                                <th>Section Name</th>
+                                <th>School Year</th>
+                                <th style="text-align:center">Manage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(classRecord, csindex) in classRecords" :key="csindex">
+                                <td>{{ classRecord.id }}</td>
+                                <td>{{ classRecord.subject.semester.name }}</td>
+                                <td>{{ classRecord.subject.subject_description }}</td>
+                                <td>{{ classRecord.section.grade_level.name }}</td>
+                                <td>{{ classRecord.section.section_name }}</td>
+                                <td>{{ classRecord.section.school_year.name }}</td>
+                                <td style="text-align:center">
+                                    <!-- <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" class="btn btn-primary" v-for="(quarter, qindex) in classRecord.quarters" :key="qindex">{{ quarter.quarter.name }}</button>
+                                    </div> -->
+                                    <button type="button" class="btn btn-primary" @click="viewClassRecord(classRecord)">
+                                        <i class="bi bi-gear-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <li class="page-item" :class="{ active: pagination.active }" v-for="(pagination, index) in classRecordPaginations" :key="index" @click="navigateClassRecordPages(pagination.label)">
@@ -56,7 +60,7 @@
         </div>
 
         <div class="col-md-6">
-            <card style="height: 90vh">
+            <card style="min-height: 90vh">
                 <template v-slot:header>Your Advisories</template>
                 <form @submit.prevent="getSections()">
                     <div class="row gx-0">
@@ -68,6 +72,8 @@
                         </div>
                     </div>
                 </form>
+                
+                <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
@@ -95,6 +101,8 @@
                         </tr>
                     </tbody>
                 </table>
+                </div>
+                
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <li class="page-item" :class="{ active: pagination.active }" v-for="(pagination, index) in sectionPaginations" :key="index" @click="navigateSectionPages(pagination.label)">

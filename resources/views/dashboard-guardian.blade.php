@@ -2,6 +2,6 @@
 
 @section('content')
 <div>
-    dashboard-guardian
+    <dashboard-guardian :user="{{ $user }}"></dashboard-guardian>
 </div>
 @endsection

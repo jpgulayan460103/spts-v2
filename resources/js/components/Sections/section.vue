@@ -1,21 +1,20 @@
 <template>
     <div class="row gy-2">
-
         <div class="col-md-4">
             <card>
                 <template v-slot:header>Section Form</template>
                 <form @submit.prevent="submitForm()">
+                    <form-item label="Grade Level" v-if="formType == 'create'" :errors="formErrors.grade_level_id">
+                        <select v-model="formData.grade_level_id" class="form-control" :class="formErrors.grade_level_id ? 'is-invalid' : ''">
+                            <option v-for="(item, index) in gradeLevels" :key="index" :value="item.id">{{ item.name }}</option>
+                        </select>
+                    </form-item>
                     <form-item label="Section Name" :errors="formErrors.section_name">
                         <input type="text" v-model="formData.section_name" class="form-control" :class="formErrors.section_name ? 'is-invalid' : ''">
                     </form-item>
                     <form-item label="School Year" v-if="formType == 'create'" :errors="formErrors.school_year_id">
                         <select v-model="formData.school_year_id" class="form-control" :class="formErrors.school_year_id ? 'is-invalid' : ''">
                             <option v-for="(item, index) in schoolYears" :key="index" :value="item.id">{{ item.name }}</option>
-                        </select>
-                    </form-item>
-                    <form-item label="Grade Level" v-if="formType == 'create'" :errors="formErrors.grade_level_id">
-                        <select v-model="formData.grade_level_id" class="form-control" :class="formErrors.grade_level_id ? 'is-invalid' : ''">
-                            <option v-for="(item, index) in gradeLevels" :key="index" :value="item.id">{{ item.name }}</option>
                         </select>
                     </form-item>
                     <form-item label="Track" v-if="formType == 'create'" :errors="formErrors.track_id">
@@ -28,7 +27,10 @@
                             <option v-for="(item, index) in advisers" :key="index" :value="item.id">{{ item.full_name_last_name }}</option>
                         </select>
                     </form-item>
-                    <button type="submit" class="btn btn-primary" :disabled="submit">Submit</button>
+                    <button type="submit" class="btn btn-primary" :disabled="submit">
+                        <span v-if="formType == 'create'">Create Section</span>
+                        <span v-else>Update Section</span>
+                    </button>
                     <button type="button" style="display:none">Button</button>
                     <button type="button" class="btn btn-danger" v-if="formType != 'create'" @click="resetForm">Cancel</button>
                 </form>
@@ -48,12 +50,13 @@
                             </div>
                         </div>
                     </form>
+                <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>Grade Level</th>
                             <th>Section Name</th>
                             <th>School Year</th>
-                            <th>Grade Level</th>
                             <th>Track</th>
                             <th>Adviser</th>
                             <th></th>
@@ -61,9 +64,9 @@
                     </thead>
                     <tbody>
                         <tr v-for="(section, index) in sections" :key="index">
+                            <td>{{ section.grade_level.name }}</td>
                             <td>{{ section.section_name }}</td>
                             <td>{{ section.school_year.name }}</td>
-                            <td>{{ section.grade_level.name }}</td>
                             <td>{{ section.track.name }}</td>
                             <td>{{ section.adviser ? section.adviser.full_name_last_name : "" }}</td>
                             <td>
@@ -83,6 +86,8 @@
                         </tr>
                     </tbody>
                 </table>
+                </div>
+
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <li class="page-item" :class="{ active: pagination.active }" v-for="(pagination, index) in sectionPaginations" :key="index" @click="navigateSectionPages(pagination.label)">

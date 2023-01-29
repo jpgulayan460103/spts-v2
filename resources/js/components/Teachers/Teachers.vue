@@ -35,7 +35,11 @@
                             <input type="text" v-model="formData.password" class="form-control" :class="formErrors.password ? 'is-invalid' : ''">
                         </form-item>
                     </div>
-                    <button type="submit" class="btn btn-primary" :disabled="submit">Submit</button>
+                    <button type="submit" class="btn btn-primary" :disabled="submit">
+                        <span v-if="formType == 'create'">Create Teacher</span>
+                        <span v-else-if="formType == 'update-account'">Update Account</span>
+                        <span v-else>Update Teacher</span>
+                    </button>
                     <button type="button" style="display:none">Button</button>
                     <button type="button" class="btn btn-danger" v-if="formType != 'create'" @click="resetForm">Cancel</button>
                 </form>
@@ -55,6 +59,7 @@
                         </div>
                     </div>
                 </form>
+                <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
@@ -92,6 +97,7 @@
                         </tr>
                     </tbody>
                 </table>
+                </div>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
                         <li class="page-item" :class="{ active: pagination.active }" v-for="(pagination, index) in teacherPaginations" :key="index" @click="navigateTeacherPages(pagination.label)">

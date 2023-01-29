@@ -34,6 +34,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
+                        @if(Auth::check() && Auth::user()->account_type  == "admin")
                         <li class="nav-item">
                             <a class="nav-link {{ Route::currentRouteNamed('sections') ? 'active' : '' }}" href="{{ route('sections') }}">{{ __('Sections') }}</a>
                         </li>
@@ -46,6 +47,11 @@
                         <li class="nav-item">
                             <a class="nav-link {{ Route::currentRouteNamed('teachers') ? 'active' : '' }}" href="{{ route('teachers') }}">{{ __('Teachers') }}</a>
                         </li>
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link {{ Route::currentRouteNamed('home') ? 'active' : '' }}" href="{{ route('home') }}">{{ __('Home') }}</a>
+                            </li>
+                        @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -70,6 +76,9 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changePasswordModal" href="#">
+                                        Change Password
+                                    </a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -83,6 +92,9 @@
                             </li>
                         @endguest
                     </ul>
+
+
+                    <change-password-modal />
                 </div>
             </div>
         </nav>

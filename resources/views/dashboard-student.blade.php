@@ -2,6 +2,10 @@
 
 @section('content')
 <div>
-    dashboard-student
+    <dashboard-student
+        :user="{{ $user }}"
+        :student="{{ $student }}"
+        :section="{{ $section }}"
+    ></dashboard-student>
 </div>
 @endsection

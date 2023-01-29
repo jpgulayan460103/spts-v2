@@ -33,6 +33,7 @@ Route::get('/guardians', [HomeController::class, 'guardians'])->name('guardians'
 Route::get('/teachers', [HomeController::class, 'teachers'])->name('teachers');
 Route::get('/sections/{uuid}/manage/{type?}', [HomeController::class, 'manageSection'])->name('sections.manage');
 Route::get('/libraries/{library_type}', [LibraryController::class, 'index'])->name('libraries.type');
+Route::post('/change-password', [HomeController::class, 'changePassword'])->name('change-password');
 
 Route::prefix('data')->group(function () {
     Route::resource('/guardians', GuardianController::class);
@@ -44,12 +45,26 @@ Route::prefix('data')->group(function () {
     Route::resource('/unit-scores', UnitScoreController::class);
     Route::resource('/unit-actions', UnitActionController::class);
     Route::resource('/class-records', ClassRecordController::class);
-    Route::get('/class-records/{id}/unit-items', [ClassRecordController::class, 'unitItems'])->name('class-records.unit-items');
-    Route::get('/class-records/{id}/unit-scores', [ClassRecordController::class, 'unitScore'])->name('class-records.unit-scores');
-    Route::get('/class-records/{id}/unit-summary', [ClassRecordController::class, 'unitSummary'])->name('class-records.unit-summary');
-    Route::get('/all/teachers', [TeacherController::class, 'all'])->name('all.teachers');
-    Route::get('/all/guardians', [GuardianController::class, 'all'])->name('all.guardians');
-    Route::get('/teachers/{id}/class-records', [TeacherController::class, 'classRecords'])->name('teachers.class-records');
-    Route::get('/teachers/{id}/advisories', [TeacherController::class, 'advisories'])->name('teachers.advisories');
+    Route::prefix('class-records')->group(function () {
+        Route::get('/{id}/unit-items', [ClassRecordController::class, 'unitItems'])->name('class-records.unit-items');
+        Route::get('/{id}/unit-scores', [ClassRecordController::class, 'unitScore'])->name('class-records.unit-scores');
+        Route::get('/{id}/unit-summary', [ClassRecordController::class, 'unitSummary'])->name('class-records.unit-summary');
+    });
+    Route::prefix('all')->group(function () {
+        Route::get('/teachers', [TeacherController::class, 'all'])->name('all.teachers');
+        Route::get('/guardians', [GuardianController::class, 'all'])->name('all.guardians'); 
+    });
+    Route::prefix('teachers')->group(function () {
+        Route::get('/{id}/class-records', [TeacherController::class, 'classRecords'])->name('teachers.class-records');
+        Route::get('/{id}/advisories', [TeacherController::class, 'advisories'])->name('teachers.advisories');
+    });
+    Route::prefix('students')->group(function () {
+        Route::get('/{id}/sections', [StudentController::class, 'sections'])->name('students.sections');
+        Route::get('/{id}/subject-summary', [StudentController::class, 'subjectSummary'])->name('students.subject.summary');
+        Route::post('/{id}/photo', [StudentController::class, 'photo'])->name('students.photo');
+    });
+
+    Route::get('/guaridans/{id}/students', [GuardianController::class, 'students'])->name('guaridans.students');
+    Route::get('/sections/{id}/subjects', [SectionController::class, 'subjects'])->name('sections.subjects');
 });
 

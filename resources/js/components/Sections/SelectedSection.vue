@@ -52,6 +52,7 @@
 
             <card v-if="isEmpty(classRecord)">
                 <template v-slot:header>Class Records</template>
+                <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
@@ -82,6 +83,8 @@
                         </tr>
                     </tbody>
                 </table>
+                </div>
+
             </card>
 
             <!-- Has Selected Class Record -->
@@ -106,6 +109,7 @@
                 Add Students
                 </button>
 
+                <div class="table-responsive">
                 <table class="table">
                     <thead>
                         <tr>
@@ -135,6 +139,8 @@
                         </tr>
                     </tbody>
                 </table>
+                </div>
+
             </card>
         </div>
 
@@ -157,6 +163,7 @@
                             </div>
                         </div>
                     </form>
+                    <div class="table-responsive">
                     <table class="table">
                         <thead>
                             <tr>
@@ -186,6 +193,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    </div>
 
                 </div>
                 <div class="modal-footer">

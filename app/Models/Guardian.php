@@ -41,6 +41,11 @@ class Guardian extends Model
         return $this->belongsTo(Guardian::class);
     }
 
+    public function students()
+    {
+        return $this->hasMany(Student::class);
+    }
+
     public function user()
     {
         return $this->morphOne(User::class, 'userable');

@@ -20,11 +20,14 @@ class TeacherController extends Controller
         $teachers = Teacher::with(['gender','user']);
         if($request->searchQuery){
             $searchQuery = $request->searchQuery;
-            $teachers->orWhere("teacher_id_number", "like", "%$searchQuery%");
-            $teachers->orWhere("first_name", "like", "%$searchQuery%");
-            $teachers->orWhere("middle_name", "like", "%$searchQuery%");
-            $teachers->orWhere("last_name", "like", "%$searchQuery%");
-            $teachers->orWhere("ext_name", "like", "%$searchQuery%");
+
+            $teachers->where(function($query) use ($searchQuery){
+                $query->orWhere("teacher_id_number", "like", "%$searchQuery%");
+                $query->orWhere("first_name", "like", "%$searchQuery%");
+                $query->orWhere("middle_name", "like", "%$searchQuery%");
+                $query->orWhere("last_name", "like", "%$searchQuery%");
+                $query->orWhere("ext_name", "like", "%$searchQuery%");
+            });
         }
 
         $teachers = $teachers->paginate(20);
@@ -119,11 +122,13 @@ class TeacherController extends Controller
         $teachers = Teacher::with(['gender']);
         if($request->searchQuery){
             $searchQuery = $request->searchQuery;
-            $teachers->orWhere("teacher_id_number", "like", "%$searchQuery%");
-            $teachers->orWhere("first_name", "like", "%$searchQuery%");
-            $teachers->orWhere("middle_name", "like", "%$searchQuery%");
-            $teachers->orWhere("last_name", "like", "%$searchQuery%");
-            $teachers->orWhere("ext_name", "like", "%$searchQuery%");
+            $teachers->where(function($query) use ($searchQuery){
+                $query->orWhere("teacher_id_number", "like", "%$searchQuery%");
+                $query->orWhere("first_name", "like", "%$searchQuery%");
+                $query->orWhere("middle_name", "like", "%$searchQuery%");
+                $query->orWhere("last_name", "like", "%$searchQuery%");
+                $query->orWhere("ext_name", "like", "%$searchQuery%");
+            });
         }
 
         $teachers->orderBy('last_name');

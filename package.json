@@ -25,6 +25,8 @@
     },
     "dependencies": {
         "bootstrap-icons": "^1.10.3",
-        "vue-bootstrap-typeahead": "^0.2.6"
+        "chart.js": "^4.2.0",
+        "vue-bootstrap-typeahead": "^0.2.6",
+        "vue-chartjs": "^5.2.0"
     }
 }

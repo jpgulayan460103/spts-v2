@@ -128,9 +128,34 @@ class SectionController extends Controller
      * @param  \App\Models\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function show(Section $section)
+    public function show(Request $request, $id)
     {
-        //
+        $with = [
+            'school_year',
+            'grade_level',
+            'track',
+            'students',
+            'adviser',
+            'class_records',
+        ];
+        $section = Section::with($with)->findOrFail($id);
+
+        return $section;
+    }
+
+    public function subjects(Request $request, $id)
+    {
+        $student_id = $request->student_id;
+        $with = [
+            'school_year',
+            'grade_level',
+            'track',
+            'adviser',
+        ];
+        $section = Section::with($with)->findOrFail($id);
+        $section->subjects = ClassRecord::with(['subject.semester'])->select('subject_id')->distinct()->where('section_id', $section->id)->get();
+
+        return $section;
     }
 
     /**

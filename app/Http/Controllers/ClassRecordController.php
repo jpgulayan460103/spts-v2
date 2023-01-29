@@ -121,15 +121,17 @@ class ClassRecordController extends Controller
     }
 
     
-    private function calulateUnitScores($section_students, $class_record, $unit_id)
+    private function calulateUnitScores($section_students, $class_record, $unit_id, $load_unit_grades)
     {
         foreach ($section_students as $key => $section_student) {
             $grading_systems = $class_record->subject->subject_category->grading_systems->toArray();
             foreach ($grading_systems as $key => $grading_system) {
-                $grading_systems[$key]['unit_scores'] = UnitScore::where('unit_id', $unit_id)->where('grading_system_id', $grading_system['id'])->where('section_student_id', $section_student->id)->get();
+                if($load_unit_grades){
+                    $grading_systems[$key]['unit_scores'] = UnitScore::where('unit_id', $unit_id)->where('grading_system_id', $grading_system['id'])->where('section_student_id', $section_student->id)->get();
+                    $grading_systems[$key]['count'] = count($grading_systems[$key]['unit_scores']);
+                }
                 $grading_systems[$key]['total_scores'] = UnitScore::where('unit_id', $unit_id)->where('grading_system_id', $grading_system['id'])->where('section_student_id', $section_student->id)->sum('score');
                 $grading_systems[$key]['unit_items'] = UnitItem::where('unit_id', $unit_id)->where('grading_system_id', $grading_system['id'])->sum('item');
-                $grading_systems[$key]['count'] = count($grading_systems[$key]['unit_scores']);
                 if($grading_systems[$key]['total_scores'] != 0 && $grading_systems[$key]['unit_items'] != 0){
                     $grading_systems[$key]['percentage_score'] = ($grading_systems[$key]['total_scores'] / $grading_systems[$key]['unit_items']) * 100;
                     $grading_systems[$key]['weighted_score'] = $grading_systems[$key]['percentage_score'] * $grading_systems[$key]['percentage'];
@@ -152,6 +154,8 @@ class ClassRecordController extends Controller
                 }
             }
             $section_student->grading_system = $grading_systems;
+            // $section_student->unit = Unit::find($unit_id);
+            $section_student->unit_id = $unit_id;
             $section_student->initial_grade = array_reduce($grading_systems, function($sum, $grading_system){
                 $sum += $grading_system['weighted_score'];
                 return $sum;
@@ -238,14 +242,17 @@ class ClassRecordController extends Controller
         $class_record = ClassRecord::with($with)->find($id);
 
         // return $class_record;
+        $load_unit_grades = true;
 
         if($request->section_student_id){
             $section_students = $class_record->section->students()->where('id', $request->section_student_id)->get();
+            $load_unit_grades = false;
+            // $section_students->load(['student', 'section']);
         }else{
             $section_students = $class_record->section->students;
         }
         
-        $section_students = $this->calulateUnitScores($section_students, $class_record, $request->unit_id);
+        $section_students = $this->calulateUnitScores($section_students, $class_record, $request->unit_id, $load_unit_grades);
         
         return [
             'section_students' => $section_students,

@@ -11,6 +11,7 @@
             </p>
             <hr v-if="user.account_type == 'admin'">
         </div>
+        <div class="table-responsive">
         <table class="table">
             <thead>
                 <tr>
@@ -30,6 +31,7 @@
                 </tr>
             </tbody>
         </table>
+        </div>
     </div>
 </template>
 

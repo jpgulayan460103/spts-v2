@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\GuardianRequest;
 use App\Models\Guardian;
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class GuardianController extends Controller
@@ -19,11 +20,14 @@ class GuardianController extends Controller
         
         if($request->searchQuery){
             $searchQuery = $request->searchQuery;
-            $guardians->orWhere("guardian_id_number", "like", "%$searchQuery%");
-            $guardians->orWhere("first_name", "like", "%$searchQuery%");
-            $guardians->orWhere("middle_name", "like", "%$searchQuery%");
-            $guardians->orWhere("last_name", "like", "%$searchQuery%");
-            $guardians->orWhere("ext_name", "like", "%$searchQuery%");
+
+            $guardians->where(function($query) use ($searchQuery){
+                $query->orWhere("guardian_id_number", "like", "%$searchQuery%");
+                $query->orWhere("first_name", "like", "%$searchQuery%");
+                $query->orWhere("middle_name", "like", "%$searchQuery%");
+                $query->orWhere("last_name", "like", "%$searchQuery%");
+                $query->orWhere("ext_name", "like", "%$searchQuery%");
+            });
         }
 
         $per_page = $request->perPage ?? 20;
@@ -125,11 +129,14 @@ class GuardianController extends Controller
         $guardians = Guardian::with(['gender']);
         if($request->searchQuery){
             $searchQuery = $request->searchQuery;
-            $guardians->orWhere("guardian_id_number", "like", "%$searchQuery%");
-            $guardians->orWhere("first_name", "like", "%$searchQuery%");
-            $guardians->orWhere("middle_name", "like", "%$searchQuery%");
-            $guardians->orWhere("last_name", "like", "%$searchQuery%");
-            $guardians->orWhere("ext_name", "like", "%$searchQuery%");
+
+            $guardians->where(function($query) use ($searchQuery){
+                $query->orWhere("guardian_id_number", "like", "%$searchQuery%");
+                $query->orWhere("first_name", "like", "%$searchQuery%");
+                $query->orWhere("middle_name", "like", "%$searchQuery%");
+                $query->orWhere("last_name", "like", "%$searchQuery%");
+                $query->orWhere("ext_name", "like", "%$searchQuery%");
+            });
         }
 
         $guardians->orderBy('last_name');
@@ -140,5 +147,32 @@ class GuardianController extends Controller
         $guardians = $guardians->get();
 
         return $guardians;
+    }
+
+    public function students(Request $request, $id)
+    {
+        $students = Student::with(['gender','user'])->where('guardian_id', $id);
+
+        if($request->searchQuery){
+            $searchQuery = $request->searchQuery;
+            $students->where(function($query) use ($searchQuery){
+                $query->orWhere("student_id_number", "like", "%$searchQuery%");
+                $query->orWhere("first_name", "like", "%$searchQuery%");
+                $query->orWhere("middle_name", "like", "%$searchQuery%");
+                $query->orWhere("last_name", "like", "%$searchQuery%");
+                $query->orWhere("ext_name", "like", "%$searchQuery%");
+            });
+        }
+
+        $per_page = $request->perPage ?? 20;
+
+        $students->orderBy('last_name');
+        $students->orderBy('first_name');
+        $students->orderBy('middle_name');
+        $students->orderBy('ext_name');
+
+        $students = $students->paginate($per_page);
+
+        return $students;
     }
 }

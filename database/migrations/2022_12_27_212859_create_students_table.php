@@ -20,6 +20,7 @@ class CreateStudentsTable extends Migration
             $table->string('middle_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('ext_name')->nullable();
+            $table->string('photo')->nullable();
             $table->unsignedBigInteger('gender_id')->nullable();
             $table->unsignedBigInteger('guardian_id')->nullable();
             $table->timestamps();

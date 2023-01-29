@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\ClassRecord;
 use App\Models\ClassRecordQuarter;
 use App\Models\Section;
+use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\Unit;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class HomeController extends Controller
 {
@@ -28,7 +31,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         $data = [
@@ -40,9 +43,45 @@ class HomeController extends Controller
             case 'teacher':
                 return view('dashboard-teacher', $data);
             case 'student':
-                return view('dashboard-student', $data);
             case 'guardian':
-                return view('dashboard-guardian', $data);
+                if($request->stduid || $user->account_type == 'student'){
+
+                    if($user->account_type == 'guardian'){
+                        $student = Student::whereUuid($request->stduid)->first();
+                        if($student){
+                            $student_id = $student->id;
+                        }else{
+                            abort(404);
+                        }
+                    }else{
+                        $student_id = $user->userable_id;
+                    }
+                    $section = "{}";
+                    if($request->sctuid){
+                        $section_uuid = $request->sctuid;
+                        $section = Section::with([
+                            'school_year',
+                            'grade_level',
+                            'track',
+                            'adviser',
+                        ])
+                        ->whereUuid($section_uuid)
+                        ->whereHas('students',function($query) use ($student_id){
+                            $query->where('student_id', $student_id);
+                        })
+                        ->first();
+    
+                        if(!$section){
+                            abort(404);
+                        }
+                    }
+    
+                    $data['section'] = $section;
+                    $data['student'] = Student::with(['gender'])->find($student_id);
+                    return view('dashboard-student', $data);
+                }else{
+                    return view('dashboard-guardian', $data);
+                }
             default:
                 # code...
                 break;
@@ -176,5 +215,27 @@ class HomeController extends Controller
         }else{
             abort(404);
         }
+    }
+
+    public function changePassword(Request $request)
+    {
+        $validated = $request->validate([
+            'old_password' => [
+                'required', function ($attribute, $value, $fail) {
+                    if (!Hash::check($value, Auth::user()->password)) {
+                        $fail('Old Password didn\'t match');
+                    }
+                },
+            ],
+            'new_password' => 'required|regex:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{8,16}$/m|min:8|confirmed',
+            'new_password_confirmation' => 'required',
+        ],[
+            'new_password.regex' => "Must contain at least 1 uppercase, 1 lowercase, 1 numeric, and 1 special character."
+        ]);
+
+        $user = User::find(Auth::user()->id);
+        $user->password = $request->new_password;
+        $user->save();
+
     }
 }
