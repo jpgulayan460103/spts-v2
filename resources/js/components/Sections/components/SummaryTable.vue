@@ -40,7 +40,7 @@
                         <th rowspan="2">Student Name</th>
                         <th :colspan="attendances.length" style="text-align:center">
                             Week
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#attendanceModal" v-if="user.account_type == 'admin' || user.userable_id == classRecord.teacher_id">
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#attendanceModal" v-if="user.account_type == 'teacher' && user.userable_id == classRecord.teacher_id" v-tooltip="'Add Week'">
                                 <b>+</b>
                             </button>
                         </th>

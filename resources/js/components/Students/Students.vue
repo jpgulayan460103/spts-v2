@@ -22,7 +22,7 @@
                             <input type="text" v-model="formData.ext_name" class="form-control" :class="formErrors.ext_name ? 'is-invalid' : ''">
                         </form-item>
                         <form-item label="Gender" :errors="formErrors.gender_id">
-                            <select v-model="formData.gender_id" class="form-control" :class="formErrors.gender_id ? 'is-invalid' : ''">
+                            <select v-model="formData.gender_id" class="form-control" placeholder="Select gender" :class="formErrors.gender_id ? 'is-invalid' : ''">
                                 <option v-for="(item, index) in genders" :key="index" :value="item.id">{{ item.name }}</option>
                             </select>
                         </form-item>
@@ -71,8 +71,9 @@
                                 <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <a class="btn btn-primary" href="/students/import">Import</a>
+                            <button type="button" class="btn btn-warning" @click="exportStudents" :disabled="exporting">Export {{ exportPercentage }}</button>
                         </div>
                     </div>
                 </form>
@@ -102,13 +103,13 @@
                             <td>{{ student.guardian ? student.guardian.full_name_last_name : "" }}</td>
                             <td>{{ student.user ? student.user.username : "" }}</td>
                             <td>
-                                <button type="button" class="btn btn-primary" @click="editAccount(student)">
+                                <button type="button" class="btn btn-primary" @click="editAccount(student)" v-tooltip="'Edit Login Account'">
                                     <i class="bi bi-person-circle"></i>
                                 </button>
-                                <button type="button" class="btn btn-primary" @click="editStudent(student)">
+                                <button type="button" class="btn btn-primary" @click="editStudent(student)" v-tooltip="'Edit Student'">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
-                                <button type="button" class="btn btn-danger" @click="deleteStudent(student)">
+                                <button type="button" class="btn btn-danger" @click="deleteStudent(student)" v-tooltip="'Delete Student'">
                                     <i class="bi bi-trash"></i>
                                 </button>
                                 
@@ -161,7 +162,16 @@
                 },
                 guardians: [],
                 guardianSearch: '',
-                selectedGuardian: null
+                selectedGuardian: null,
+                exporting: false,
+                exportedPage: 1,
+                exportData: {},
+                exportedFilename: "",
+                exportPagination: {
+                    current_page: 1,
+                    total: 1,
+                    per_page: 1,
+                },
             };
         },
         methods: {
@@ -269,22 +279,61 @@
                     username: student_id_number,
                     password: student_id_number,
                 }
-            }
-            // async getGuardianes(query) {
-            //     // const res = await fetch(API_URL.replace(':query', query))
-            //     // const suggestions = await res.json()
-            //     // this.guardians = suggestions.suggestions
-
-            //     axios.get(route('guardians.index'), {
-            //         params: {
-            //             searchQuery: query
-            //         }
-            //     })
-            //     .then(res => {
-            //         this.guardians = res.data.data;
-            //     })
-            //     .catch(err => {});
-            // }
+            },
+            exportStudents(){
+                if(this.exporting){
+                    return false;
+                }
+                this.exporting = true;
+                this.exportedPage = 1;
+                this.exportData = cloneDeep({
+                    keyword: this.keyword,
+                    type: this.type,
+                    export: 1,
+                });
+                this.createExport();
+            },
+            createExport(){
+                axios.post(route('students.export', 'create'), this.exportData)
+                .then(res => {
+                    this.exportedFilename = res.data.filename;
+                    this.exportPagination = cloneDeep({
+                        total_pages: res.data.total_pages,
+                    });
+                    console.log(this.exportPagination);
+                    this.writeExport(this.exportedPage);
+                })
+                .catch(err => {
+                })
+                .then(err => {
+                    // this.submit = false;
+                });
+            },
+            
+            writeExport(page){
+                if (this.exportedPage > this.exportPagination.total_pages || this.exporting == false) {
+                    this.downloadExportedFile();
+                    return false;
+                }
+                this.exportData.page = page;
+                this.exportData.filename = this.exportedFilename;
+                axios.post(route('students.export', 'write'), this.exportData)
+                .then(res => {
+                    this.exportedPage = parseInt(res.data.page);
+                    this.exportedPage++;
+                    this.writeExport(this.exportedPage);
+                })
+                .catch(err => {
+                    this.writeExport(this.exportedPage);
+                })
+                .then(err => {
+                    // this.submit = false;
+                });
+            },
+            downloadExportedFile(){
+                window.location = '/exports/'+this.exportedFilename;
+                this.exporting = false;
+            },
         },
         mounted() {
             this.getGenders();
@@ -293,6 +342,14 @@
         },
         watch: {
             guardianSearch: debounce(function(addr) { this.getGuardianes(addr) }, 500)
+        },
+        computed: {
+            exportPercentage(){
+                if(this.exporting){
+                    return (((this.exportedPage-1) / this.exportPagination.total_pages) * 100).toFixed(2) + "%";
+                }
+                return '';
+            },
         }
     }
 </script>

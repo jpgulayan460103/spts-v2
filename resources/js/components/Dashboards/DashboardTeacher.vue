@@ -39,7 +39,7 @@
                                     <!-- <div class="btn-group" role="group" aria-label="Basic example">
                                         <button type="button" class="btn btn-primary" v-for="(quarter, qindex) in classRecord.quarters" :key="qindex">{{ quarter.quarter.name }}</button>
                                     </div> -->
-                                    <button type="button" class="btn btn-primary" @click="viewClassRecord(classRecord)">
+                                    <button type="button" class="btn btn-primary" @click="viewClassRecord(classRecord)" v-tooltip="'Manange Class Record'">
                                         <i class="bi bi-gear-fill"></i>
                                     </button>
                                 </td>
@@ -91,10 +91,10 @@
                             <td>{{ section.grade_level.name }}</td>
                             <td>{{ section.track.name }}</td>
                             <td style="width: 120px;">
-                                <button type="button" class="btn btn-primary" @click="manageClassRecord(section)">
-                                    <i class="bi bi-book-fill"></i>
+                                <button type="button" class="btn btn-primary" @click="manageClassRecord(section)" v-tooltip="'View Section'">
+                                    <i class="bi bi-journal-bookmark-fill"></i>
                                 </button>
-                                <button type="button" class="btn btn-primary" @click="manageSection(section)">
+                                <button type="button" class="btn btn-primary" @click="manageSection(section)" v-tooltip="'View Students'">
                                     <i class="bi bi-people-fill"></i>
                                 </button>
                             </td>

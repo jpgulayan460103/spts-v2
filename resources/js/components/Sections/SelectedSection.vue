@@ -61,23 +61,23 @@
                             <th>Subject Code</th>
                             <th>Subject Description</th>
                             <th>Teacher</th>
-                            <th style="text-align:center">Manage</th>
+                            <th style="text-align:center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(class_record, csindex) in section.class_records" :key="csindex">
+                        <tr v-for="(class_record, csindex) in section.class_records.filter(item => item.teacher_id == user.userable_id || user.userable_id == section.adviser_id)" :key="csindex">
                             <td>{{ class_record.id }}</td>
                             <td>{{ class_record.subject.semester.name }}</td>
                             <td>{{ class_record.subject.subject_code }}</td>
                             <td>{{ class_record.subject.subject_description }}</td>
                             <td>{{ class_record.teacher && class_record.teacher.full_name_first_name ? class_record.teacher.full_name_last_name : "" }}</td>
                             <td style="text-align:center">
-                                <!-- <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" class="btn btn-primary" v-for="(quarter, qindex) in class_record.quarters" :key="qindex">{{ quarter.quarter.name }}</button>
-                                </div> -->
-                                <!-- <button type="button" class="btn btn-primary" @click="viewClassRecord(class_record)" v-if="user.account_type == 'admin' || user.userable_id == class_record.teacher_id"> -->
-                                <button type="button" class="btn btn-primary" @click="viewClassRecord(class_record)">
+                                <button v-if="class_record.teacher_id == user.userable_id" type="button" class="btn btn-primary" @click="viewClassRecord(class_record)"  v-tooltip="'Manange Class Record'">
                                     <i class="bi bi-gear-fill"></i>
+                                </button>
+
+                                <button  v-else type="button" class="btn btn-secondary" @click="viewClassRecord(class_record)"  v-tooltip="'View Class Record'">
+                                    <i class="bi bi-eye"></i>
                                 </button>
                             </td>
                         </tr>
@@ -105,9 +105,57 @@
         <div class="col-md-10" v-else-if="type=='students'">
             <card>
                 <template v-slot:header>Students</template>
+
+
+                <div class="modal modal-lg fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Import Students</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form @submit.prevent="uploadFile()">
+                                <div class="row gx-2">
+                                    <div class="col-md-6">
+                                        <form-item label="Upload File" :errors="fileErrors.file">
+                                            <input type="file" ref="file" class="form-control" :class="fileErrors.file ? 'is-invalid' : ''" accept=".csv">
+                                        </form-item>
+                                        <button type="submit" class="btn btn-primary" :disabled="submit">
+                                            Upload
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <form-item label="Importing Format" :errors="fileErrors.file">
+                                            <a class="form-control" href="/spts-import-student-format.csv">Download this file to view the importing format</a>
+                                        </form-item>
+                                    </div>
+                                </div>
+                                <div class="row gx-2">
+                                    <div class="col-md-12">
+                                        <b>Importing Status</b> <br>
+                                        Total Number of Students: <b>{{ fileContents.length }}</b> <br>
+                                        Total Number of Successfully Imported: <b>{{ fileContents.filter(item => item.success == 1).length }}</b> <br>
+                                        Total Number of Failed Imports: <b>{{ fileContents.filter(item => item.success == 0).length }}</b> <br>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="getStudents()"  v-if="user.account_type == 'admin'">
                 Add Students
                 </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Import Students
+                </button>
+
 
                 <div class="table-responsive">
                 <table class="table">
@@ -131,7 +179,7 @@
                             <td>{{ student.student.ext_name }}</td>
                             <td>{{ student.student.gender.name }}</td>
                             <td>
-                                <button type="button" class="btn btn-danger" @click="deleteStudent(student)" v-if="user.account_type == 'admin'">
+                                <button type="button" class="btn btn-danger" @click="deleteStudent(student)" v-if="user.account_type == 'admin'"  v-tooltip="'Remove Student'">
                                     <i class="bi bi-person-dash-fill"></i>
                                 </button>
                                 
@@ -185,7 +233,7 @@
                                 <td>{{ student.ext_name }}</td>
                                 <td>{{ student.gender.name }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-primary" @click="addStudent(student)">
+                                    <button type="button" class="btn btn-primary" @click="addStudent(student)" v-tooltip="'Insert Student'">
                                         <i class="bi bi-person-plus-fill"></i>
                                     </button>
                                     
@@ -214,7 +262,7 @@
     import SummaryTable from './components/SummaryTable.vue'
     import UnitTable from './components/UnitTable.vue'
     import axios from 'axios';
-    import { cloneDeep, isEmpty } from 'lodash'
+    import { cloneDeep, isEmpty, debounce } from 'lodash'
 
     export default {
         props: [
@@ -247,6 +295,10 @@
                     searchQuery: "",
                     perPage: 5,
                 },
+                submit: false,
+                fileErrors: {},
+                fileContents: [],
+                fileHeaders: [],
             };
         },
         methods: {
@@ -269,6 +321,12 @@
                 })
                 .catch(err => {
                     alert(`${student.full_name_last_name} is already added`);
+                });
+            },
+            async insertStudent(student){
+                return axios.post(route('section-students.store'), {
+                    section_id : this.section.id,
+                    student_id : student.id
                 });
             },
             deleteStudent(student){
@@ -317,6 +375,72 @@
                         utuid: unit.uuid
                     }
                 })
+            },
+            async uploadFile(){
+                this.submit = true;
+                this.selectedFile = this.$refs.file.files[0];
+                let formData = new FormData();
+
+                formData.append("file", this.selectedFile);
+
+                axios.post(route('sections.students.import'), formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data"
+                    }
+                })
+                .then(res => {
+                    this.submit = false;
+                    this.fileContents = res.data.contents;
+                    this.fileHeaders = res.data.headers;
+                    this.importStudent();
+                })
+                .catch(err => {
+                    console.log(err);
+                    this.submit = false;
+                    this.fileErrors = err.response.data.errors;
+                })
+                ;
+            },
+
+            importStudent: debounce(async function(){
+                this.submit = true;
+                this.formErrors = [];
+                let rows = [
+                    this.fileHeaders
+                ];
+
+                for (let index = 0; index < this.fileContents.length; index++) {
+                    try {
+                        const saveResult = await this.insertStudent(this.fileContents[index], false);
+                        this.sectionStudents.unshift(saveResult.data);
+                        this.fileContents[index].success = 1;
+                    } catch (err) {
+                        this.fileContents[index].success = 0;
+                        rows.push([
+                            this.fileContents[index].student_id_number,
+                            this.fileContents[index].last_name,
+                            this.fileContents[index].first_name,
+                            this.fileContents[index].middle_name,
+                            this.fileContents[index].ext_name,
+                            this.fileContents[index].gender,
+                        ]);
+                    }
+                }
+
+                let csvContent = "data:text/csv;charset=utf-8," 
+                    + rows.map(e => e.join(",")).join("\n");
+                var encodedUri = encodeURI(csvContent);
+                var link = document.createElement("a");
+                link.setAttribute("href", encodedUri);
+                link.setAttribute("download", "failed-imports.csv");
+                document.body.appendChild(link); // Required for FF
+
+                link.click();
+                this.submit = false;
+            }, 250),
+
+            async saveStudent(formData){
+                return axios.post(route('students.store'), formData);
             },
             isEmpty(value){
                 return isEmpty(value);

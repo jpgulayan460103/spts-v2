@@ -98,7 +98,7 @@ class GuardianController extends Controller
      * @param  \App\Models\Guardian  $guardian
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(GuardianRequest $request, $id)
     {
         $guardian = Guardian::find($id);
         $guardian->update($request->all());

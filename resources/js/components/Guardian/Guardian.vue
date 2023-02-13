@@ -22,9 +22,12 @@
                             <input type="text" v-model="formData.ext_name" class="form-control" :class="formErrors.ext_name ? 'is-invalid' : ''">
                         </form-item>
                         <form-item label="Gender" :errors="formErrors.gender_id">
-                            <select v-model="formData.gender_id" class="form-control" :class="formErrors.gender_id ? 'is-invalid' : ''">
+                            <select v-model="formData.gender_id" class="form-control" placeholder="Select gender" :class="formErrors.gender_id ? 'is-invalid' : ''">
                                 <option v-for="(item, index) in genders" :key="index" :value="item.id">{{ item.name }}</option>
                             </select>
+                        </form-item>
+                        <form-item label="Contact Number" :errors="formErrors.contact_number">
+                            <input type="text" v-model="formData.contact_number" placeholder="e.g. 09123456789" class="form-control" :class="formErrors.contact_number ? 'is-invalid' : ''">
                         </form-item>
                     </div>
                     <div v-if="formType != 'update'">
@@ -69,6 +72,7 @@
                             <th>Middle Name</th>
                             <th>Ext Name</th>
                             <th>Gender</th>
+                            <th>Contact Number</th>
                             <th>SPTS Account ID</th>
                             <th></th>
                         </tr>
@@ -81,15 +85,16 @@
                             <td>{{ guardian.middle_name }}</td>
                             <td>{{ guardian.ext_name }}</td>
                             <td>{{ guardian.gender.name }}</td>
+                            <td>{{ guardian.contact_number }}</td>
                             <td>{{ guardian.user ? guardian.user.username : "" }}</td>
                             <td>
-                                <button type="button" class="btn btn-primary" @click="editAccount(guardian)">
+                                <button type="button" class="btn btn-primary" @click="editAccount(guardian)" v-tooltip="'Edit Login Account'">
                                     <i class="bi bi-person-circle"></i>
                                 </button>
-                                <button type="button" class="btn btn-primary" @click="editGuardian(guardian)">
+                                <button type="button" class="btn btn-primary" @click="editGuardian(guardian)" v-tooltip="'Edit Guardian'">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
-                                <button type="button" class="btn btn-danger" @click="deleteGuardian(guardian)">
+                                <button type="button" class="btn btn-danger" @click="deleteGuardian(guardian)" v-tooltip="'Delete Guardian'">
                                     <i class="bi bi-trash"></i>
                                 </button>
                                 

@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+Route::get('/home', [HomeController::class, 'index']);
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/sections', [HomeController::class, 'sections'])->name('sections');
 Route::get('/students', [HomeController::class, 'students'])->name('students');
@@ -68,9 +69,13 @@ Route::prefix('data')->group(function () {
         Route::get('/{id}/subject-summary', [StudentController::class, 'subjectSummary'])->name('students.subject.summary');
         Route::post('/{id}/photo', [StudentController::class, 'photo'])->name('students.photo');
     });
+    Route::prefix('exports')->group(function () {
+        Route::post('/students/{type}', [StudentController::class, 'export'])->name('students.export');
+    });
 
     Route::get('/guaridans/{id}/students', [GuardianController::class, 'students'])->name('guaridans.students');
     Route::get('/sections/{id}/subjects', [SectionController::class, 'subjects'])->name('sections.subjects');
     Route::post('/students-import', [StudentController::class, 'import'])->name('sections.import');
+    Route::post('/section-students-import', [SectionStudentController::class, 'import'])->name('sections.students.import');
 });
 

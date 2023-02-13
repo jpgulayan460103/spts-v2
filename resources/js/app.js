@@ -8,12 +8,15 @@ require('./bootstrap');
 
 import Vue from 'vue'
 import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
+import FloatingVue from 'floating-vue'
 
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import './components'
 import './../css/app.css'
+import 'floating-vue/dist/style.css'
 
 Vue.component('vue-bootstrap-typeahead', VueBootstrapTypeahead)
+Vue.use(FloatingVue)
 
 
 

@@ -49,10 +49,9 @@
                             <td>{{ student.guardian ? student.guardian.full_name_last_name : "" }}</td>
                             <td>{{ student.user ? student.user.username : "" }}</td>
                             <td>
-                                <a type="button" class="btn btn-primary" :href="`/?stduid=${student.uuid}`">
-                                    <i class="bi bi-book-fill"></i>
+                                <a type="button" class="btn btn-primary" :href="`/?stduid=${student.uuid}`" v-tooltip="'View Student'">
+                                    <i class="bi bi-person-circle"></i>
                                 </a>
-                                
                             </td>
                         </tr>
                     </tbody>

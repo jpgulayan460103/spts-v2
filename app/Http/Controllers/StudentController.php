@@ -13,6 +13,7 @@ use App\Models\TransmutedGrade;
 use App\Models\UnitAction;
 use App\Models\UnitItem;
 use App\Models\UnitScore;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -48,7 +49,7 @@ class StudentController extends Controller
         $students->orderBy('middle_name');
         $students->orderBy('ext_name');
 
-        $students = $students->paginate($per_page);
+        $students = $students->paginate($per_page)->toArray();
 
         return $students;
     }
@@ -186,7 +187,7 @@ class StudentController extends Controller
         $subject_id = $request->subject_id;
         $section_id = $request->section_id;
         $student_id = $id;
-        $class_record = ClassRecord::with(['quarters.units', 'quarters.quarter'])->where('subject_id', $subject_id)->where('section_id', $section_id)->first();
+        $class_record = ClassRecord::with(['quarters.units', 'quarters.quarter','teacher'])->where('subject_id', $subject_id)->where('section_id', $section_id)->first();
         $unit_summarries = [];
 
         $section_student = SectionStudent::with(['attendances.attendance'])->where('section_id', $section_id)->where('student_id', $student_id)->first();
@@ -269,6 +270,79 @@ class StudentController extends Controller
         return $section_student;
     }
 
+    public function export(Request $request, $type = null)
+    {
+        $disk = config('app.env') == "local" ? "local" : "sftp";
+        $export_pages = 100;
+
+        if (strtolower($type) == "create") {
+            $datetime = Carbon::now();
+            $filename = "export-students-" . $datetime->toDateString() . "-" . $datetime->format('H-i-s') . ".csv";
+            $file_location = public_path("exports/$filename");
+            $file = fopen($file_location, 'w+');
+            
+            $headers = [
+                "student_id_number",
+                "first_name",
+                "middle_name",
+                "last_name",
+                "ext_name",
+                "gender",
+            ];
+            
+            fputcsv($file, $headers);
+            fclose($file);
+
+            $students = $this->index($request);
+
+            return [
+                'total_pages' => $students["last_page"],
+                'filename' => $filename,
+                'file_location' => $file_location,
+            ];
+
+        }elseif (strtolower($type) == "write") {
+            // sleep(2);
+            $filename = $request->filename;
+            $file_location = $request->file_location;
+
+            $students = $this->index($request);
+            $students = $students['data'];
+
+            $file = fopen(public_path("exports/$filename"), "a+");
+
+            $for_export = [];
+
+            foreach ($students as $student) {
+                $for_export[] = [
+                    $student["student_id_number"],
+                    $student["first_name"],
+                    $student["middle_name"],
+                    $student["last_name"],
+                    $student["ext_name"],
+                    $student["gender"]["name"],
+                ];
+            }
+
+            // return $for_export;
+
+            foreach ($for_export as $export_data) {
+                fputcsv($file, $export_data);
+            }
+            fclose($file);
+
+            return [
+                'page' => $request->page,
+                'filename' => $filename,
+            ];
+        }elseif(strtolower($type) == "download"){
+            $file_location = $request->file_location;
+            return [
+                'url' => $file_location
+            ];
+        }
+    }
+
     public function import(Request $request)
     {
         $validated = $request->validate([
@@ -276,12 +350,9 @@ class StudentController extends Controller
         ]);
 
         $file = request('file');
-        // return $file->getMimeType();
         $file_uuid = Str::uuid();
         $filename = "$file_uuid.".$file->getClientOriginalExtension();
         $path = Storage::putFileAs("public", $file, $filename);
-        // return public_path();
-        // return public_path(Storage::url($path));
         $csv = Reader::createFromPath(public_path(Storage::url($path)), 'r');
         $headers = [
             'student_id_number',

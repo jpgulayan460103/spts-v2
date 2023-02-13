@@ -22,7 +22,7 @@
                             <input type="text" v-model="formData.ext_name" class="form-control" :class="formErrors.ext_name ? 'is-invalid' : ''">
                         </form-item>
                         <form-item label="Gender" :errors="formErrors.gender_id">
-                            <select v-model="formData.gender_id" class="form-control" :class="formErrors.gender_id ? 'is-invalid' : ''">
+                            <select v-model="formData.gender_id" class="form-control" placeholder="Select gender" :class="formErrors.gender_id ? 'is-invalid' : ''">
                                 <option v-for="(item, index) in genders" :key="index" :value="item.id">{{ item.name }}</option>
                             </select>
                         </form-item>
@@ -83,13 +83,13 @@
                             <td>{{ teacher.gender.name }}</td>
                             <td>{{ teacher.user ? teacher.user.username : "" }}</td>
                             <td>
-                                <button type="button" class="btn btn-primary" @click="editAccount(teacher)">
+                                <button type="button" class="btn btn-primary" @click="editAccount(teacher)" v-tooltip="'Edit Login Account'">
                                     <i class="bi bi-person-circle"></i>
                                 </button>
-                                <button type="button" class="btn btn-primary" @click="editTeacher(teacher)">
+                                <button type="button" class="btn btn-primary" @click="editTeacher(teacher)" v-tooltip="'Edit Teacher'">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
-                                <button type="button" class="btn btn-danger" @click="deleteTeacher(teacher)">
+                                <button type="button" class="btn btn-danger" @click="deleteTeacher(teacher)" v-tooltip="'Delete Teacher'">
                                     <i class="bi bi-trash"></i>
                                 </button>
                                 

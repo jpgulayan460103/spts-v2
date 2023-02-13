@@ -5,7 +5,7 @@
                 <template v-slot:header>Section Form</template>
                 <form @submit.prevent="submitForm()">
                     <form-item label="Grade Level" v-if="formType == 'create'" :errors="formErrors.grade_level_id">
-                        <select v-model="formData.grade_level_id" class="form-control" :class="formErrors.grade_level_id ? 'is-invalid' : ''">
+                        <select v-model="formData.grade_level_id" class="form-control" placeholder="Select grade level" :class="formErrors.grade_level_id ? 'is-invalid' : ''">
                             <option v-for="(item, index) in gradeLevels" :key="index" :value="item.id">{{ item.name }}</option>
                         </select>
                     </form-item>
@@ -13,17 +13,17 @@
                         <input type="text" v-model="formData.section_name" class="form-control" :class="formErrors.section_name ? 'is-invalid' : ''">
                     </form-item>
                     <form-item label="School Year" v-if="formType == 'create'" :errors="formErrors.school_year_id">
-                        <select v-model="formData.school_year_id" class="form-control" :class="formErrors.school_year_id ? 'is-invalid' : ''">
+                        <select v-model="formData.school_year_id" class="form-control" placeholder="Select school year" :class="formErrors.school_year_id ? 'is-invalid' : ''">
                             <option v-for="(item, index) in schoolYears" :key="index" :value="item.id">{{ item.name }}</option>
                         </select>
                     </form-item>
                     <form-item label="Track" v-if="formType == 'create'" :errors="formErrors.track_id">
-                        <select v-model="formData.track_id" class="form-control" :class="formErrors.track_id ? 'is-invalid' : ''">
+                        <select v-model="formData.track_id" class="form-control"  placeholder="Select track" :class="formErrors.track_id ? 'is-invalid' : ''">
                             <option v-for="(item, index) in tracks" :key="index" :value="item.id">{{ item.name }}</option>
                         </select>
                     </form-item>
                     <form-item label="Adviser" :errors="formErrors.adviser_id">
-                        <select v-model="formData.adviser_id" class="form-control" :class="formErrors.adviser_id ? 'is-invalid' : ''">
+                        <select v-model="formData.adviser_id" class="form-control" placeholder="Select teacher" :class="formErrors.adviser_id ? 'is-invalid' : ''">
                             <option v-for="(item, index) in advisers" :key="index" :value="item.id">{{ item.full_name_last_name }}</option>
                         </select>
                     </form-item>
@@ -69,17 +69,17 @@
                             <td>{{ section.school_year.name }}</td>
                             <td>{{ section.track.name }}</td>
                             <td>{{ section.adviser ? section.adviser.full_name_last_name : "" }}</td>
-                            <td>
-                                <button type="button" class="btn btn-primary" @click="manageClassRecord(section)">
+                            <td style="width: 200px">
+                                <button type="button" class="btn btn-primary" @click="manageClassRecord(section)"  v-tooltip="'View Class Record'">
                                     <i class="bi bi-book-fill"></i>
                                 </button>
-                                <button type="button" class="btn btn-primary" @click="manageSection(section)">
+                                <button type="button" class="btn btn-primary" @click="manageSection(section)"  v-tooltip="'View Students'">
                                     <i class="bi bi-people-fill"></i>
                                 </button>
-                                <button type="button" class="btn btn-primary" @click="editSection(section)">
+                                <button type="button" class="btn btn-primary" @click="editSection(section)" v-tooltip="'Edit Class Record'">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
-                                <button type="button" class="btn btn-danger" @click="deleteSection(section)">
+                                <button type="button" class="btn btn-danger" @click="deleteSection(section)" v-tooltip="'Delete Section'">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </td>

@@ -1,12 +1,13 @@
 <template>
     <div class="row gy-2 gx-2">
         <div class="col-md-12">
-            <nav aria-label="breadcrumb" v-if="user.account_type == 'guardian' && !isEmpty(section)">
+            <nav aria-label="breadcrumb" v-if="user.account_type == 'guardian'">
                 <ol class="breadcrumb">
                     <!-- <li class="breadcrumb-item"><a href="/">My Students</a></li> -->
-                    <li class="breadcrumb-item" aria-current="page" :class="isEmpty(section) ? 'active' : ''" v-if="!isEmpty(section)">
-                        <span v-if="isEmpty(section)">{{ student.full_name_first_name }}</span>
-                        <a :href="backToEnrolledUrl()" v-else>{{ student.full_name_first_name }}</a>
+                    <li class="breadcrumb-item" aria-current="page" :class="isEmpty(section) ? 'active' : ''">
+                        <!-- <span v-if="isEmpty(section)">{{ student.full_name_first_name }}</span> -->
+                        <!-- <a :href="backToEnrolledUrl()" v-else>{{ student.full_name_first_name }}</a> -->
+                        <a :href="backToEnrolledUrl()">{{ student.full_name_first_name }}</a>
                     </li>
                     <li class="breadcrumb-item active" aria-current="page" v-if="!isEmpty(section)">
                         {{ section.grade_level.name }} - {{ section.section_name }} - {{ section.school_year.name }} - {{ section.track.name }}
@@ -91,8 +92,8 @@
                             <td>{{ section.track.name }}</td>
                             <td>{{ section.adviser ? section.adviser.full_name_last_name : "" }}</td>
                             <td>
-                                <a type="button" class="btn btn-primary" :href="sectionUrl(section)">
-                                    <i class="bi bi-book-fill"></i>
+                                <a type="button" class="btn btn-primary" :href="sectionUrl(section)" v-tooltip="'View Grades'">
+                                    <i class="bi bi-award"></i>
                                 </a>
                             </td>
                         </tr>
@@ -115,6 +116,9 @@
         <div class="col-md-10" v-else>
             <card style="min-height: 90vh">
                 <template v-slot:header>{{ section.grade_level.name }} - {{ section.section_name }} - {{ section.school_year.name }} - {{ section.track.name }}</template>
+                Adviser: <b>{{ !isEmpty(adviser) ? adviser.full_name_first_name : "" }}</b>
+                <br>
+                <br>
 
                 <div class="accordion" id="accordionFlushExample">
                     
@@ -126,6 +130,11 @@
                         </h2>
                         <div :id="`flush-collapseOne-${subject.subject_id}`" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                         <div class="accordion-body">
+                            <div class="row mb-4">
+                                <div class="col-md-12">
+                                    Teacher: <b>{{ !isEmpty(teacher) ? teacher.full_name_first_name : "" }}</b>
+                                </div>
+                            </div>
 
                             <div class="row">
                                 <div class="col-md-2">
@@ -278,6 +287,7 @@
                 userImage,
                 studentPhoto: null,
                 subjects: [],
+                adviser: {},
                 sections: [],
                 sectionPaginations: [],
                 sectionFilterData: {
@@ -285,6 +295,7 @@
                     searchQuery: "",
                 },
                 selectedPhoto: null,
+                teacher: {},
                 formErrors: {},
                 attendances: [],
                 present_days: 0,
@@ -376,6 +387,7 @@
                 axios.get(route('sections.subjects', this.section.id))
                 .then(res => {
                     this.subjects = res.data.subjects;
+                    this.adviser = res.data.adviser;
                 })
                 .catch(err => {})
                 ;
@@ -406,6 +418,7 @@
                     this.attendances = res.data.attendances;
                     this.present_days = res.data.present_days;
                     this.week_days = res.data.week_days;
+                    this.teacher = res.data.teacher;
                     let quarterOne = result.quarters[0];
                     let quarterOneUnits = quarterOne.units
                     let quarterOneLabels = map(quarterOneUnits, "name");

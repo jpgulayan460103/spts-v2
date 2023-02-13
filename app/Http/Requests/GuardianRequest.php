@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidContactNumber;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -32,6 +33,7 @@ class GuardianRequest extends FormRequest
             'last_name' => 'required',
             // 'ext_name' => 'required',
             'gender_id' => 'required',
+            'contact_number' => ['required', new ValidContactNumber]
         ];
         if(request()->has('id') && request()->has('username')){
             $rules = [

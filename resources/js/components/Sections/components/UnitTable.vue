@@ -16,19 +16,19 @@
                         <th class="br bl" rowspan="3" style="width: 320px;">Student Name</th>
                         <th class="br" :colspan="unitGradingSystem1.count != 0 ? unitGradingSystem1.count + 3 : unitGradingSystem1.count + 4">
                             {{ unitGradingSystem1.name }}
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="selectGradingSystem(unitGradingSystem1)" v-if="user.account_type == 'admin' || user.userable_id == classRecord.teacher_id">
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="selectGradingSystem(unitGradingSystem1)" v-if="user.account_type == 'teacher' && user.userable_id == classRecord.teacher_id"  v-tooltip="'Add Score Items'">
                                 <b>+</b>
                             </button>
                         </th>
                         <th class="br" :colspan="unitGradingSystem2.count != 0 ? unitGradingSystem2.count + 3 : unitGradingSystem2.count + 4">
                             {{ unitGradingSystem2.name }}
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="selectGradingSystem(unitGradingSystem2)" v-if="user.account_type == 'admin' || user.userable_id == classRecord.teacher_id">
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="selectGradingSystem(unitGradingSystem2)" v-if="user.account_type == 'teacher' && user.userable_id == classRecord.teacher_id"  v-tooltip="'Add Score Items'">
                                 <b>+</b>
                             </button>
                         </th>
                         <th class="br" :colspan="unitGradingSystem3.count != 0 ? unitGradingSystem3.count + 3 : unitGradingSystem3.count + 4">
                             {{ unitGradingSystem3.name }}
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="selectGradingSystem(unitGradingSystem3)" v-if="user.account_type == 'admin' || user.userable_id == classRecord.teacher_id">
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#staticBackdrop" @click="selectGradingSystem(unitGradingSystem3)" v-if="user.account_type == 'teacher' && user.userable_id == classRecord.teacher_id"  v-tooltip="'Add Score Items'">
                                 <b>+</b>
                             </button>
                         </th>
@@ -87,7 +87,7 @@
                         </td>
 
                         <td v-for="(unitItem, index) in unitGradingSystem1.unit_items" :key="`unit-score-1-${index}`">
-                            <div v-if="user.account_type == 'admin' || user.userable_id == classRecord.teacher_id">
+                            <div v-if="user.account_type == 'teacher' && user.userable_id == classRecord.teacher_id">
                                 <input type="number" min="0" style="width: 50px;" :value="unitScore(unitItem, sectionStudent, scoreGradingSystem1(sectionStudent))" :max="unitItem.item" @blur="addScore($event, unitItem, sectionStudent, scoreGradingSystem1(sectionStudent))" ref="scores">
                             </div>
                             <div v-else>
@@ -102,7 +102,7 @@
                         <td class="br">{{ scoreGradingSystem1(sectionStudent).weighted_score }}</td>
 
                         <td v-for="(unitItem, index) in unitGradingSystem2.unit_items" :key="`unit-score-2-${index}`">
-                            <div v-if="user.account_type == 'admin' || user.userable_id == classRecord.teacher_id">
+                            <div v-if="user.account_type == 'teacher' && user.userable_id == classRecord.teacher_id">
                                 <input type="number" min="0" style="width: 50px;" :value="unitScore(unitItem, sectionStudent, scoreGradingSystem2(sectionStudent))" :max="unitItem.item" @blur="addScore($event, unitItem, sectionStudent, scoreGradingSystem2(sectionStudent))" ref="scores">
                             </div>
                             <div v-else>
@@ -117,7 +117,7 @@
                         <td class="br">{{ scoreGradingSystem2(sectionStudent).weighted_score }}</td>
 
                         <td v-for="(unitItem, index) in unitGradingSystem3.unit_items" :key="`unit-score-3-${index}`">
-                            <div v-if="user.account_type == 'admin' || user.userable_id == classRecord.teacher_id">
+                            <div v-if="user.account_type == 'teacher' && user.userable_id == classRecord.teacher_id">
                                 <input type="number" min="0" style="width: 50px;" :value="unitScore(unitItem, sectionStudent, scoreGradingSystem3(sectionStudent))" :max="unitItem.item" @blur="addScore($event, unitItem, sectionStudent, scoreGradingSystem3(sectionStudent))" ref="scores">
                             </div>
                             <div v-else>
@@ -179,7 +179,7 @@
                         <th>{{ sectionStudent.descriptor }}</th>
                         <th class="br">{{ sectionStudent.remarks }}</th>
                         <th class="br">
-                            <div v-if="user.account_type == 'admin' || user.userable_id == classRecord.teacher_id">
+                            <div v-if="user.account_type == 'teacher' && user.userable_id == classRecord.teacher_id">
                                 <select @change="setUnitAction($event, sectionStudent, 'action')" v-if="sectionStudent.descriptor != ''">
                                     <option value="">Select Action</option>
                                     <option v-for="(item, index) in actionOptions" :key="index" :value="item.id" :selected="(sectionStudent.unit_action && sectionStudent.unit_action.action_id == item.id)">{{ item.name }}</option>
@@ -192,7 +192,7 @@
                             </div>
                         </th>
                         <th class="br">
-                            <div v-if="user.account_type == 'admin' || user.userable_id == classRecord.teacher_id">
+                            <div v-if="user.account_type == 'teacher' && user.userable_id == classRecord.teacher_id">
                                 <div v-if="sectionStudent.descriptor != ''">
                                     <textarea @change="setUnitAction($event, sectionStudent, 'feedback')" rows="1" v-if="sectionStudent.unit_action" v-model="sectionStudent.unit_action.teacher_feedback"></textarea>
                                     <textarea @change="setUnitAction($event, sectionStudent, 'feedback')" rows="1" v-else></textarea>
